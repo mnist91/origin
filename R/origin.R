@@ -18,9 +18,6 @@ addPackageToFunction <- function(pkg,
                                  verbose = FALSE,
                                  functions = NULL) {
 
-  if(exists("lg")){
-    dbaHelpers::lgDifftime()
-  }
 
   if(!file.exists(file)) {
     stop("No file in this path\n", file)

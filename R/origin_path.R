@@ -18,10 +18,6 @@ addPackageToFunction_all <- function(file,
                                      excludeBasePackages = TRUE,
                                      verbose = FALSE) {
 
-  if(exists("lg")){
-    dbaHelpers::lgDifftime()
-  }
-
   if(!file.exists(file)) {
     stop("No file in this path\n", file)
   }
@@ -103,15 +99,18 @@ addPackageToFunction_all <- function(file,
                       verbose = verbose)
 
   # iterate over all functions and add package:: when necessary
-  purrr::walk2(.x = pkgs,
-               .y = functions,
-               .f = ~ addPackageToFunction(pkg            = .x,
-                                           functions      = .y,
-                                           file           = file,
-                                           overwrite      = overwrite,
-                                           ignoreComments = ignoreComments,
-                                           verbose        = verbose)
-  )
+  invisible(
+    Map(f = function(pkg, funs){
+      addPackageToFunction(pkg            = pkg,
+                           functions      = funs,
+                           file           = file,
+                           overwrite      = overwrite,
+                           ignoreComments = ignoreComments,
+                           verbose        = verbose)
+    },
+    pkgs,
+    functions
+    ))
 
 
   # Check all changes and potentially missed functions
