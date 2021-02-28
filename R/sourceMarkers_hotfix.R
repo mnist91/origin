@@ -5,11 +5,11 @@
 
 my_callFun <- function (fname, ...)
 {
-  if (isChildProcess())
-    return(callRemote(sys.call(), parent.frame()))
-  verifyAvailable()
-  if (usingTools())
-    found <- exists(toolsName(fname), envir = toolsEnv(),
+  if (rstudioapi:::isChildProcess())
+    return(rstudioapi:::callRemote(sys.call(), parent.frame()))
+  rstudioapi:::verifyAvailable()
+  if (rstudioapi:::usingTools())
+    found <- exists(rstudioapi:::toolsName(fname), envir = rstudioapi:::toolsEnv(),
                     mode = "function")
   else found <- exists(fname, envir = asNamespace("rstudio"),
                        mode = "function")
