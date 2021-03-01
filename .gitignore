@@ -8,7 +8,7 @@
 # User-specific files
 .Ruserdata
 .rproj
-.Rproj
+*.Rproj
 
 # Example code in package build process
 *-Ex.R
