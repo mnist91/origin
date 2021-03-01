@@ -8,16 +8,22 @@ datapath <- system.file("testdata", package = "origin") # funzt bei mir noch nic
 datapath <- file.path("inst", "testdata")
 test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
                        na.strings = "NA")
-
 writeLines(test_text$TARGET, con = target_file_path)
 
+
+# nur für renv um zum testen verfügbar zu sein
+library("data.table", include.only = NULL)
+library("dplyr", include.only = NULL)
+
+
+invisible(lapply(list.files("R", full.names = TRUE), FUN = source))
 # Unit tests
 testthat::test_that("origin file", {
   writeLines(test_text$TESTSKRIPT, con = test_file_path)
-  target <- readLines(target_file_path)
+  script <- readLines(test_file_path)
 
   # In einem Schritt, mit crosschecks
-  addPackageToFunction_all(target_file_path,
+  addPackageToFunction_all(test_file_path,
                            pkgs = c("data.table",
                                     "dplyr",
                                     "testthat",
