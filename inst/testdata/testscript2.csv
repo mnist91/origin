@@ -1,0 +1,75 @@
+﻿COMMENT;TESTSKRIPT;TARGET
+# Code to test explicit package usage PACKAGE::FUNCTION();;
+# regular usage;irisdt <- as.data.table(iris);irisdt <- data.table::as.data.table(iris)
+# start of a line;setkey(iris, Species);data.table::setkey(iris, Species)
+# spaces between function and opening bracket;setkey (iris, Species);data.table::setkey (iris, Species)
+setkey       (iris, Species);data.table::setkey       (iris, Species)
+;
+# already set;# already set
+data.table::setkey(iris, Species);data.table::setkey(iris, Species)
+data.table::setkey (iris, Species);data.table::setkey (iris, Species)
+data.table::setkey     (iris, Species);data.table::setkey     (iris, Species)
+;
+# function called as is;# function called as is
+setkey;setkey
+;
+# special functions;# special functions
+"irisdt[Species %like% ""setosa""]";"irisdt[Species %like% ""setosa""]"
+irisdt[Sepal.Length %between% c(1, 2)];irisdt[Sepal.Length %between% c(1, 2)]
+"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]";"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]"
+;
+# variable masks function name;# variable masks function name
+"filter <- 'Species == ""setosa""'";"filter <- 'Species == ""setosa""'"
+;
+# same function used multiple times in the same line;# same function used multiple times in the same line
+"iris %>% filter(Species == ""setosa"") %>% filter(Spepal.Length > 3) %>% filter(TRUE)";"iris %>% dplyr::filter(Species == ""setosa"") %>% dplyr::filter(Spepal.Length > 3) %>% dplyr::filter(TRUE)"
+;
+# mutltiple calls plus usage of a variable with same name as a function;# mutltiple calls plus usage of a variable with same name as a function
+iris %>% filter(filter) %>% filter(Spepal.Length > 3);iris %>% dplyr::filter(filter) %>% dplyr::filter(Spepal.Length > 3)
+;
+# different functions used in the same line;# different functions used in the same line
+"mutate(filter(iris,if_else(Species == ""setosa"", TRUE, FALSE)))";"dplyr::mutate(dplyr::filter(iris,dplyr::if_else(Species == ""setosa"", TRUE, FALSE)))"
+;
+;
+;
+# ignore comments;# ignore comments
+# last()-function exported by both dplyr and data.table;# last()-function exported by both dplyr and data.table
+  # indendet comments are also ignored last();  # indendet comments are also ignored last()
+  last()   # comments in the same line as code last();  data.table::last()   # comments in the same line as code data.table::last()
+;
+# id() is a dplyr function;# id() is a dplyr function
+id <- 54;id <- 54
+last(id);data.table::last(id)
+szen <- last(id);szen <- data.table::last(id)
+last(szen);data.table::last(szen)
+id(id);dplyr::id(id)
+;
+;
+# functional programming. Only checked if explicitly called.;# functional programming. Only checked if explicitly called.
+lapply(iris, bind_cols);lapply(iris, bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols);       FUN = dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols );       FUN = dplyr::bind_cols )
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols      );       FUN = dplyr::bind_cols      )
+lapply(X = iris,;lapply(X = iris,
+       FUN=bind_cols);       FUN=dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN= bind_cols);       FUN= dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN =bind_cols);       FUN =dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols_2);       FUN = bind_cols_2)
+lapply(X = iris,;lapply(X = iris,
+       FUN =bind_cols, ...);       FUN =dplyr::bind_cols, ...)
+lapply(X = iris,;lapply(X = iris,
+       FUN =bind_cols , ...);       FUN =dplyr::bind_cols , ...)
+;
+# purrr-style;# purrr-style
+map(iris, ;purrr::map(iris,
+    bind_cols);    bind_cols)
+map(iris, bind_cols);purrr::map(iris, bind_cols)
+map(iris, ;purrr::map(iris,
+    .f = bind_cols);    .f = dplyr::bind_cols)
+map(iris, .f =bind_cols);purrr::map(iris, .f =dplyr::bind_cols)

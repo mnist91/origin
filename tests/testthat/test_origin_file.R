@@ -1,13 +1,20 @@
 # Push dummy R script to a temp directory --------------------------------------
 dir <- tempdir()
 test_file_path <- file.path(dir, "testfile.R")
-test_text <- readr::read_delim("../testscript.csv",
-                               delim = ";",
-                               trim_ws = FALSE,
-                               col_names = TRUE,
-                               col_types = "cc",
-                               na = "NA")
-writeLines(test_text$TESTSKRIPT, con = test_file_path)
+target_file_path <- file.path(dir, "targetfile.R")
+
+datapath <- system.file("testdata", package = "origin")
+
+test_text <- read.csv2(file = paste0(datapath, "/testscript.csv"),
+                       na.strings = "NA")
+
+# test_text <- readr::read_delim(file = paste0(datapath, "/testscript.csv"),
+#                                delim = ";",
+#                                trim_ws = FALSE,
+#                                col_names = TRUE,
+#                                col_types = "cc",
+#                                na = "NA")
+writeLines(test_text$TARGET, con = target_file_path)
 
 # Unit tests
 testthat::test_that("origin file", {
