@@ -74,12 +74,12 @@ jobs:
         run: remotes::install_deps(dependencies = TRUE, type = 'binary')
         shell: Rscript {0}
 
-      - name: Fix stringi source installation in ubuntu
-        if: (runner.os == 'Linux')
-        run: |
-          remove.packages(c('stringi'))
-          install.packages("stringi", type="source", repos="https://cran.rstudio.com")
-        shell: Rscript {0}
+      # - name: Fix stringi source installation in ubuntu
+      #   if: (runner.os == 'Linux')
+      #   run: |
+      #     remove.packages(c('stringi'))
+      #     install.packages("stringi", type="source", repos="https://cran.rstudio.com")
+      #   shell: Rscript {0}
 
 
       - name: Session info
