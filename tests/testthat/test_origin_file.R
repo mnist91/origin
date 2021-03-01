@@ -3,17 +3,12 @@ dir <- tempdir()
 test_file_path <- file.path(dir, "testfile.R")
 target_file_path <- file.path(dir, "targetfile.R")
 
-datapath <- system.file("testdata", package = "origin")
+datapath <- system.file("testdata", package = "origin") # funzt bei mir noch nicht so
 
-test_text <- read.csv2(file = paste0(datapath, "/testscript.csv"),
+datapath <- file.path("inst", "testdata")
+test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
                        na.strings = "NA")
 
-# test_text <- readr::read_delim(file = paste0(datapath, "/testscript.csv"),
-#                                delim = ";",
-#                                trim_ws = FALSE,
-#                                col_names = TRUE,
-#                                col_types = "cc",
-#                                na = "NA")
 writeLines(test_text$TARGET, con = target_file_path)
 
 # Unit tests
@@ -35,25 +30,4 @@ testthat::test_that("origin file", {
   testfile_after <- readLines(target_file_path)
 
   testthat::expect_equal(testfile_after, test_text$TARGET)
-})
-
-
-testthat::test_that("origin iterative", {
-
-  # Iterativ, Pakete werden unabhängig voneinander überprüft
-  purrr::walk(c("data.table",
-                "dplyr",
-                "testthat",
-                "purrr"
-  ),
-  .f = ~ addPackageToFunction(pkg = .x,
-                              file = target_file_path,
-                              overwrite = TRUE,
-                              ignoreComments = TRUE,
-                              verbose = TRUE)
-  )
-  testfile_after <- readLines(target_file_path)
-
-  testthat::expect_equal(testfile_after, test_text$TARGET)
-
 })
