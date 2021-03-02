@@ -1,17 +1,17 @@
-#' Print Change Log and potential Errors in Concole
+#' Print Change Log and potential Errors in Console
 #'
-#' @param script_prior
-#' @param script_after
-#' @param lineMatches
-#' @param functions
-#' @param functionsInScript
-#' @param special_functions
-#' @param special_matches
+#' @param script_prior the script before any changes
+#' @param script_after the script after the changes
+#' @param lineMatches a boolean vector with the lines that contain changes
+#' @param functions a vector with function names
+#' @param functionsInScript a vector which functions were used
+#' @param special_functions a vector with special functions such as \%like\%
+#' @param special_matches a boolean vector that indicates which special
+#'   functions are used
 #'
 #' @return
 #' @export
 #'
-#' @examples
 verbolize <- function(script_prior,
                       script_after,
                       lineMatches = rep(TRUE, length(script_after)),
@@ -163,8 +163,8 @@ highlight_stringdiff <- function(prior, after, html = TRUE) {
   # see crayon::green("TEST)
   diffs <- !nzchar(prior_split)
 
-  # the last element cannot be on that was replaced
-  pos <- c(diff(diffs), FALSE)
+  # to capture the first diff, adding a FALSE = 0
+  pos <- diff(c(FALSE, diffs))
 
   if (html) {
     color_start <- '<text style="color:red;">'
@@ -177,9 +177,9 @@ highlight_stringdiff <- function(prior, after, html = TRUE) {
   # +1 since the nth diff, means on the nth +1 position the change starts
   # not for the end, since the diff here means that the change has happened
   # on the nth position
-  after_split[which(pos == 1) + 1] <- paste0(color_start,
-                                             after_split[which(pos == 1) + 1])
-  after_split[pos == -1] <- paste0(after_split[pos == -1], color_end)
+  after_split[pos == 1] <- paste0(color_start, after_split[pos == 1])
+  after_split[which(pos == -1) - 1] <-
+    paste0(after_split[which(pos == -1) - 1], color_end)
 
   after <- paste(after_split, collapse = "")
   return(after)
