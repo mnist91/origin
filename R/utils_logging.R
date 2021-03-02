@@ -162,12 +162,25 @@ highlight_stringdiff <- function(prior, after, html = TRUE) {
   # colorize detected added tokens
   # see crayon::green("TEST)
   diffs <- !nzchar(prior_split)
+
+  # the last element cannot be on that was replaced
+  pos <- c(diff(diffs), FALSE)
+
   if (html) {
-    after_split[diffs] <- paste0('<text style="color:red;">',
-                                 after_split[diffs], "</text>")
+    color_start <- '<text style="color:red;">'
+    color_end <- "</text>"
   } else {
-    after_split[diffs] <- paste0("\033[36m", after_split[diffs], "\033[39m")
+    color_start <- "\033[36m"
+    color_end <- "\033[39m"
   }
+
+  # +1 since the nth diff, means on the nth +1 position the change starts
+  # not for the end, since the diff here means that the change has happened
+  # on the nth position
+  after_split[which(pos == 1) + 1] <- paste0(color_start,
+                                             after_split[which(pos == 1) + 1])
+  after_split[pos == -1] <- paste0(after_split[pos == -1], color_end)
+
   after <- paste(after_split, collapse = "")
   return(after)
 }
