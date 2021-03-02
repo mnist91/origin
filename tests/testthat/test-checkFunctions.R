@@ -11,7 +11,7 @@ test_that("checkFunctions has correct output", {
 
   # expected results
   res1 <- res2 <- list(
-    matches = c("nrow" = TRUE, "n_row" = TRUE),
+    matches = c(TRUE, TRUE),
     lineMatches = c(TRUE, FALSE, TRUE, TRUE),
     special_matches = TRUE,
     special_functions = c(FALSE, TRUE, FALSE),
@@ -19,7 +19,7 @@ test_that("checkFunctions has correct output", {
   )
 
   res3 <- list(
-    matches = c("nrow" = TRUE, "n_row" = TRUE),
+    matches = c(TRUE, TRUE),
     lineMatches = c(TRUE, TRUE, TRUE, TRUE),
     special_matches = TRUE,
     special_functions = c(FALSE, TRUE, FALSE),
@@ -28,22 +28,23 @@ test_that("checkFunctions has correct output", {
 
   # call function with different settings
   tmp1 <- checkFunctions(script,
-                        functions,
-                        ignoreComments = TRUE,
-                        pkg = NULL,
-                        verbose = TRUE)
+                         functions,
+                         ignoreComments = TRUE,
+                         pkg = NULL,
+                         verbose = TRUE)
+
 
   tmp2 <- checkFunctions(script,
-                        functions,
-                        ignoreComments = TRUE,
-                        pkg = "this_pkg",
-                        verbose = TRUE)
+                         functions,
+                         ignoreComments = TRUE,
+                         pkg = "this_pkg",
+                         verbose = TRUE)
 
   tmp3 <- checkFunctions(script,
-                        functions,
-                        ignoreComments = FALSE,
-                        pkg = NULL,
-                        verbose = FALSE)
+                         functions,
+                         ignoreComments = FALSE,
+                         pkg = NULL,
+                         verbose = FALSE)
 
   # compare results
   expect_equal(tmp1, res1)

@@ -6,7 +6,7 @@ target_file_path <- file.path(dir, "targetfile.R")
 # works only when package is build
 datapath <- system.file("testdata", package = "origin")
 
-datapath <- file.path("inst", "testdata")
+#datapath <- file.path("inst", "testdata")
 test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
                        na.strings = "NA")
 writeLines(test_text$TARGET, con = target_file_path)
@@ -25,15 +25,17 @@ testthat::test_that("origin file", {
   script <- readLines(test_file_path)
 
   # In einem Schritt, mit crosschecks
-  addPackageToFunction_all(test_file_path,
-                           pkgs = c("data.table",
-                                    "dplyr",
-                                    "testthat",
-                                    "purrr"),
-                           overwrite = TRUE,
-                           ignoreComments = TRUE,
-                           excludeBasePackages = TRUE,
-                           verbose = FALSE)
+  capture.output(
+    addPackageToFunction_all(test_file_path,
+                             pkgs = c("data.table",
+                                      "dplyr",
+                                      "testthat",
+                                      "purrr"),
+                             overwrite = TRUE,
+                             ignoreComments = TRUE,
+                             excludeBasePackages = TRUE,
+                             verbose = FALSE)
+  )
 
   testfile_after <- readLines(target_file_path)
 
