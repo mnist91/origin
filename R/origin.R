@@ -19,7 +19,7 @@ addPackageToFunction <- function(pkg,
                                  functions = NULL) {
 
 
-  if(!file.exists(file)) {
+  if (!file.exists(file)) {
     stop("No file in this path\n", file)
     # load file
   } else {
@@ -27,11 +27,11 @@ addPackageToFunction <- function(pkg,
   }
 
   # save prior script for comparison
-  if(verbose){
+  if (verbose) {
     script_prior <- script
   }
 
-  if(is.null(functions)) {
+  if (is.null(functions)) {
     # get all exported functions from a package --------------------------------
     # lese alle exportierten Funktionen aus dem Paket ein
     # lists all (incl. not exported) functions
@@ -49,12 +49,12 @@ addPackageToFunction <- function(pkg,
                       verbose = verbose)
 
   # make function-Output available
-  matches = l$matches
-  lineMatches = l$lineMatches
-  special_matches = l$special_matches
-  functionsInScript = l$functionsInScript
-  special_functions = l$special_functions
-  if(!any(matches)) {
+  matches <- l$matches
+  lineMatches <- l$lineMatches
+  special_matches <- l$special_matches
+  functionsInScript <- l$functionsInScript
+  special_functions <- l$special_functions
+  if (!any(matches)) {
     return(NULL)
   }
 
@@ -94,8 +94,8 @@ addPackageToFunction <- function(pkg,
             # In functional programming, the function's call is used without
             # brackets but as an object. To differentiate between such a
             # function and a variable, an explicit parameter is needed:
-            # *apply: "FUN = "
-            # purr: ".f = "
+            # e.g. *apply "FUN = "
+            # e.g. purr ".f = "
             functionalPatternRegex <-
               paste0("(.*)((?<=", leadingPatterns, ")",
                      FUN, "(?=[ \\,)]|$))(.*)")
@@ -110,7 +110,7 @@ addPackageToFunction <- function(pkg,
                              pattern = functionalPatternRegex,
                              replacement = replacementRegex,
                              perl = TRUE)
-              if(STRING_PRIOR == STRING) {
+              if (STRING_PRIOR == STRING) {
                 break
               }
             }
@@ -120,10 +120,11 @@ addPackageToFunction <- function(pkg,
           .init = LINE)
       })
 
-  if(verbose) {
+  if (verbose) {
 
     # which packet was analyzed
-    cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)), collapse = "")), "\n")
+    cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)),
+                               collapse = "")), "\n")
 
     verbolize(script_prior = script_prior,
               script = script,
@@ -135,11 +136,10 @@ addPackageToFunction <- function(pkg,
   }
 
 
-  if(overwrite){
+  if (overwrite) {
     writeLines(script, con = file)
     return(NULL)
   } else {
     return(script)
   }
 }
-

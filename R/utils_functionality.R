@@ -33,14 +33,18 @@ getFunctions <- function(pkg) {
 #' @export
 #'
 #' @examples
-checkFunctions <- function(script, functions, ignoreComments = TRUE, pkg = NULL, verbose = TRUE) {
+checkFunctions <- function(script,
+                           functions,
+                           ignoreComments = TRUE,
+                           pkg = NULL,
+                           verbose = TRUE) {
   # entferne bestimmte Funktionen mit special characters
   # remove function with special characters like %, &, [] and :
-  special_functions <- grepl(functions, pattern = paste("\\$", "\\:", "\\]", "\\[", "%", sep = "|"))
+  special_functions <- grepl(functions, pattern = "\\&|\\:|\\]|\\[|%")
   relevant_functions <- functions[!special_functions]
-  # reduce the number of functions to check, by selecting possible (occouring)
-  # functions. This is not a check if it is a function or an object, but a simple
-  # regular expression
+  # reduce the number of functions to check, by selecting possible (occurring)
+  # functions. This isn't a check if it is a function or an object,
+  # but a simple regular expression
 
   # TODO: check performance of one script vs multiple scripts
   # any(grepl(pattern = .x, x = script, fixed = TRUE))
@@ -53,25 +57,33 @@ checkFunctions <- function(script, functions, ignoreComments = TRUE, pkg = NULL,
   # special functions such as %like" can not be called with ::
   # print a warning, that such functions occur
   special_matches <- purrr::map_lgl(functions[special_functions],
-                                    ~grepl(pattern = .x, x = fullScript, fixed = TRUE))
+                                    ~grepl(pattern = .x,
+                                           x = fullScript,
+                                           fixed = TRUE))
 
   # no matching functions
-  if(!any(matches)) {
-    if(!verbose) {
+  if (!any(matches)) {
+    if (!verbose) {
       return(NULL)
     }
-    if(!is.null(pkg)) {
-      cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)), collapse = "")), "\n")
+    if (!is.null(pkg)) {
+      cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)),
+                                 collapse = "")), "\n")
     }
     cat(crayon::green(0, "Lines changed\n"))
     cat(crayon::green(0, "Functions recognized\n"))
 
-    if(any(special_matches)) {
-      special_functions_in_script <- functions[special_functions][special_matches]
+    if (any(special_matches)) {
+      special_functions_in_script <-
+        functions[special_functions][special_matches]
       cat(crayon::magenta("Special Functions used!"), "\n")
-      specialMatches <- which(as.logical(Reduce(f = "+", purrr::map(.x = special_functions_in_script,
-                                                                    .f = ~grepl(x = script, pattern = .x, fixed = TRUE)))))
-      cat(paste(paste("Line ", specialMatches, ": ", script[specialMatches], sep = ""),
+      specialMatches <- which(as.logical(
+        Reduce(f = "+", purrr::map(.x = special_functions_in_script,
+                                   .f = ~grepl(x = script,
+                                               pattern = .x, fixed = TRUE)))
+        ))
+      cat(paste(paste("Line ", specialMatches, ": ",
+                      script[specialMatches], sep = ""),
                 collapse = "\n"))
     }
     cat("\n")
@@ -80,10 +92,11 @@ checkFunctions <- function(script, functions, ignoreComments = TRUE, pkg = NULL,
 
   # reduce the number of script rows to check, by selecting only those which
   # contain a function name
-  lineMatches <- grepl(x = script, pattern = paste(functionsInScript, collapse = "|"))
+  lineMatches <- grepl(x = script,
+                       pattern = paste(functionsInScript, collapse = "|"))
 
   # ignore comment rows
-  if(ignoreComments) {
+  if (ignoreComments) {
     # starts with # or leading spaces and #
     # startsWithHashRegEx <- "(?<=^[ *]|^)#"
     lineComments <- grepl(x = trimws(script[lineMatches]), pattern = "^#")

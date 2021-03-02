@@ -34,11 +34,13 @@ verbolize <- function(script_prior,
   # list all changed lines
   cat(crayon::green("Changes:\n"))
 
-  changedStrings <- highlight_stringdiff_iter(prior = script_prior[lineMatches][changes],
-                                              after = script_after[lineMatches][changes],
-                                              html = FALSE)
+  changedStrings <- highlight_stringdiff_iter(
+    prior = script_prior[lineMatches][changes],
+    after = script_after[lineMatches][changes],
+    html = FALSE)
 
-  cat(paste(paste("Line ", line_matches_pos[changes], ": ", changedStrings, sep = ""),
+  cat(paste(paste("Line ", line_matches_pos[changes],
+                  ": ", changedStrings, sep = ""),
             collapse = "\n"), "\n")
 
   # lines where a function name occurred, but no changed happened
@@ -71,7 +73,7 @@ verbolize <- function(script_prior,
                                          replacement = replacementRegex,
                                          pattern = patternRegex,
                                          perl = TRUE)
-                          if(STRING_PRIOR == STRING) {
+                          if (STRING_PRIOR == STRING) {
                             break
                           }
                         }
@@ -81,9 +83,11 @@ verbolize <- function(script_prior,
                       .init = LINE)
       })
 
-  potential_missings_unchanged <- potential_missings_unchanged[potential_missings_unchanged != potential_missings]
-  if(length(potential_missings_unchanged) > 0){
-    cat("\n",crayon::blue("Function names are not used like functions. Check for variable names or ",
+  potential_missings_unchanged <- potential_missings_unchanged[
+    potential_missings_unchanged != potential_missings]
+  if (length(potential_missings_unchanged) > 0) {
+    cat("\n", crayon::blue("Function names are not used like functions.",
+                           "Check for variable names or",
                           "functional programming in *apply/purrr"), "\n")
     cat(paste(paste("Line ", line_matches_pos, #[!changes],
                     ": ", potential_missings_unchanged, sep = ""),
@@ -92,29 +96,32 @@ verbolize <- function(script_prior,
 
   # did special functions such as "%like" or %>% which are not used with
   # PACAKGE::FUNCTION occur
-  if(any(special_matches)) {
+  if (any(special_matches)) {
     cat("\n", crayon::magenta("Special functions used!"), "\n")
 
     special_functions_in_script <- functions[special_functions][special_matches]
     # lines with special functions
-    specialMatches <- which(as.logical(Reduce(f = "+",
-                                              purrr::map(.x = special_functions_in_script,
-                                                         .f = ~ grepl(x = script_after,
-                                                                      pattern = .x,
-                                                                      fixed = TRUE)))))
+    specialMatches <- which(as.logical(
+      Reduce(f = "+", purrr::map(.x = special_functions_in_script,
+                                 .f = ~ grepl(x = script_after,
+                                              pattern = .x,
+                                              fixed = TRUE)))
+      ))
     # which special functions were used?
     # Through the special characters a regular expression search is not possible
     # Hence `fixed = TRUE` and looping overall possible functions
     # each list element is a special function and the number represent the line
     specialsFound <- purrr::map(.x = special_functions_in_script,
-                                .f = ~grep(x =  script_after[specialMatches], pattern = .x, fixed = TRUE))
+                                .f = ~grep(x =  script_after[specialMatches],
+                                           pattern = .x, fixed = TRUE))
 
     # function's name as name
     names(specialsFound) <- special_functions_in_script
 
     specialsUnlisted <- unlist(purrr::transpose(specialsFound))
     # aggregate all functions by lines
-    funsInLine <- by(names(specialsUnlisted), specialsUnlisted, paste, collapse = ", ")
+    funsInLine <- by(names(specialsUnlisted),
+                     specialsUnlisted, paste, collapse = ", ")
 
     # for alignment, make all functions string the same length
     funsInLine <- format(funsInLine, width = max(nchar(funsInLine)))
@@ -140,9 +147,9 @@ highlight_stringdiff_iter <- function(prior, after, html = TRUE) {
 }
 
 highlight_stringdiff <- function(prior, after, html = TRUE) {
-  # füge leeren string ein, wenn es einen unterschied zwischen string 1 und string 2 gibt
+  # include an empty string in prior
+  # if there are differences between prior and after
   split_regex <- "(?=[[:space:]]|[[:punct:]])"
-  # split_regex <- "(?=[[:space:]]|[\\!\\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\/\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\`\\{\\|\\}\\~])"
   prior_split <- strsplit(prior, split = split_regex, perl = TRUE)[[1]]
   after_split <- strsplit(after, split = split_regex, perl = TRUE)[[1]]
   for (i in seq_along(after_split)) {
@@ -156,12 +163,11 @@ highlight_stringdiff <- function(prior, after, html = TRUE) {
   # see crayon::green("TEST)
   diffs <- !nzchar(prior_split)
   if (html) {
-    after_split[diffs] <- paste0('<text style="color:red;">', after_split[diffs], "</text>")
+    after_split[diffs] <- paste0('<text style="color:red;">',
+                                 after_split[diffs], "</text>")
   } else {
     after_split[diffs] <- paste0("\033[36m", after_split[diffs], "\033[39m")
   }
   after <- paste(after_split, collapse = "")
   return(after)
 }
-
-

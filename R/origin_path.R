@@ -41,8 +41,6 @@ addPackageToFunction_all <- function(file,
   # a deterministic order is chosen
   functions <- setNames(functions, pkgs)
 
-  # paclge with the most functions, importan for purrr::transpose()
-  longestList <- which.max(lapply(functions, length))
 
   # named character vector of functions with package name as names
   funs_unlisted <- unlist(
@@ -84,12 +82,12 @@ addPackageToFunction_all <- function(file,
     cat(paste(pkgs[pkgs %in% names(funs_duplicates)], collapse = " >> "), "\n")
 
     cat("Do you want to proceed?\n")
-    if(interactive()) {
+    if (interactive()) {
       answer <- menu(choices = c("YES", "NO"))
     } else {
       answer <- 1
     }
-    if(answer != 1) {
+    if (answer != 1) {
       stop("Execution halted")
     }
 
@@ -104,7 +102,7 @@ addPackageToFunction_all <- function(file,
 
   # iterate over all functions and add package:: when necessary
   invisible(
-    Map(f = function(pkg, funs){
+    Map(f = function(pkg, funs) {
       addPackageToFunction(pkg            = pkg,
                            functions      = funs,
                            file           = file,
@@ -128,4 +126,3 @@ addPackageToFunction_all <- function(file,
             special_matches = l$special_matches)
 
 }
-
