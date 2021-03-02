@@ -38,7 +38,6 @@ checkFunctions <- function(script,
                            ignoreComments = TRUE,
                            pkg = NULL,
                            verbose = TRUE) {
-  # entferne bestimmte Funktionen mit special characters
   # remove function with special characters like %, &, [] and :
   special_functions <- grepl(functions, pattern = "\\&|\\:|\\]|\\[|%")
   relevant_functions <- functions[!special_functions]
