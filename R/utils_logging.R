@@ -19,52 +19,50 @@ verbolize <- function(script_prior,
                       functionsInScript,
                       special_functions = NULL,
                       special_matches = FALSE) {
-  # zeilen, die verändert wurden
+  # changed lines
   changes <- script_after[lineMatches] != script_prior[lineMatches]
   line_matches_pos <- which(lineMatches)
-  
-  # Anzahl geänderter Zeilen
+
+  # number of changed lines
   sumChanges <- sum(changes)
   cat(crayon::green(sumChanges, "Lines changed\n"))
-  
-  # Auflistung erkannter Funktionen aus dem Paket im Skript
+
+  # list all recognized and used functions of a package
   cat(crayon::green(length(functionsInScript), "Functions recognized\n"))
   cat(paste(functionsInScript, collapse = "\n"), "\n")
-  
-  # Auflistung aller veränderter Zeilen
+
+  # list all changed lines
   cat(crayon::green("Changes:\n"))
-  
+
   changedStrings <- highlight_stringdiff_iter(prior = script_prior[lineMatches][changes],
                                               after = script_after[lineMatches][changes],
                                               html = FALSE)
-  
+
   cat(paste(paste("Line ", line_matches_pos[changes], ": ", changedStrings, sep = ""),
             collapse = "\n"), "\n")
-  
-  
-  # Zeilen, in denen Funktionsnamen vorkommen, die sich aber nicht verändert haben
-  # NICHT allumfassend, da in einer Zeile eine Funktion erkannt worden sein könnte, die andere nicht
+
+  # lines where a function name occurred, but no changed happened
+  # not comprehensive, since there might be line where one function was
+  # recognized, but not another
   potential_missings <- script_after[lineMatches]#[!changes]
-  # färbe verpasste Funktionen rot ein.
-  # Siehe crayon::yellow("TEST)
+  # color missed functions, like crayon::yellow("TEST)
   replacementRegex <- paste0("\\1\033[33m\\2\033[39m\\3")
   potential_missings_unchanged <-
-    # iteriere über alle Zeilen des Skripts
+    # iterate over each line
     purrr::map_chr(
       .x = potential_missings,
       .f = function(LINE) {
-        # iteriere über alle Funktionen.
-        # nutze reduce um jeweils vorherige ersetzte funktion nicht zu überschreiben
+        # iterate over each function
+        # using reduce to not override prevoius changed functions
         purrr::reduce(.x = functionsInScript,
                       .f = function(STRING, FUN) {
-                        
-                        # wird die selbe Funktion mehrfach in einer Zeile aufgerufen
-                        # wird dies von gsub nicht mehrmals ersetzt
-                        # daher repeat-loop.
-                        # potentiell umwandeln in while loop oder gsub zum laufen bringen
-                        
-                        # Funktionsname , der nicht nach "::" kommt oder nach der
-                        # Farbsequenz
+
+                        # gsub only changes the first occurrence
+                        # hence a repeat loop
+                        # potentially changes this code part
+
+                        # function name which does not come after "::"
+                        # or a color sequenz
                         FUN <- gsub("\\.", "\\\\.", x = FUN)
                         patternRegex <- paste0("(.*)((?<!::|33m)", FUN, ")(.*)")
                         repeat{
@@ -77,12 +75,12 @@ verbolize <- function(script_prior,
                             break
                           }
                         }
-                        
+
                         return(STRING)
                       },
                       .init = LINE)
       })
-  
+
   potential_missings_unchanged <- potential_missings_unchanged[potential_missings_unchanged != potential_missings]
   if(length(potential_missings_unchanged) > 0){
     cat("\n",crayon::blue("Function names are not used like functions. Check for variable names or ",
@@ -91,39 +89,37 @@ verbolize <- function(script_prior,
                     ": ", potential_missings_unchanged, sep = ""),
               collapse = "\n"), "\n")
   }
-  
-  # wurden Spezialfunktionen wie %like% oder %>% genutzt, die nicht mit
-  # PACKAGE:: vorangestellt genutzt werden können?
+
+  # did special functions such as "%like" or %>% which are not used with
+  # PACAKGE::FUNCTION occur
   if(any(special_matches)) {
     cat("\n", crayon::magenta("Special functions used!"), "\n")
-    
+
     special_functions_in_script <- functions[special_functions][special_matches]
-    # Welche Zeilen enthielten mindestens eine solche Spezialfunktion
+    # lines with special functions
     specialMatches <- which(as.logical(Reduce(f = "+",
                                               purrr::map(.x = special_functions_in_script,
                                                          .f = ~ grepl(x = script_after,
                                                                       pattern = .x,
                                                                       fixed = TRUE)))))
-    # Welche Spezialfunktion wurde in welcher Zeile genutzt?
-    # Durch die Special-Characters in diesen Funktionen ist eine regEx-Suche nicht möglich
-    # fixed muss auf TRUE gesetzt sein und über die Funktionen iteriert werden
-    # Jedes Listenelement steht für eine special-Funktion und die Zahlen darin stehen
-    # für die Zeile, in der diese genutzt wird
+    # which special functions were used?
+    # Through the special characters a regular expression search is not possible
+    # Hence `fixed = TRUE` and looping overall possible functions
+    # each list element is a special function and the number represent the line
     specialsFound <- purrr::map(.x = special_functions_in_script,
                                 .f = ~grep(x =  script_after[specialMatches], pattern = .x, fixed = TRUE))
-    
-    # entsprechender Funktionsname als name
+
+    # function's name as name
     names(specialsFound) <- special_functions_in_script
-    
-    # liste als ein Vektor, wobei der name jeweils der Funktionsname ist
+
     specialsUnlisted <- unlist(purrr::transpose(specialsFound))
-    # Aggregiere alle Funktionen nach Zeilen zusammen
+    # aggregate all functions by lines
     funsInLine <- by(names(specialsUnlisted), specialsUnlisted, paste, collapse = ", ")
-    
-    # Für alignment, mache alle Funktions-Strings gleich lang
+
+    # for alignment, make all functions string the same length
     funsInLine <- format(funsInLine, width = max(nchar(funsInLine)))
-    
-    # Output highlighting wegen special Characters nicht möglich
+
+    # Output highlighting not used because of special characters
     cat(paste(paste("Line ", specialMatches, ": ",
                     funsInLine, "\t",
                     script_after[specialMatches],
@@ -131,7 +127,7 @@ verbolize <- function(script_prior,
               collapse = "\n"), "\n")
   }
   cat("\n\n")
-  
+
 }
 
 

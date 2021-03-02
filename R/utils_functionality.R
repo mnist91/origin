@@ -9,20 +9,21 @@
 #' @examples
 #' getFunctions("data.table)
 getFunctions <- function(pkg) {
-  # lese alle exportierten Funktionen aus dem Paket ein ---------------------------
-  # listet alle, auch nicht exportierten Funktionen des Pakets, auf
+  # get all exported functions from a package --------------------------------
+  # lese alle exportierten Funktionen aus dem Paket ein
+  # lists all (incl. not exported) functions
   functions <- lsf.str(paste0("package::", pkg),
                        envir = getNamespace(pkg))
-  # listet alle Exports des Pakets auf, auch nicht-FUnktionen
+  # lists all exports of a package (incl. non functions)
   exports <- getNamespaceExports(pkg)
-  # Schnittmenge aus Fnúnktionen und exports
+  # overlap of exports and functions -> exported functions
   functions <- functions[functions %in% exports]
 
   return(functions)
 }
 
 
-#' Extract relevant Function informations
+#' Extract relevant Function information
 #'
 #' @param script
 #' @param functions
@@ -34,26 +35,27 @@ getFunctions <- function(pkg) {
 #' @examples
 checkFunctions <- function(script, functions, ignoreComments = TRUE, pkg = NULL, verbose = TRUE) {
   # entferne bestimmte Funktionen mit special characters
+  # remove function with special characters like %, &, [] and :
   special_functions <- grepl(functions, pattern = paste("\\$", "\\:", "\\]", "\\[", "%", sep = "|"))
   relevant_functions <- functions[!special_functions]
-  # Um Anzahl der zu überprüfenden Funktionen zu reduzieren, überprüfe, welche
-  # Funktionsnamen überhaupt im file potentiell genutzt werden.
-  # Hier findet noch keine Überprüfung statt, ob es sich hier lediglich um
-  # andere Objekte handelt
+  # reduce the number of functions to check, by selecting possible (occouring)
+  # functions. This is not a check if it is a function or an object, but a simple
+  # regular expression
+
+  # TODO: check performance of one script vs multiple scripts
+  # any(grepl(pattern = .x, x = script, fixed = TRUE))
   fullScript <- paste0(script, collapse = "")
 
-  # TODO: performance of sschneller mit
-  # any(grepl(pattern = .x, x = script, fixed = TRUE))
   matches <- purrr::map_lgl(relevant_functions,
                             ~grepl(pattern = .x, x = fullScript, fixed = TRUE))
   functionsInScript <- relevant_functions[matches]
 
-  # Spezialfunktionen wie %like% können nicht mit :: aufgerufen werden.
-  # Printe Warnung, dass diese genutzt werden
+  # special functions such as %like" can not be called with ::
+  # print a warning, that such functions occur
   special_matches <- purrr::map_lgl(functions[special_functions],
                                     ~grepl(pattern = .x, x = fullScript, fixed = TRUE))
 
-  # Keine Funktionen zu ersetzen
+  # no matching functions
   if(!any(matches)) {
     if(!verbose) {
       return(NULL)
@@ -76,18 +78,17 @@ checkFunctions <- function(script, functions, ignoreComments = TRUE, pkg = NULL,
     return(NULL)
   }
 
-  # Reduziere die Anzahl der zu überprüfenden Zeilen, welche überhaupt
-  # funktionsnamen enthalten
+  # reduce the number of script rows to check, by selecting only those which
+  # contain a function name
   lineMatches <- grepl(x = script, pattern = paste(functionsInScript, collapse = "|"))
 
-  # Kommentarzeilen ignorieren
+  # ignore comment rows
   if(ignoreComments) {
-    # beginnt mit # oder es kommen nur Öeerzeichen vor dem #
+    # starts with # or leading spaces and #
     # startsWithHashRegEx <- "(?<=^[ *]|^)#"
-    lineComments <- grepl(x = gsub(x = script[lineMatches], pattern = " ", replacement = ""),
-                          pattern = "^#")
+    lineComments <- grepl(x = trimws(script[lineMatches]), pattern = "^#")
 
-    # beachte diese Zeilen nicht beim ersetzen
+    # ignore these line for the matching
     lineCommentsMatches <- which(lineMatches)[which(lineComments)]
     lineMatches[lineCommentsMatches] <- FALSE
 

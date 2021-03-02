@@ -21,24 +21,25 @@ addPackageToFunction <- function(pkg,
 
   if(!file.exists(file)) {
     stop("No file in this path\n", file)
-    # Lese file ein
+    # load file
   } else {
     script <- readLines(file)
   }
 
-  # Eingangsstatus für späteren Vergleich
+  # save prior script for comparison
   if(verbose){
     script_prior <- script
   }
 
   if(is.null(functions)) {
-    # lese alle exportierten Funktionen aus dem Paket ein ---------------------------
-    # listet alle, auch nicht exportierten Funktionen des Pakets, auf
+    # get all exported functions from a package --------------------------------
+    # lese alle exportierten Funktionen aus dem Paket ein
+    # lists all (incl. not exported) functions
     functions <- lsf.str(paste0("package::", pkg),
                          envir = getNamespace(pkg))
-    # listet alle Exports des Pakets auf, auch nicht-FUnktionen
+    # lists all exports of a package (incl. non functions)
     exports <- getNamespaceExports(pkg)
-    # Schnittmenge aus Fnúnktionen und exports
+    # overlap of exports and functions -> exported functions
     functions <- functions[functions %in% exports]
   }
 
@@ -58,10 +59,10 @@ addPackageToFunction <- function(pkg,
   }
 
 
-  # regex, um Paketname Funktionsname voranzustellen
+  # regular expression, to prefix package name to functions
   replacementRegex <- paste0("\\1", pkg, "::\\2\\3")
 
-  # regex, um funcktional genutzte Funktionen in *apply/purrr zu erkennen
+  # regular expression, to identify usage with *apply/purrr
   funArguments <- c("FUN", "\\.f")
   assignWithSpaces <- c("=", " = ", "= ", " =")
   leadingPatterns <- paste(apply(expand.grid(funArguments, assignWithSpaces),
@@ -71,33 +72,33 @@ addPackageToFunction <- function(pkg,
                            collapse = "|")
 
   script[lineMatches] <-
-    # iteriere über alle Zeilen des Skripts
+    # iterate over all scripts' rows
     purrr::map_chr(
       .x = script[lineMatches],
       .f = function(LINE) {
-        # iteriere über alle Funktionen.
-        # nutze reduce um jeweils vorherige ersetzte funktion nicht zu überschreiben
+        # iterate over all functions
+        # using reduce to not override prevoius changed functions
         purrr::reduce(
           .x = functionsInScript,
           .f = function(STRING, FUN) {
 
-            # wird die selbe Funktion mehrfach in einer Zeile aufgerufen
-            # wird dies von gsub nicht mehrmals ersetzt
-            # daher while-loop.
-            # potentiell umwandeln in while loop oder gsub zum laufen bringen
+            # gsub only changes the first occurrence, hence a while loop
+            # potentially changes this code part
 
-            # Funktionsname muss nach einem Komma, Leerzeichen oder einer
-            # offenen Klammer kommen ODER am anfang der Zeile stehen
-            # Außerdem gefolgt von einer offnen runden Klammer
+            # function name must be after a comma, space or an open bracket
+            # or at the beginning of a row
+            # in addition it must be followed by an open round bracket
             FUN <- gsub("\\.", "\\\\.", x = FUN)
             patternRegex <- paste0("(.*)((?<=[, \\(]|^)", FUN, " *\\()(.*)")
 
-            # beim funktionalen programmieren wird die Funktion ohne Klammern
-            # sondern als Objekt aufgerufen. Eine unterscheidung zwischen
-            # einer Funktion und einer sonstigen Avriable ist hier nur dadurch
-            # möglich, dass das Funktionsargument explizit via "FUN = "
-            # (apply-Funktionen) oder ".f = " gesetzt wird,
-            functionalPatternRegex <- paste0("(.*)((?<=", leadingPatterns, ")", FUN, "(?=[ \\,)]|$))(.*)")
+            # In functional programming, the function's call is used without
+            # brackets but as an object. To differentiate between such a
+            # function and a variable, an explicit parameter is needed:
+            # *apply: "FUN = "
+            # purr: ".f = "
+            functionalPatternRegex <-
+              paste0("(.*)((?<=", leadingPatterns, ")",
+                     FUN, "(?=[ \\,)]|$))(.*)")
 
             repeat{
               STRING_PRIOR <- STRING
@@ -121,7 +122,7 @@ addPackageToFunction <- function(pkg,
 
   if(verbose) {
 
-    # welches Paket wurde betrachtet
+    # which packet was analyzed
     cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)), collapse = "")), "\n")
 
     verbolize(script_prior = script_prior,

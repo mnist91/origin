@@ -15,8 +15,9 @@ writeLines(test_text$TARGET, con = target_file_path)
 library("data.table", include.only = NULL)
 library("dplyr", include.only = NULL)
 
-
+# only until the package is build, then this line can be removed
 invisible(lapply(list.files("R", full.names = TRUE), FUN = source))
+
 # Unit tests
 testthat::test_that("origin file", {
   writeLines(test_text$TESTSKRIPT, con = test_file_path)

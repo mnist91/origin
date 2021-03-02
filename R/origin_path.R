@@ -18,16 +18,16 @@ addPackageToFunction_all <- function(file,
                                      excludeBasePackages = TRUE,
                                      verbose = FALSE) {
 
-  if(!file.exists(file)) {
+  if (!file.exists(file)) {
     stop("No file in this path\n", file)
   }
 
-  # Lese file ein
+  # read file
   script <- readLines(file)
 
 
-  # exkludiere R-base Packages
-  if(excludeBasePackages) {
+  # exclude base R packages
+  if (excludeBasePackages) {
     pkgs <- setdiff(pkgs, c("stats", "graphics", "grDevices", "datasets",
                             "utils", "methods", "base"))
   }
@@ -36,11 +36,12 @@ addPackageToFunction_all <- function(file,
 
 
   # DUPLICATES ---------------------------------------------------------------
-  # finde Funktionen, die in mehreren Paketen vorkommen.
-  # Eine zuordnung ist hier nicht eineindeutig möglich
+  # find functions, that are called within multiple packages
+  # a automatic assignment is not possible in such cases
+  # a deterministic order is chosen
   functions <- setNames(functions, pkgs)
 
-  # Paket mit den meisten Funtionen, wichtig für purrr::transpose()
+  # paclge with the most functions, importan for purrr::transpose()
   longestList <- which.max(lapply(functions, length))
 
   # named character vector of functions with package name as names
@@ -62,7 +63,7 @@ addPackageToFunction_all <- function(file,
   # duplicate functions and their corresponding packages
   dups <- by(names(funs_duplicates), funs_duplicates, paste, collapse = ", ")
 
-  # which dupplilcates are in the script
+  # which duplicates are in the script
   dup_funs_in_script <- sapply(names(dups),
                                function(FUN) {
                                  grepl(pattern = FUN,
@@ -70,9 +71,11 @@ addPackageToFunction_all <- function(file,
                                        fixed = TRUE)
                                })
 
-  # Require User interaction if cuplicates are detected
-  if(any(dup_funs_in_script)) {
-    crayon_danger <- crayon::combine_styles(crayon::red, crayon::underline, crayon::bold)
+  # Require User interaction if duplicates are detected
+  if (any(dup_funs_in_script)) {
+    crayon_danger <- crayon::combine_styles(crayon::red,
+                                            crayon::underline,
+                                            crayon::bold)
     cat(crayon_danger("Used functions in mutliple Packages!"), "\n")
     cat(paste(dups[dup_funs_in_script], ": ", names(dups[dup_funs_in_script]),
               collapse = "\n", sep = ""),
@@ -93,10 +96,11 @@ addPackageToFunction_all <- function(file,
 
   }
 
-  # get relevant function informations
+  # get relevant function information
   l <- checkFunctions(script = script,
                       functions = funs_unlisted,
-                      verbose = verbose)
+                      verbose = verbose,
+                      ignoreComments = ignoreComments)
 
   # iterate over all functions and add package:: when necessary
   invisible(
