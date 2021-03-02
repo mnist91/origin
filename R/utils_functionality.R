@@ -7,7 +7,8 @@
 #' @export
 #'
 #' @examples
-#' getFunctions("data.table)
+#' getFunctions("data.table")
+#'
 getFunctions <- function(pkg) {
   # get all exported functions from a package --------------------------------
   # lese alle exportierten Funktionen aus dem Paket ein
@@ -25,14 +26,13 @@ getFunctions <- function(pkg) {
 
 #' Extract relevant Function information
 #'
-#' @param script
-#' @param functions
-#' @param ignoreComments
+#' @param script a script to check
+#' @param functions a vector with function names
+#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
 #'
 #' @return
 #' @export
 #'
-#' @examples
 checkFunctions <- function(script,
                            functions,
                            ignoreComments = TRUE,

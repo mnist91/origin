@@ -1,16 +1,15 @@
 #' Add Package Name to Function Calls
 #'
-#' @param pkg
-#' @param file
-#' @param overwrite
-#' @param ignoreComments
-#' @param verbose
-#' @param functions
+#' @param pkg a package name
+#' @param file a path to a script
+#' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
+#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param verbose a boolean
+#' @param functions a vector with function names
 #'
 #' @return
 #' @export
 #'
-#' @examples
 addPackageToFunction <- function(pkg,
                                  file = NULL,
                                  overwrite = FALSE,
