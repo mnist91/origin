@@ -10,37 +10,37 @@
 #' @return
 #' @export
 #'
-addPackageToFunction_all <- function(file,
-                                     pkgs = .packages(),
-                                     overwrite = FALSE,
-                                     ignoreComments = TRUE,
-                                     excludeBasePackages = TRUE,
-                                     verbose = FALSE) {
-
+originize_file <- function(file,
+                           pkgs = .packages(),
+                           overwrite = FALSE,
+                           ignoreComments = TRUE,
+                           excludeBasePackages = TRUE,
+                           verbose = FALSE) {
+  
   if (!file.exists(file)) {
     stop("No file in this path\n", file)
   }
-
+  
   # read file
   script <- readLines(file)
-
-
+  
+  
   # exclude base R packages
   if (excludeBasePackages) {
     pkgs <- setdiff(pkgs, c("stats", "graphics", "grDevices", "datasets",
                             "utils", "methods", "base"))
   }
-
+  
   functions <- lapply(X = pkgs, FUN = getFunctions)
-
-
+  
+  
   # DUPLICATES ---------------------------------------------------------------
   # find functions, that are called within multiple packages
   # a automatic assignment is not possible in such cases
   # a deterministic order is chosen
   functions <- setNames(functions, pkgs)
-
-
+  
+  
   # named character vector of functions with package name as names
   funs_unlisted <- unlist(
     unname(
@@ -52,14 +52,14 @@ addPackageToFunction_all <- function(file,
       )
     )
   )
-
-
+  
+  
   funs_duplicates <- funs_unlisted[which(duplicated(funs_unlisted))]
   funs_duplicates <- funs_unlisted[funs_unlisted %in% funs_duplicates]
-
+  
   # duplicate functions and their corresponding packages
   dups <- by(names(funs_duplicates), funs_duplicates, paste, collapse = ", ")
-
+  
   # which duplicates are in the script
   dup_funs_in_script <- sapply(names(dups),
                                function(FUN) {
@@ -67,7 +67,7 @@ addPackageToFunction_all <- function(file,
                                        x = paste(script, collapse = ""),
                                        fixed = TRUE)
                                })
-
+  
   # Require User interaction if duplicates are detected
   if (any(dup_funs_in_script)) {
     crayon_danger <- crayon::combine_styles(crayon::red,
@@ -79,7 +79,7 @@ addPackageToFunction_all <- function(file,
         "\n")
     cat("Order in which packges are evaluated;\n\n")
     cat(paste(pkgs[pkgs %in% names(funs_duplicates)], collapse = " >> "), "\n")
-
+    
     cat("Do you want to proceed?\n")
     if (interactive()) {
       answer <- menu(choices = c("YES", "NO"))
@@ -89,16 +89,16 @@ addPackageToFunction_all <- function(file,
     if (answer != 1) {
       stop("Execution halted")
     }
-
-
+    
+    
   }
-
+  
   # get relevant function information
   l <- checkFunctions(script = script,
                       functions = funs_unlisted,
                       verbose = verbose,
                       ignoreComments = ignoreComments)
-
+  
   # iterate over all functions and add package:: when necessary
   invisible(
     Map(f = function(pkg, funs) {
@@ -112,8 +112,8 @@ addPackageToFunction_all <- function(file,
     pkgs,
     functions
     ))
-
-
+  
+  
   # Check all changes and potentially missed functions
   script_after <- readLines(file)
   verbolize(script_prior = script,
@@ -123,5 +123,5 @@ addPackageToFunction_all <- function(file,
             functionsInScript = l$functionsInScript,
             special_functions = l$special_functions,
             special_matches = l$special_matches)
-
+  
 }

@@ -7,46 +7,39 @@
 #' @param verbose a boolean
 #' @param functions a vector with function names
 #'
+#' @noRd
 #' @return
-#' @export
-#'
-addPackageToFunction <- function(pkg,
-                                 file = NULL,
-                                 overwrite = FALSE,
-                                 ignoreComments = TRUE,
-                                 verbose = FALSE,
-                                 functions = NULL) {
 
-
+originize <- function(pkg,
+                      file = NULL,
+                      overwrite = FALSE,
+                      ignoreComments = TRUE,
+                      verbose = FALSE,
+                      functions = NULL) {
+  
+  
   if (!file.exists(file)) {
     stop("No file in this path\n", file)
     # load file
   } else {
     script <- readLines(file)
   }
-
+  
   # save prior script for comparison
   if (verbose) {
     script_prior <- script
   }
-
+  
   if (is.null(functions)) {
     # get all exported functions from a package --------------------------------
-    # lese alle exportierten Funktionen aus dem Paket ein
-    # lists all (incl. not exported) functions
-    functions <- lsf.str(paste0("package::", pkg),
-                         envir = getNamespace(pkg))
-    # lists all exports of a package (incl. non functions)
-    exports <- getNamespaceExports(pkg)
-    # overlap of exports and functions -> exported functions
-    functions <- functions[functions %in% exports]
+    functions <- getFunctions(pkg)
   }
-
+  
   l <- checkFunctions(script = script,
                       functions = functions,
                       pkg = pkg,
                       verbose = verbose)
-
+  
   # make function-Output available
   matches <- l$matches
   lineMatches <- l$lineMatches
@@ -56,11 +49,11 @@ addPackageToFunction <- function(pkg,
   if (!any(matches)) {
     return(NULL)
   }
-
-
+  
+  
   # regular expression, to prefix package name to functions
   replacementRegex <- paste0("\\1", pkg, "::\\2\\3")
-
+  
   # regular expression, to identify usage with *apply/purrr
   funArguments <- c("FUN", "\\.f")
   assignWithSpaces <- c("=", " = ", "= ", " =")
@@ -69,7 +62,7 @@ addPackageToFunction <- function(pkg,
                                  FUN = paste0,
                                  collapse = ""),
                            collapse = "|")
-
+  
   script[lineMatches] <-
     # iterate over all scripts' rows
     purrr::map_chr(
@@ -80,16 +73,16 @@ addPackageToFunction <- function(pkg,
         purrr::reduce(
           .x = functionsInScript,
           .f = function(STRING, FUN) {
-
+            
             # gsub only changes the first occurrence, hence a while loop
             # potentially changes this code part
-
+            
             # function name must be after a comma, space or an open bracket
             # or at the beginning of a row
             # in addition it must be followed by an open round bracket
             FUN <- gsub("\\.", "\\\\.", x = FUN)
             patternRegex <- paste0("(.*)((?<=[, \\(]|^)", FUN, " *\\()(.*)")
-
+            
             # In functional programming, the function's call is used without
             # brackets but as an object. To differentiate between such a
             # function and a variable, an explicit parameter is needed:
@@ -98,7 +91,7 @@ addPackageToFunction <- function(pkg,
             functionalPatternRegex <-
               paste0("(.*)((?<=", leadingPatterns, ")",
                      FUN, "(?=[ \\,)]|$))(.*)")
-
+            
             repeat{
               STRING_PRIOR <- STRING
               STRING <- gsub(x = STRING,
@@ -113,18 +106,18 @@ addPackageToFunction <- function(pkg,
                 break
               }
             }
-
+            
             return(STRING)
           },
           .init = LINE)
       })
-
+  
   if (verbose) {
-
+    
     # which packet was analyzed
     cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)),
                                collapse = "")), "\n")
-
+    
     verbolize(script_prior = script_prior,
               script = script,
               lineMatches = lineMatches,
@@ -133,8 +126,8 @@ addPackageToFunction <- function(pkg,
               special_functions = special_functions,
               special_matches = special_matches)
   }
-
-
+  
+  
   if (overwrite) {
     writeLines(script, con = file)
     return(NULL)
