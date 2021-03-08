@@ -4,6 +4,7 @@ test_that("check verbolize", {
     "nrow(x) %like%  n_row(nrow)",
     "# nrow(x)",
     "y <- x$nrow",
+    "y <- n_row(a)",
     "y <- no_n_row_like"
   )
   functions <- c("nrow", "%like%", "n_row", "n_col")
@@ -12,6 +13,7 @@ test_that("check verbolize", {
     "pkg::nrow(x) %like%  pkg::n_row(nrow)",
     "# nrow(x)",
     "y <- x$nrow",
+    "y <- pkg::n_row(a)",
     "y <- no_n_row_like"
   )
 
@@ -23,17 +25,19 @@ test_that("check verbolize", {
                         verbose = TRUE)
 
   res <- c(
-    "\033[32m1 Lines changed",
+    "\033[32m2 Lines changed",
     "\033[39m\033[32m2 Functions recognized",
     "\033[39mnrow",
     "n_row ",
     "\033[32mChanges:",
-    "\033[39mLine 1: \033[36mpkg::\033[39mnrow(x) %like%  \033[36mpkg::\033[39mn_row(nrow) ",
+    "\033[39mLine 1: \033[36mpkg::\033[39mnrow(x) %like%  \033[36mpkg::\033[39mn_row(nrow)",
+    "Line 4: y <- \033[36mpkg::\033[39mn_row(a) ",
     "",
     " \033[34mFunction names are not used like functions. Check for variable names or functional programming in *apply/purrr\033[39m ",
     "Line 1: pkg::nrow(x) %like%  pkg::n_row(\033[33mnrow\033[39m)",
     "Line 3: y <- x$\033[33mnrow\033[39m",
-    "Line 4: y <- no_\033[33mn_row\033[39m_like ",
+    "Line 4: y <- no_\033[33mn_row\033[39m_like",
+    "Line 5: pkg::nrow(x) %like%  pkg::n_row(\033[33mnrow\033[39m) ",
     "",
     " \033[35mSpecial functions used!\033[39m ",
     "Line 1: %like%\tpkg::nrow(x) %like%  pkg::n_row(nrow) ",
