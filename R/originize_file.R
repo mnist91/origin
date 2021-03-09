@@ -95,7 +95,6 @@ originize_file <- function(file,
                       pkgs = pkgs,
                       overwrite = overwrite,
                       ignoreComments = ignoreComments,
-                      excludeBasePackages = excludeBasePackages,
                       verbose = verbose,
                       html = html)
   

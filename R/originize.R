@@ -4,7 +4,6 @@
 #' @param pkgs a vector with package names
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
 #' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
-#' @param excludeBasePackages a boolean, if TRUE base R functions are excluded
 #' @param verbose a boolean
 #'
 #' @return
@@ -16,7 +15,6 @@ originize <- function(script,
                       pkgs = .packages(),
                       overwrite = FALSE,
                       ignoreComments = TRUE,
-                      excludeBasePackages = TRUE,
                       verbose = FALSE,
                       html = TRUE) {
   
