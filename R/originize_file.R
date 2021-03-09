@@ -29,10 +29,10 @@ originize_file <- function(file,
   if (!file.exists(file)) {
     stop("No file in this path\n", file)
   }
-  
+
   # read file
   script <- readLines(file)
-  
+
   
   # TODO: save as internal data
   base_r_packages <- c("stats", "graphics", "grDevices", "datasets",
@@ -53,7 +53,6 @@ originize_file <- function(file,
     functions <- exclude_functions(functions, excluded_functions)
   }
 
-  
   
   # DUPLICATES ---------------------------------------------------------------
   # find functions, that are called within multiple packages
