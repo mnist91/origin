@@ -63,13 +63,16 @@ originize_file <- function(file,
     # get duplicate functions
     dups <- get_fun_duplicates(functions)  
     
+    script_collapsed <- paste(script, collapse = "")
     # which duplicates are in the script
-    dup_funs_in_script <- sapply(names(dups),
-                                 function(FUN) {
+    dup_funs_in_script <- vapply(X = dups,
+                                 FUN = function(FUN) {
                                    grepl(pattern = FUN,
-                                         x = paste(script, collapse = ""),
+                                         x = script_collapsed,
                                          fixed = TRUE)
-                                 })
+                                 }, 
+                                 FUN.VALUE = logical(1),
+                                 USE.NAMES = TRUE)
 
     # Require User interaction if duplicates are detected
     if (any(dup_funs_in_script)) {
