@@ -27,19 +27,21 @@ testthat::test_that("origin file", {
   script <- readLines(test_file_path)
   
   # In einem Schritt, mit crosschecks
-  capture.output(
+  # capture.output(
     originize_file(test_file_path,
                    pkgs = c("data.table",
                             "dplyr",
-                            "testthat",
-                            "purrr"),
+                            # "testthat",
+                            "purrr"
+                            ),
                    overwrite = TRUE,
+                   ask_before_applying_changes = FALSE, 
+                   excluded_functions = list(dplyr = "last"),
                    ignoreComments = TRUE,
-                   excludeBasePackages = TRUE,
-                   verbose = FALSE)
-  )
+                   verbose = TRUE)
+  # )
   
-  testfile_after <- readLines(target_file_path)
+  testfile_after <- readLines(test_file_path)
   
   testthat::expect_equal(testfile_after, test_text$TARGET)
 })
