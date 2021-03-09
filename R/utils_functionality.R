@@ -16,7 +16,7 @@ getFunctions <- function(pkg) {
   
   is_function <- vapply(exports, 
                         FUN = function(x, ns) {
-                          class(getExportedValue(ns, x)) == "function"
+                          inherits(x = getExportedValue(ns, x), what = "function")
                         },
                         FUN.VALUE = logical(1),
                         ns = getNamespace(pkg))
