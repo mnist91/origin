@@ -40,6 +40,9 @@ originize <- function(script,
     functions
     )
   
+  # keep package info only if matches are present
+  replacement_list <- Filter(function(l) length(l) > 0, replacement_list)
+  
   # combine results for all packages
   combined <- Reduce(f = function(...) {
     Map(f = c,
@@ -62,7 +65,7 @@ originize <- function(script,
     script[fixed_lines_dat$line] <- fixed_lines_dat$string
     
     return(list(to_write = list(file = file, script = script),
-                marker_data = data.frame()))
+                logging_data = data.frame()))
     
   } else {
     
