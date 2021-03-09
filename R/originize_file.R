@@ -12,10 +12,19 @@
 #'
 originize_file <- function(file,
                            pkgs = .packages(),
-                           overwrite = FALSE,
+                           overwrite = TRUE,
+                           ask_before_applying_changes = TRUE,
                            ignoreComments = TRUE,
-                           excludeBasePackages = TRUE,
-                           verbose = FALSE) {
+                           check_conflicts = TRUE,
+                           check_base_conflicts = TRUE,
+                           add_base_packages = FALSE,
+                           excluded_functions = list(),
+                           verbose = FALSE,
+                           html = TRUE) {
+  
+  if (!check_base_conflicts && add_base_packages) {
+    stop("When adding base packages checking for potential conflicts is required!")
+  }
   
   if (!file.exists(file)) {
     stop("No file in this path\n", file)
@@ -25,103 +34,83 @@ originize_file <- function(file,
   script <- readLines(file)
   
   
-  # exclude base R packages
-  if (excludeBasePackages) {
-    pkgs <- setdiff(pkgs, c("stats", "graphics", "grDevices", "datasets",
-                            "utils", "methods", "base"))
+  # TODO: save as internal data
+  base_r_packages <- c("stats", "graphics", "grDevices", "datasets",
+                       "utils", "methods", "base")
+  
+  # exclude base R packages from checks for duplicates
+  if (!check_base_conflicts) {
+    pkgs <- setdiff(pkgs, base_r_packages)
   }
   
-  functions <- lapply(X = pkgs, FUN = getFunctions)
+  # get all exported functions from each package
+  functions <- setNames(object = lapply(X   = pkgs, 
+                                        FUN = getFunctions), 
+                        nm     = pkgs)
+
+  # exclude unwanted functions
+  if (!is.null(excluded_functions) && length(excluded_functions) > 0) {
+    functions <- exclude_functions(functions, excluded_functions)
+  }
+
   
   
   # DUPLICATES ---------------------------------------------------------------
   # find functions, that are called within multiple packages
   # a automatic assignment is not possible in such cases
   # a deterministic order is chosen
-  functions <- setNames(functions, pkgs)
-  
-  
-  # named character vector of functions with package name as names
-  funs_unlisted <- unlist(
-    unname(
-      Map(function(x, nm) {
-        setNames(x, rep(nm, length(x)))
-      },
-      functions,
-      names(functions)
-      )
-    )
-  )
-  
-  
-  funs_duplicates <- funs_unlisted[which(duplicated(funs_unlisted))]
-  funs_duplicates <- funs_unlisted[funs_unlisted %in% funs_duplicates]
-  
-  # duplicate functions and their corresponding packages
-  dups <- by(names(funs_duplicates), funs_duplicates, paste, collapse = ", ")
-  
-  # which duplicates are in the script
-  dup_funs_in_script <- sapply(names(dups),
-                               function(FUN) {
-                                 grepl(pattern = FUN,
-                                       x = paste(script, collapse = ""),
-                                       fixed = TRUE)
-                               })
-  
-  # Require User interaction if duplicates are detected
-  if (any(dup_funs_in_script)) {
-    crayon_danger <- crayon::combine_styles(crayon::red,
-                                            crayon::underline,
-                                            crayon::bold)
-    cat(crayon_danger("Used functions in mutliple Packages!"), "\n")
-    cat(paste(dups[dup_funs_in_script], ": ", names(dups[dup_funs_in_script]),
-              collapse = "\n", sep = ""),
-        "\n")
-    cat("Order in which packges are evaluated;\n\n")
-    cat(paste(pkgs[pkgs %in% names(funs_duplicates)], collapse = " >> "), "\n")
+
+  if (check_conflicts) {
+    # get duplicate functions
+    dups <- get_fun_duplicates(functions)  
     
-    cat("Do you want to proceed?\n")
-    if (interactive()) {
-      answer <- menu(choices = c("YES", "NO"))
-    } else {
-      answer <- 1
+    # which duplicates are in the script
+    dup_funs_in_script <- sapply(names(dups),
+                                 function(FUN) {
+                                   grepl(pattern = FUN,
+                                         x = paste(script, collapse = ""),
+                                         fixed = TRUE)
+                                 })
+
+    # Require User interaction if duplicates are detected
+    if (any(dup_funs_in_script)) {
+      solve_fun_duplicates(dups = dups[dup_funs_in_script],
+                           pkgs = pkgs)
     }
-    if (answer != 1) {
-      stop("Execution halted")
-    }
-    
-    
   }
   
-  # get relevant function information
-  l <- checkFunctions(script = script,
-                      functions = funs_unlisted,
+  # do not consider base packages in originizing
+  if (!add_base_packages) {
+    pkgs <- setdiff(pkgs, base_r_packages)
+    functions <- functions[!names(functions) %in% base_r_packages]
+  }
+  
+  
+  
+  result <- originize(script = script,
+                      file = file,
+                      functions = functions,
+                      pkgs = pkgs,
+                      overwrite = overwrite,
+                      ignoreComments = ignoreComments,
+                      excludeBasePackages = excludeBasePackages,
                       verbose = verbose,
-                      ignoreComments = ignoreComments)
+                      html = html)
   
-  # iterate over all functions and add package:: when necessary
-  invisible(
-    Map(f = function(pkg, funs) {
-      addPackageToFunction(pkg            = pkg,
-                           functions      = funs,
-                           file           = file,
-                           overwrite      = overwrite,
-                           ignoreComments = ignoreComments,
-                           verbose        = verbose)
-    },
-    pkgs,
-    functions
-    ))
+  if (verbose) {
+    if (html) {
+      rstudioapi::sourceMarkers(name = "origin", markers = result$logging_data)
+    } else {
+      # TODO
+    }
+  }
+  
+  if (overwrite) {
+    apply_changes(ask_before_applying_changes = ask_before_applying_changes,
+                  result = result)
+  }
   
   
-  # Check all changes and potentially missed functions
-  script_after <- readLines(file)
-  verbolize(script_prior = script,
-            script_after = script_after,
-            lineMatches = l$lineMatches,
-            functions = funs_unlisted,
-            functionsInScript = l$functionsInScript,
-            special_functions = l$special_functions,
-            special_matches = l$special_matches)
   
+  invisible(return(NULL))
 }
