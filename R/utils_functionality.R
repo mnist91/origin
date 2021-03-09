@@ -119,7 +119,8 @@ checkFunctions <- function(script,
   
 }
 
-
+# named list to a named vector with names corresponding
+# to prior name of its list element
 get_named_vec <- function(LIST, nms = names(LIST)) {
   out <- unlist(
     unname(
@@ -134,15 +135,8 @@ get_named_vec <- function(LIST, nms = names(LIST)) {
   return(out)
 }
 
-add_package <- function(string, splits, pkg) {
-  splitted <- substring(text = string,
-                        first = c(1, splits),
-                        last = c(splits - 1, nchar(string)))
-  out <- paste0(splitted[1], paste0(pkg, splitted[-1], collapse = ""))
-  return(out)
-}
-
-
+# style a string for logging output
+# TODO: color codes as arguments
 add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
   if(html) {
     ins_start_string <- '<text style="color: red;">'
@@ -152,6 +146,7 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
     spe_start_string <- '<text style="color: green;">'
     spe_end_string <- '</text>'
   } else {
+    # TODO: color codes
     miss_start_string <- '33m['
     miss_end_string <- 'XXXX'
   }
@@ -194,7 +189,7 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
   return(out)
 }
 
-
+# Insert all package:: to a line
 prep_line_originize <- function(line, combined) {
   rel <- combined$line == line
   
@@ -209,7 +204,16 @@ prep_line_originize <- function(line, combined) {
   
 }
 
+# insert package:: at positions
+add_package <- function(string, splits, pkg) {
+  splitted <- substring(text = string,
+                        first = c(1, splits),
+                        last = c(splits - 1, nchar(string)))
+  out <- paste0(splitted[1], paste0(pkg, splitted[-1], collapse = ""))
+  return(out)
+}
 
+# combined color highlighting for each line 
 prep_line_logging <- function(line, logging_comb, html) {
   rel <- logging_comb$line == line
   
@@ -248,8 +252,8 @@ comb_matches <- function(x, y) {
 
 
 # assign new script
-assign_result <- function(ask_before, result) {
-  if (ask_before && interactive()) {
+apply_changes <- function(ask_before_applying_changes, result) {
+  if (ask_before_applying_changes && interactive()) {
     cat("Happy with the result? \U0001f600\n\n")
     answer <- menu(choices = c("YES", "NO"))
     if (answer != 1) {
@@ -275,6 +279,7 @@ get_fun_duplicates <- function(functions) {
 }
 
 
+# print warning regarding conflicts
 solve_fun_duplicates <- function(dups, pkgs) {
   # Require User interaction if duplicates are detected
   crayon_danger <- crayon::combine_styles(crayon::red,
@@ -301,6 +306,8 @@ solve_fun_duplicates <- function(dups, pkgs) {
   
 }
 
+
+# exclude functions from originizing
 exclude_functions <- function(funs, to_exclude) {
   # functions to be exlcluded from specific packages
   has_name <- nzchar(names(to_exclude))
@@ -334,7 +341,7 @@ exclude_functions <- function(funs, to_exclude) {
   return(out)
 }
 
-
+# exclude functions from specific packages
 setdiff_specific <- function(funs, pkg, excl) {
   # functions to exclude from the current package
   to_exclude <- unlist(excl[names(excl) == pkg])
