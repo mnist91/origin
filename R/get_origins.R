@@ -31,9 +31,9 @@ get_origins <- function(pkg,
   
   # make function-Output available
   matches <- l$matches
-  lineMatches <- l$lineMatches
+  line_matches <- l$line_matches
   special_matches <- l$special_matches
-  functionsInScript <- l$functionsInScript
+  functions_in_script <- l$functions_in_script
   special_functions <- l$special_functions
   if (!any(matches)) {
     return(list())
@@ -42,12 +42,12 @@ get_origins <- function(pkg,
   
   
   
-  funs_comb <- paste0(functionsInScript, collapse = "|")
+  funs_comb <- paste0(functions_in_script, collapse = "|")
   funs_prep <-  gsub("\\.", "\\\\.", x = funs_comb)
   pattern_regex <- paste0("(?<=[, \\(!\\[\\n]|^)(", funs_prep, ") *\\(")
   
-  regular_calls <- get_matches(script[lineMatches],
-                               line = which(lineMatches),
+  regular_calls <- get_matches(script[line_matches],
+                               line = which(line_matches),
                                regex = pattern_regex,
                                perl = TRUE,
                                filter_nomatches = FALSE)
@@ -67,8 +67,8 @@ get_origins <- function(pkg,
   functionalPatternRegex <-
     paste0("(?<=", leadingPatterns, ")(",
            funs_prep, ")(?=[ \\,)]|$)")
-  functional_calls <- get_matches(script[lineMatches],
-                                  line = which(lineMatches),
+  functional_calls <- get_matches(script[line_matches],
+                                  line = which(line_matches),
                                   regex = functionalPatternRegex,
                                   perl = TRUE,
                                   fixed = FALSE,

@@ -12,18 +12,18 @@ test_that("checkFunctions has correct output", {
   # expected results
   res1 <- res2 <- list(
     matches = c(TRUE, TRUE),
-    lineMatches = c(TRUE, FALSE, TRUE, TRUE),
+    line_matches = c(TRUE, FALSE, TRUE, TRUE),
     special_matches = TRUE,
     special_functions = c(FALSE, TRUE, FALSE),
-    functionsInScript = c("nrow", "n_row")
+    functions_in_script = c("nrow", "n_row")
   )
 
   res3 <- list(
     matches = c(TRUE, TRUE),
-    lineMatches = c(TRUE, TRUE, TRUE, TRUE),
+    line_matches = c(TRUE, TRUE, TRUE, TRUE),
     special_matches = TRUE,
     special_functions = c(FALSE, TRUE, FALSE),
-    functionsInScript = c("nrow", "n_row")
+    functions_in_script = c("nrow", "n_row")
   )
 
   # call function with different settings

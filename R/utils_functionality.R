@@ -60,7 +60,7 @@ checkFunctions <- function(script,
                             fixed = TRUE)
                     },
                     FUN.VALUE = logical(1))
-  functionsInScript <- relevant_functions[matches]
+  functions_in_script <- relevant_functions[matches]
   
   # special functions such as %like" can not be called with ::
   # print a warning, that such functions occur
@@ -92,27 +92,27 @@ checkFunctions <- function(script,
   
   # reduce the number of script rows to check, by selecting only those which
   # contain a function name
-  lineMatches <- grepl(x = script,
-                       pattern = paste(functionsInScript, collapse = "|"))
+  line_matches <- grepl(x = script,
+                       pattern = paste(functions_in_script, collapse = "|"))
   
   # ignore comment rows
   if (ignoreComments) {
     # starts with # or leading spaces and #
     # startsWithHashRegEx <- "(?<=^[ *]|^)#"
-    lineComments <- grepl(x = trimws(script[lineMatches]), pattern = "^#")
+    lineComments <- grepl(x = trimws(script[line_matches]), pattern = "^#")
     
     # ignore these line for the matching
-    lineCommentsMatches <- which(lineMatches)[which(lineComments)]
-    lineMatches[lineCommentsMatches] <- FALSE
+    lineCommentsMatches <- which(line_matches)[which(lineComments)]
+    line_matches[lineCommentsMatches] <- FALSE
     
   }
   
   
   return(list(matches = matches,
-              lineMatches = lineMatches,
+              line_matches = line_matches,
               special_matches = special_matches,
               special_functions = special_functions,
-              functionsInScript = functionsInScript))
+              functions_in_script = functions_in_script))
   
 }
 

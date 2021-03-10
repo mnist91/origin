@@ -1,10 +1,9 @@
 #' Print Change Log and potential Errors in Console
 #'
-#' @param script_prior the script before any changes
-#' @param script_after the script after the changes
-#' @param lineMatches a boolean vector with the lines that contain changes
+#' @param script the script before any changes
+#' @param line_matches a boolean vector with the lines that contain changes
 #' @param functions a vector with function names
-#' @param functionsInScript a vector which functions were used
+#' @param functions_in_script a vector which functions were used
 #' @param special_functions a vector with special functions such as \%like\%
 #' @param special_matches a boolean vector that indicates which special
 #'   functions are used
@@ -12,28 +11,28 @@
 #' @return
 #' @export
 #'
-prep_verbose <- function(script_prior,
-                         lineMatches = rep(TRUE, length(script_after)),
+prep_verbose <- function(script,
+                         line_matches = rep(TRUE, length(script)),
                          functions,
-                         functionsInScript,
+                         functions_in_script,
                          special_functions = NULL,
                          special_matches = FALSE) {
   
   # lines where a function name occurred, but no changed happened
   # not comprehensive, since there might be line where one function was
   # recognized, but not another
-  potential_missings <- script_prior[lineMatches]#[!changes]
+  potential_missings <- script[line_matches]#[!changes]
   
   # check for functions 
   # special regex characters in functions like dots must be escaped
   # function names  should not be preceded by a double colon OR character nor
   # succeeded by a double colon OR a percentage sign OR a character
-  funs_comb <- paste(functionsInScript, collapse = "|")
+  funs_comb <- paste(functions_in_script, collapse = "|")
   funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
   fun_regex <- paste0("(?<!::|[[:alnum:]])(", funs_prep, ")(?!::|%|[[:alnum:]])")
   
   
-  list_pot_missings <- get_matches(line = which(lineMatches),
+  list_pot_missings <- get_matches(line = which(line_matches),
                                    text = potential_missings,
                                    regex = fun_regex,
                                    perl = TRUE,
@@ -53,10 +52,10 @@ prep_verbose <- function(script_prior,
     
     # lines with special functions
     specialMatches <- which(as.logical(
-      Reduce(f = "+", purrr::map(.x = special_functions_in_script,
-                                 .f = ~ grepl(x = script_prior,
-                                              pattern = .x,
-                                              fixed = TRUE)))
+      Reduce(f = "+", lapply(X = special_functions_in_script,
+                             FUN = function(pattern) grepl(x = script,
+                                                           pattern = pattern,
+                                                           fixed = TRUE)))
     ))
     
     funs_comb <- paste(special_functions_in_script, collapse = "|")
@@ -71,7 +70,7 @@ prep_verbose <- function(script_prior,
     funs_prep <- gsub(">", "\\>", x = funs_prep)
     
     list_specials <- get_matches(line = specialMatches,
-                                 text = script_prior[specialMatches],
+                                 text = script[specialMatches],
                                  regex = funs_prep,
                                  perl = FALSE,
                                  fixed = FALSE,

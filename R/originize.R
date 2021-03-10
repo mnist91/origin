@@ -70,10 +70,10 @@ originize <- function(script,
   } else {
     
     # get positions of potential missined (special) functions
-    potential_missings <- prep_verbose(script_prior = script,
-                                       lineMatches = l$lineMatches,
+    potential_missings <- prep_verbose(script = script,
+                                       line_matches = l$line_matches,
                                        functions = unlist(functions),
-                                       functionsInScript = l$functionsInScript,
+                                       functions_in_script = l$functions_in_script,
                                        special_functions = l$special_functions,
                                        special_matches = l$special_matches)
     

@@ -48,9 +48,9 @@ test_that("check verbolize", {
   tmp_out <- capture.output(
     verbolize(script_prior = script_prior,
               script_after = script_after,
-              lineMatches = tmp$lineMatches,
+              line_matches = tmp$line_matches,
               functions = functions,
-              functionsInScript = tmp$functionsInScript,
+              functions_in_script = tmp$functions_in_script,
               special_functions = tmp$special_functions,
               special_matches = tmp$special_matches)
   )
