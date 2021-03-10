@@ -53,24 +53,32 @@ checkFunctions <- function(script,
   # any(grepl(pattern = .x, x = script, fixed = TRUE))
   fullScript <- paste0(script, collapse = "")
   
-  matches <- purrr::map_lgl(relevant_functions,
-                            ~grepl(pattern = .x, x = fullScript, fixed = TRUE))
+  matches <- vapply(X = relevant_functions,
+                    FUN = function(fun) {
+                      grepl(pattern = fun,
+                            x = fullScript,
+                            fixed = TRUE)
+                    },
+                    FUN.VALUE = logical(1))
   functionsInScript <- relevant_functions[matches]
   
   # special functions such as %like" can not be called with ::
   # print a warning, that such functions occur
-  special_matches <- purrr::map_lgl(functions[special_functions],
-                                    ~grepl(pattern = .x,
-                                           x = fullScript,
-                                           fixed = TRUE))
+  special_matches <- vapply(X = functions[special_functions],
+                            FUN = function(fun) {
+                              grepl(pattern = fun,
+                                    x = fullScript,
+                                    fixed = TRUE)
+                            },
+                            FUN.VALUE = logical(1))
   
   # no matching functions
   if (!any(matches)) {
-
+    
     if (any(special_matches)) {
       special_functions_in_script <-
         functions[special_functions][special_matches]
-
+      
       specialMatches <- which(as.logical(
         Reduce(f = "+", lapply(X = special_functions_in_script,
                                FUN = function(pattern) grepl(x = script,
