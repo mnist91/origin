@@ -261,14 +261,14 @@ apply_changes <- function(ask_before_applying_changes, result) {
     answer <- menu(choices = c("YES", "NO"))
     if (answer != 1) {
       message("No changes made!")
-      invisible(return(NULL))
+      return(invisible(NULL))
     }
   } 
   
-  invisible(
     lapply(X = Filter(result, f = function(l) !is.null(l$script)), 
            FUN = function(x) writeLines(text = x$script, con = x$file))
-  )
+    
+    return(invisible(NULL))
 }
 
 

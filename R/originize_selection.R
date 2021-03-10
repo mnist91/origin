@@ -124,5 +124,5 @@ originize_selection <- function(context = rstudioapi::getSourceEditorContext(),
   
   rstudioapi::insertText(out)
   
-  invisible(return(NULL))
+  return(invisible(NULL))
 }

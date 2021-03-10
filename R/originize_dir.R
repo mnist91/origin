@@ -142,5 +142,5 @@ originize_dir <- function(path,
   
   
   
-  invisible(return(NULL))
+  return(invisible(NULL))
 }

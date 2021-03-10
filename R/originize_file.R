@@ -113,5 +113,5 @@ originize_file <- function(file = rstudioapi::getSourceEditorContext()$path,
   
   
   
-  invisible(return(NULL))
+  return(invisible(NULL))
 }
