@@ -98,15 +98,19 @@ originize <- function(script,
     # combine all lines
     logging_data <- Reduce(rbind, fixed_lines_list)
     
+    
+    
+    
     if (html) {
       # add further attributes for markers output
-      logging_data$type <- "info"
+      # include other types?
+      # c("usage", "error", "warning", "info", "style", "box")
+      logging_data$type <- "usage"
       logging_data$file <- file
       logging_data$column <- 1
       attr(logging_data$message, which = "class") <- c("html", "character")
     }
     script[fixed_lines_dat$line] <- fixed_lines_dat$string
-    
     
     return(list(to_write = list(file = file, script = script),
                 logging_data = logging_data))
