@@ -44,7 +44,7 @@ get_origins <- function(pkg,
   
   funs_comb <- paste0(functionsInScript, collapse = "|")
   funs_prep <-  gsub("\\.", "\\\\.", x = funs_comb)
-  pattern_regex <- paste0("(?<=[, \\(!\\[]|^)(", funs_prep, ") *\\(")
+  pattern_regex <- paste0("(?<=[, \\(!\\[\\n]|^)(", funs_prep, ") *\\(")
   
   regular_calls <- get_matches(script[lineMatches],
                                line = which(lineMatches),
