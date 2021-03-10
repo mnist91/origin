@@ -3,5 +3,8 @@
 export(checkFunctions)
 export(getFunctions)
 export(originize)
+export(originize_dir)
 export(originize_file)
+export(originize_selection)
+export(originize_text)
 export(prep_verbose)
