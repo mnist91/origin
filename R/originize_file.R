@@ -13,7 +13,7 @@
 originize_file <- function(file = rstudioapi::getSourceEditorContext()$path,
                            pkgs = .packages(),
                            overwrite = TRUE,
-                           ask_before_applying_changes = TRUE,
+                           ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
                            ignoreComments = TRUE,
                            check_conflicts = TRUE,
                            check_base_conflicts = TRUE,
