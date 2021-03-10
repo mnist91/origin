@@ -34,7 +34,8 @@ testthat::test_that("origin file", {
                             # "testthat",
                             "purrr"
                             ),
-                   overwrite = TRUE,
+                   overwrite = FALSE,
+                   add_base_packages = FALSE,
                    ask_before_applying_changes = FALSE, 
                    excluded_functions = list(dplyr = "last"),
                    ignoreComments = TRUE,
@@ -55,5 +56,4 @@ originize_dir(datapath,
                        "purrr"),
               overwrite = TRUE,
               ignoreComments = TRUE,
-              excludeBasePackages = TRUE,
               verbose = FALSE)
