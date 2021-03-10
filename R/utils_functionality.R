@@ -137,6 +137,7 @@ get_named_vec <- function(LIST, nms = names(LIST)) {
 
 # style a string for logging output
 # TODO: color codes as arguments
+# TODO: colors depending on background /theme
 add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
   if(html) {
     ins_start_string <- '<text style="color: red;">'
@@ -146,7 +147,7 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
     spe_start_string <- '<text style="color: green;">'
     spe_end_string <- '</text>'
   } else {
-    # TODO: color codes
+    # TODO: color codes abhängig von Theme
     miss_start_string <- '33m['
     miss_end_string <- 'XXXX'
   }
@@ -190,10 +191,14 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
 }
 
 # Insert all package:: to a line
+# TODO: combined elements as separate arguments
 prep_line_originize <- function(line, combined) {
   rel <- combined$line == line
   
   matches <- get_named_vec(combined$matches[rel], combined$pkg[rel])
+  
+  # account for functions that are exported by multiple packages
+  # first evaluated function wins
   replace_matches <- sort(matches[!duplicated(matches)])
   string_after <- add_package(string = combined$string[rel][1],
                               splits = replace_matches,
@@ -218,9 +223,10 @@ prep_line_logging <- function(line, logging_comb, html) {
   rel <- logging_comb$line == line
   
   matches <- get_named_vec(logging_comb$matches[rel], logging_comb$pkg[rel])
-  match_length <- Reduce(c, logging_comb$log_length[rel])
-  match_type <- Reduce(c, rep(logging_comb$type[rel], 
-                              lapply(logging_comb$log_length[rel], FUN = length)))
+  match_length <- unlist(logging_comb$log_length[rel])
+  match_type <- rep(logging_comb$type[rel], 
+                    lapply(X = logging_comb$log_length[rel],
+                           FUN = length))
   dups <- !duplicated(matches)
   replace_matches <- matches[dups]
   replace_lengths <- match_length[dups]
@@ -261,8 +267,9 @@ apply_changes <- function(ask_before_applying_changes, result) {
       invisible(return(NULL))
     }
   } 
+
   invisible(
-    lapply(X = result["to_write"], 
+    lapply(X = Filter(result, f = function(l) !is.null(l$script)), 
            FUN = function(x) writeLines(text = x$script, con = x$file))
   )
 }
