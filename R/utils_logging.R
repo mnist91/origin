@@ -30,7 +30,7 @@ prep_verbose <- function(script_prior,
   # succeeded by a double colon OR a percentage sign OR a character
   funs_comb <- paste(functionsInScript, collapse = "|")
   funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
-  fun_regex <- paste0("(?<!::|[A-z])(", funs_prep, ")(?!::|%|[A-z])")
+  fun_regex <- paste0("(?<!::|[[:alnum:]])(", funs_prep, ")(?!::|%|[[:alnum:]])")
   
   
   list_pot_missings <- get_matches(line = which(lineMatches),
