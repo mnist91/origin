@@ -34,7 +34,7 @@ testthat::test_that("origin file", {
                             # "testthat",
                             "purrr"
                             ),
-                   overwrite = FALSE,
+                   overwrite = TRUE,
                    add_base_packages = FALSE,
                    ask_before_applying_changes = FALSE, 
                    excluded_functions = list(dplyr = "last"),
