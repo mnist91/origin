@@ -66,28 +66,17 @@ checkFunctions <- function(script,
   
   # no matching functions
   if (!any(matches)) {
-    if (!verbose) {
-      return(NULL)
-    }
-    if (!is.null(pkg)) {
-      cat(crayon::red(pkg, paste(rep("-", 100 - nchar(pkg)),
-                                 collapse = "")), "\n")
-    }
-    cat(crayon::green(0, "Lines changed\n"))
-    cat(crayon::green(0, "Functions recognized\n"))
-    
+
     if (any(special_matches)) {
       special_functions_in_script <-
         functions[special_functions][special_matches]
-      cat(crayon::magenta("Special Functions used!"), "\n")
+
       specialMatches <- which(as.logical(
-        Reduce(f = "+", purrr::map(.x = special_functions_in_script,
-                                   .f = ~grepl(x = script,
-                                               pattern = .x, fixed = TRUE)))
+        Reduce(f = "+", lapply(X = special_functions_in_script,
+                               FUN = function(pattern) grepl(x = script,
+                                                             pattern = pattern,
+                                                             fixed = TRUE)))
       ))
-      cat(paste(paste("Line ", specialMatches, ": ",
-                      script[specialMatches], sep = ""),
-                collapse = "\n"))
     }
     cat("\n")
     return(NULL)
@@ -267,7 +256,7 @@ apply_changes <- function(ask_before_applying_changes, result) {
       invisible(return(NULL))
     }
   } 
-
+  
   invisible(
     lapply(X = Filter(result, f = function(l) !is.null(l$script)), 
            FUN = function(x) writeLines(text = x$script, con = x$file))
