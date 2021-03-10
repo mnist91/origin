@@ -35,7 +35,7 @@ originize_text <- function(text,
   }
 
   # read file
-  script <- text
+  script <- strsplit(text, split = "\\n")
   
   
   # TODO: save as internal data
@@ -113,5 +113,5 @@ originize_text <- function(text,
 
   
   
-  return(result$to_write$script)
+  return(paste(result$to_write$script, collapse = "\n"))
 }
