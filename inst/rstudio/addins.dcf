@@ -1,0 +1,9 @@
+Name: Originize Selection
+Description: Add package:: to functions in selected text
+Binding: originize_selection
+Interactive: false
+
+Name: Originize Current File
+Description: Add package:: to functions in current file
+Binding: originize_file
+Interactive: false
