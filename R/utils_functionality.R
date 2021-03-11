@@ -79,21 +79,24 @@ checkFunctions <- function(script,
       special_functions_in_script <-
         functions[special_functions][special_matches]
       
-      specialMatches <- which(as.logical(
-        Reduce(f = "+", lapply(X = special_functions_in_script,
-                               FUN = function(pattern) grepl(x = script,
-                                                             pattern = pattern,
-                                                             fixed = TRUE)))
-      ))
+      specialMatches <- which(
+        as.logical(
+          Reduce(f = "+",
+                 x = lapply(X = special_functions_in_script,
+                            FUN = function(pattern) {
+                              grepl(x = script,
+                                    pattern = pattern,
+                                    fixed = TRUE)
+                            }))
+        ))
     }
-    cat("\n")
     return(NULL)
   }
   
   # reduce the number of script rows to check, by selecting only those which
   # contain a function name
   line_matches <- grepl(x = script,
-                       pattern = paste(functions_in_script, collapse = "|"))
+                        pattern = paste(functions_in_script, collapse = "|"))
   
   # ignore comment rows
   if (ignoreComments) {
@@ -116,8 +119,13 @@ checkFunctions <- function(script,
   
 }
 
+
 # named list to a named vector with names corresponding
 # to prior name of its list element
+# l <- list(rot = 1:3, blau = 1:2)
+# get_named_vec(l)
+# # >  rot  rot  rot blau blau
+# # >    1    2    3    1    2
 get_named_vec <- function(LIST, nms = names(LIST)) {
   out <- unlist(
     unname(
@@ -188,16 +196,15 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
 }
 
 # Insert all package:: to a line
-# TODO: combined elements as separate arguments
-prep_line_originize <- function(line, combined) {
-  rel <- combined$line == line
+prep_line_originize <- function(line, lines, matches, pkg, string) {
+  rel <- lines == line
   
-  matches <- get_named_vec(combined$matches[rel], combined$pkg[rel])
+  matches <- get_named_vec(matches[rel], pkg[rel])
   
   # account for functions that are exported by multiple packages
   # first evaluated function wins
   replace_matches <- sort(matches[!duplicated(matches)])
-  string_after <- add_package(string = combined$string[rel][1],
+  string_after <- add_package(string = string[rel][1],
                               splits = replace_matches,
                               pkg = names(replace_matches))
   
@@ -265,10 +272,10 @@ apply_changes <- function(ask_before_applying_changes, result) {
     }
   } 
   
-    lapply(X = Filter(result, f = function(l) !is.null(l$script)), 
-           FUN = function(x) writeLines(text = x$script, con = x$file))
-    
-    return(invisible(NULL))
+  lapply(X = Filter(result, f = function(l) !is.null(l$script)), 
+         FUN = function(x) writeLines(text = x$script, con = x$file))
+  
+  return(invisible(NULL))
 }
 
 

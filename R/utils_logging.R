@@ -4,15 +4,14 @@
 #' @param line_matches a boolean vector with the lines that contain changes
 #' @param functions a vector with function names
 #' @param functions_in_script a vector which functions were used
-#' @param special_functions a vector with special functions such as \%like\%
+#' @param special_functions a vector with special functions such as `\%like\%`
 #' @param special_matches a boolean vector that indicates which special
 #'   functions are used
 #'
 #' @return
-#' @export
-#'
+#' @noRd
 prep_verbose <- function(script,
-                         line_matches = rep(TRUE, length(script)),
+                         line_matches,
                          functions,
                          functions_in_script,
                          special_functions = NULL,
@@ -21,7 +20,7 @@ prep_verbose <- function(script,
   # lines where a function name occurred, but no changed happened
   # not comprehensive, since there might be line where one function was
   # recognized, but not another
-  potential_missings <- script[line_matches]#[!changes]
+  potential_missings <- script[line_matches]
   
   # check for functions 
   # special regex characters in functions like dots must be escaped

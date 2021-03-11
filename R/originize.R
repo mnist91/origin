@@ -54,7 +54,10 @@ originize <- function(script,
   fixed_lines_list <- lapply(
     X = sort(unique(combined$line)), 
     FUN = prep_line_originize,
-    combined = combined)
+    lines = combined$line,
+    matches = combined$matches,
+    pkg = combined$pkg,
+    string = combined$string)
   
   # combine all lines
   fixed_lines_dat <- Reduce(rbind, fixed_lines_list)
