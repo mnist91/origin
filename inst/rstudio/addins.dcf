@@ -5,5 +5,10 @@ Interactive: false
 
 Name: Originize Current File
 Description: Add package:: to functions in current file
-Binding: originize_file
+Binding: originize_current_file
+Interactive: false
+
+Name: Originize Current Project
+Description: Add package:: to functions in current file
+Binding: originize_current_project
 Interactive: false
