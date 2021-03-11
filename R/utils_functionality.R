@@ -145,11 +145,11 @@ get_named_vec <- function(LIST, nms = names(LIST)) {
 # TODO: colors depending on background /theme
 add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRUE) {
   if(use_markers) {
-    ins_start_string <- '<text style="color: red;">'
+    ins_start_string <- '<text style="color: #00F9FF;">' # cyan
     ins_end_string <- '</text>'
-    mis_start_string <- '<text style="color: yellow;">'
+    mis_start_string <- '<text style="color: #ffa500;">' # orange
     mis_end_string <- '</text>'
-    spe_start_string <- '<text style="color: green;">'
+    spe_start_string <- '<text style="color: #b300b3;">' # purple
     spe_end_string <- '</text>'
   } else {
     # TODO: color codes abhängig von Theme
