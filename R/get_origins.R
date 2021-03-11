@@ -38,13 +38,12 @@ get_origins <- function(pkg,
   if (!any(matches)) {
     return(list())
   }
-  
-  
-  
-  
+
+
   funs_comb <- paste0(functions_in_script, collapse = "|")
   funs_prep <-  gsub("\\.", "\\\\.", x = funs_comb)
-  pattern_regex <- paste0("(?<=[, \\(!\\[\\n]|^)(", funs_prep, ") *\\(")
+  # tokens that can occur right before a function calls
+  pattern_regex <- paste0("(?<=[[:blank:],;=&/\\-<>~\\!\\?\\*\\^\\+\\(\\[]|^)(", funs_prep, ") *\\(")
   
   regular_calls <- get_matches(script[line_matches],
                                line = which(line_matches),
