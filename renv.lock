@@ -170,6 +170,13 @@
       "Repository": "CRAN",
       "Hash": "53cbed70a2f7472d48fb6aef08442f25"
     },
+    "data.table": {
+      "Package": "data.table",
+      "Version": "1.14.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d1b8b1a821ee564a3515fa6c6d5c52dc"
+    },
     "desc": {
       "Package": "desc",
       "Version": "1.2.0",
@@ -205,6 +212,13 @@
       "Repository": "CRAN",
       "Hash": "f24f1e44320a978c03050b8403a83793"
     },
+    "dplyr": {
+      "Package": "dplyr",
+      "Version": "1.0.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "01c82e3b053eb7660a8ace8d932265b8"
+    },
     "ellipsis": {
       "Package": "ellipsis",
       "Version": "0.3.1",
@@ -239,6 +253,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "44594a07a42e5f91fac9f93fda6d0109"
+    },
+    "generics": {
+      "Package": "generics",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4d243a9c10b00589889fe32314ffd902"
     },
     "gert": {
       "Package": "gert",
@@ -281,13 +302,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "4dc5bb88961e347a0f4d8aad597cbfac"
-    },
-    "hms": {
-      "Package": "hms",
-      "Version": "1.0.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "bf552cdd96f5969873afdac7311c7d0d"
     },
     "htmltools": {
       "Package": "htmltools",
@@ -499,13 +513,6 @@
       "Repository": "CRAN",
       "Hash": "ed95895886dab6d2a584da45503555da"
     },
-    "readr": {
-      "Package": "readr",
-      "Version": "1.4.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "2639976851f71f330264a9c9c3d43a61"
-    },
     "rematch": {
       "Package": "rematch",
       "Version": "1.0.1",
@@ -645,6 +652,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "4d894a114dbd4ecafeda5074e7c538e6"
+    },
+    "tidyselect": {
+      "Package": "tidyselect",
+      "Version": "1.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6ea435c354e8448819627cf686f66e0a"
     },
     "tinytex": {
       "Package": "tinytex",

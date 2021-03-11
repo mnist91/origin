@@ -1,154 +1,130 @@
-#' Print Change Log and potential Errors in Concole
+#' Print Change Log and potential Errors in Console
 #'
-#' @param script_prior
-#' @param script_after
-#' @param lineMatches
-#' @param functions
-#' @param functionsInScript
-#' @param special_functions
-#' @param special_matches
+#' @param script the script before any changes
+#' @param line_matches a boolean vector with the lines that contain changes
+#' @param functions a vector with function names
+#' @param functions_in_script a vector which functions were used
+#' @param special_functions a vector with special functions such as `\%like\%`
+#' @param special_matches a boolean vector that indicates which special
+#'   functions are used
 #'
 #' @return
-#' @export
-#'
-#' @examples
-verbolize <- function(script_prior,
-                      script_after,
-                      lineMatches = rep(TRUE, length(script_after)),
-                      functions,
-                      functionsInScript,
-                      special_functions = NULL,
-                      special_matches = FALSE) {
-  # zeilen, die verändert wurden
-  changes <- script_after[lineMatches] != script_prior[lineMatches]
-  line_matches_pos <- which(lineMatches)
-
-  # Anzahl geänderter Zeilen
-  sumChanges <- sum(changes)
-  cat(crayon::green(sumChanges, "Lines changed\n"))
-
-  # Auflistung erkannter Funktionen aus dem Paket im Skript
-  cat(crayon::green(length(functionsInScript), "Functions recognized\n"))
-  cat(paste(functionsInScript, collapse = "\n"), "\n")
-
-  # Auflistung aller veränderter Zeilen
-  cat(crayon::green("Changes:\n"))
-
-  changedStrings <- purrr::map2_chr(
-    .x = script_prior[lineMatches][changes],
-    .y = script_after[lineMatches][changes],
-    .f = function(prior, after) {
-      # füge leeren string ein, wenn es einen unterschied zwischen string 1 und string 2 gibt
-      prior <- strsplit(prior, split = "")[[1]]
-      after <- strsplit(after, split = "")[[1]]
-
-      for(i in seq_along(after)) {
-        if(prior[i] != after[i]) {
-          prior[i:(length(prior) + 1)] <- c("", prior[i:length(prior)])
-        }
-      }
-
-      # Färbe Buchstaben ein, die bei afetr hinzugekommen sind
-      # Siehe crayon::green("TEST)
-      diffs <- !nzchar(prior)
-      after[diffs] <- paste0("\033[36m", after[diffs], "\033[39m")
-
-      after <- paste(after, collapse = "")
-      return(after)
-    })
-  cat(paste(paste("Line ", line_matches_pos[changes], ": ", changedStrings, sep = ""),
-            collapse = "\n"), "\n")
-
-
-  # Zeilen, in denen Funktionsnamen vorkommen, die sich aber nicht verändert haben
-  # NICHT allumfassend, da in einer Zeile eine Funktion erkannt worden sein könnte, die andere nicht
-  potential_missings <- script_after[lineMatches]#[!changes]
-  # färbe verpasste Funktionen rot ein.
-  # Siehe crayon::yellow("TEST)
-  replacementRegex <- paste0("\\1\033[33m\\2\033[39m\\3")
-  potential_missings_unchanged <-
-    # iteriere über alle Zeilen des Skripts
-    purrr::map_chr(
-      .x = potential_missings,
-      .f = function(LINE) {
-        # iteriere über alle Funktionen.
-        # nutze reduce um jeweils vorherige ersetzte funktion nicht zu überschreiben
-        purrr::reduce(.x = functionsInScript,
-                      .f = function(STRING, FUN) {
-
-                        # wird die selbe Funktion mehrfach in einer Zeile aufgerufen
-                        # wird dies von gsub nicht mehrmals ersetzt
-                        # daher repeat-loop.
-                        # potentiell umwandeln in while loop oder gsub zum laufen bringen
-
-                        # Funktionsname , der nicht nach "::" kommt oder nach der
-                        # Farbsequenz
-                        FUN <- gsub("\\.", "\\\\.", x = FUN)
-                        patternRegex <- paste0("(.*)((?<!::|33m)", FUN, ")(.*)")
-                        repeat{
-                          STRING_PRIOR <- STRING
-                          STRING <- gsub(x = STRING,
-                                         replacement = replacementRegex,
-                                         pattern = patternRegex,
-                                         perl = TRUE)
-                          if(STRING_PRIOR == STRING) {
-                            break
-                          }
-                        }
-
-                        return(STRING)
-                      },
-                      .init = LINE)
-      })
-
-  potential_missings_unchanged <- potential_missings_unchanged[potential_missings_unchanged != potential_missings]
-  if(length(potential_missings_unchanged) > 0){
-    cat("\n",crayon::blue("Function names are not used like functions. Check for variable names or ",
-                          "functional programming in *apply/purrr"), "\n")
-    cat(paste(paste("Line ", line_matches_pos, #[!changes],
-                    ": ", potential_missings_unchanged, sep = ""),
-              collapse = "\n"), "\n")
-  }
-
-  # wurden Spezialfunktionen wie %like% oder %>% genutzt, die nicht mit
-  # PACKAGE:: vorangestellt genutzt werden können?
-  if(any(special_matches)) {
-    cat("\n", crayon::magenta("Special functions used!"), "\n")
-
+#' @noRd
+prep_verbose <- function(script,
+                         line_matches,
+                         functions,
+                         functions_in_script,
+                         special_functions = NULL,
+                         special_matches = FALSE) {
+  
+  # lines where a function name occurred, but no changed happened
+  # not comprehensive, since there might be line where one function was
+  # recognized, but not another
+  potential_missings <- script[line_matches]
+  
+  # check for functions 
+  # special regex characters in functions like dots must be escaped
+  # function names  should not be preceded by a double colon OR character nor
+  # succeeded by a double colon OR a percentage sign OR a character
+  funs_comb <- paste(functions_in_script, collapse = "|")
+  funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
+  fun_regex <- paste0("(?<!::|[[:alnum:]])(", funs_prep, ")(?!::|%|[[:alnum:]])")
+  
+  
+  list_pot_missings <- get_matches(line = which(line_matches),
+                                   text = potential_missings,
+                                   regex = fun_regex,
+                                   perl = TRUE,
+                                   fixed = FALSE,
+                                   filter_nomatches = TRUE)
+  n_potentials <- length(list_pot_missings$line)
+  list_pot_missings <- c(list_pot_missings, 
+                         list(pkg = rep("", n_potentials),
+                              type = rep("missed", n_potentials)
+                         ))
+  
+  # did special functions such as "%like" or %>% which are not used with
+  # PACAKGE::FUNCTION occur
+  if (any(special_matches)) {
+    
     special_functions_in_script <- functions[special_functions][special_matches]
-    # Welche Zeilen enthielten mindestens eine solche Spezialfunktion
-    specialMatches <- which(as.logical(Reduce(f = "+",
-                                              purrr::map(.x = special_functions_in_script,
-                                                         .f = ~ grepl(x = script_after,
-                                                                      pattern = .x,
-                                                                      fixed = TRUE)))))
-    # Welche Spezialfunktion wurde in welcher Zeile genutzt?
-    # Durch die Special-Characters in diesen Funktionen ist eine regEx-Suche nicht möglich
-    # fixed muss auf TRUE gesetzt sein und über die Funktionen iteriert werden
-    # Jedes Listenelement steht für eine special-Funktion und die Zahlen darin stehen
-    # für die Zeile, in der diese genutzt wird
-    specialsFound <- purrr::map(.x = special_functions_in_script,
-                                .f = ~grep(x =  script_after[specialMatches], pattern = .x, fixed = TRUE))
-
-    # entsprechender Funktionsname als name
-    names(specialsFound) <- special_functions_in_script
-
-    # liste als ein Vektor, wobei der name jeweils der Funktionsname ist
-    specialsUnlisted <- unlist(purrr::transpose(specialsFound))
-    # Aggregiere alle Funktionen nach Zeilen zusammen
-    funsInLine <- by(names(specialsUnlisted), specialsUnlisted, paste, collapse = ", ")
-
-    # Für alignment, mache alle Funktions-Strings gleich lang
-    funsInLine <- format(funsInLine, width = max(nchar(funsInLine)))
-
-    # Output highlighting wegen special Characters nicht möglich
-    cat(paste(paste("Line ", specialMatches, ": ",
-                    funsInLine, "\t",
-                    script_after[specialMatches],
-                    sep = ""),
-              collapse = "\n"), "\n")
+    
+    # lines with special functions
+    specialMatches <- which(as.logical(
+      Reduce(f = "+", lapply(X = special_functions_in_script,
+                             FUN = function(pattern) grepl(x = script,
+                                                           pattern = pattern,
+                                                           fixed = TRUE)))
+    ))
+    
+    funs_comb <- paste(special_functions_in_script, collapse = "|")
+    
+    # potential special characters that need do be escaped in regexes
+    funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
+    funs_prep <- gsub("\\%", "\\\\%", x = funs_prep)
+    funs_prep <- gsub("\\[", "\\\\[", x = funs_prep)
+    funs_prep <- gsub("\\]", "\\\\]", x = funs_prep)
+    funs_prep <- gsub("\\$", "\\\\$", x = funs_prep)
+    funs_prep <- gsub("<", "\\<", x = funs_prep)
+    funs_prep <- gsub(">", "\\>", x = funs_prep)
+    
+    list_specials <- get_matches(line = specialMatches,
+                                 text = script[specialMatches],
+                                 regex = funs_prep,
+                                 perl = FALSE,
+                                 fixed = FALSE,
+                                 filter_nomatches = TRUE)
+    n_specials <-  length(list_specials$line)
+    list_specials <- c(list_specials, 
+                       list(pkg = rep("", n_specials),
+                            type = rep("special", n_specials)
+                       ))
+  } else {
+    list_specials <- NULL
   }
-  cat("\n\n")
+  
+  out <- list(specials = list_specials, pot_missings = list_pot_missings)
+  return(out)
+}
 
+
+# find potential missings in the data and store information
+# about type of missing, length of match and line
+get_matches <- function(text, line, regex,
+                        perl = TRUE,
+                        fixed = FALSE,
+                        filter_nomatches = TRUE) {
+  matches <- gregexpr(pattern = regex,
+                      text = text,
+                      perl = perl,
+                      fixed = fixed)
+  
+  if (filter_nomatches) {
+    has_matches <- vapply(X = matches,
+                          FUN = function(x) any(x != -1),
+                          FUN.VALUE = logical(1))
+    
+    matches <- matches[has_matches]
+    
+    out <- list(line = line[has_matches],
+                string = text[has_matches],
+                matches = lapply(matches,
+                                 FUN = as.numeric),
+                log_length = lapply(matches,
+                                    FUN = attr,
+                                    which = "match.length"))
+  } else {
+    out <- list(line = line,
+                string = text,
+                matches = lapply(matches,
+                                 FUN = as.numeric),
+                log_length = lapply(matches,
+                                    FUN = attr,
+                                    which = "match.length"))
+    
+  }
+  
+  return(out)
+  
 }
 

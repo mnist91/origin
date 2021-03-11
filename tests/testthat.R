@@ -1,4 +1,4 @@
 library(testthat)
-library(testpackage)
+library(origin)
 
 testthat::test_check("origin")
