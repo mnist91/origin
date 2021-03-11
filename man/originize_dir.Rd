@@ -12,14 +12,14 @@ originize_dir(
   ignore_case = TRUE,
   exclude_files = NULL,
   overwrite = TRUE,
-  ask_before_applying_changes = TRUE,
+  ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
   ignoreComments = TRUE,
   check_conflicts = TRUE,
   check_base_conflicts = TRUE,
   add_base_packages = FALSE,
   excluded_functions = list(),
   verbose = FALSE,
-  html = TRUE
+  use_markers = TRUE
 )
 }
 \arguments{

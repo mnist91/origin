@@ -12,7 +12,7 @@ originize(
   overwrite = FALSE,
   ignoreComments = TRUE,
   verbose = FALSE,
-  html = TRUE
+  use_markers = TRUE
 )
 }
 \arguments{

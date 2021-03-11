@@ -8,14 +8,14 @@ originize_selection(
   context = rstudioapi::getSourceEditorContext(),
   pkgs = .packages(),
   overwrite = TRUE,
-  ask_before_applying_changes = TRUE,
+  ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
   ignoreComments = TRUE,
   check_conflicts = TRUE,
   check_base_conflicts = TRUE,
   add_base_packages = FALSE,
   excluded_functions = list(),
   verbose = TRUE,
-  html = TRUE
+  use_markers = TRUE
 )
 }
 \arguments{
