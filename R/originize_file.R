@@ -10,7 +10,7 @@
 #' @return
 #' @export
 #'
-originize_file <- function(file = rstudioapi::getSourceEditorContext()$path,
+originize_file <- function(file,
                            pkgs = .packages(),
                            overwrite = TRUE,
                            ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
