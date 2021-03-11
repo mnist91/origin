@@ -20,7 +20,7 @@ originize_selection <- function(context = rstudioapi::getSourceEditorContext(),
                                 add_base_packages = FALSE,
                                 excluded_functions = list(),
                                 verbose = TRUE,
-                                html = TRUE) {
+                                use_markers = TRUE) {
   
   if (!check_base_conflicts && add_base_packages) {
     stop("When adding base packages checking for potential conflicts is required!")
@@ -100,7 +100,7 @@ originize_selection <- function(context = rstudioapi::getSourceEditorContext(),
                       overwrite = overwrite,
                       ignoreComments = ignoreComments,
                       verbose = verbose,
-                      html = html)
+                      use_markers = use_markers)
   
   if (verbose) {
     selected_context <- context$selection[[1]]$range
@@ -110,7 +110,7 @@ originize_selection <- function(context = rstudioapi::getSourceEditorContext(),
     # lines swlected and the assignment would fial
     
     result$logging_data$line <- selected_lines[result$logging_data$line]
-    if (html) {
+    if (use_markers) {
       
       rstudioapi::sourceMarkers(name = "origin", markers = result$logging_data)
     } else {

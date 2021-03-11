@@ -20,7 +20,7 @@ originize_file <- function(file,
                            add_base_packages = FALSE,
                            excluded_functions = list(),
                            verbose = FALSE,
-                           html = TRUE) {
+                           use_markers = TRUE) {
   
   if (!check_base_conflicts && add_base_packages) {
     stop("When adding base packages checking for potential conflicts is required!")
@@ -96,10 +96,10 @@ originize_file <- function(file,
                       overwrite = overwrite,
                       ignoreComments = ignoreComments,
                       verbose = verbose,
-                      html = html)
+                      use_markers = use_markers)
   
   if (verbose) {
-    if (html) {
+    if (use_markers) {
       rstudioapi::sourceMarkers(name = "origin", markers = result$logging_data)
     } else {
       # TODO

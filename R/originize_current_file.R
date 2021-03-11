@@ -23,7 +23,7 @@ originize_current_file <- function(file = rstudioapi::getSourceEditorContext()$p
                                    add_base_packages = FALSE,
                                    excluded_functions = list(),
                                    verbose = FALSE,
-                                   html = TRUE) {
+                                   use_markers = TRUE) {
   
   originize_file(file,
                  pkgs = pkgs,
@@ -35,5 +35,5 @@ originize_current_file <- function(file = rstudioapi::getSourceEditorContext()$p
                  add_base_packages = add_base_packages,
                  excluded_functions = excluded_functions,
                  verbose = verbose,
-                 html = html) 
+                 use_markers = use_markers) 
 }

@@ -16,7 +16,7 @@ originize <- function(script,
                       overwrite = FALSE,
                       ignoreComments = TRUE,
                       verbose = FALSE,
-                      html = TRUE) {
+                      use_markers = TRUE) {
   
   
   # get relevant function information
@@ -96,7 +96,7 @@ originize <- function(script,
       X = sort(unique(logging_comb$line)), 
       FUN = prep_line_logging,
       logging_comb = logging_comb,
-      html = html)
+      use_markers = use_markers)
     
     # combine all lines
     logging_data <- Reduce(rbind, fixed_lines_list)
@@ -104,7 +104,7 @@ originize <- function(script,
     
     
     
-    if (html) {
+    if (use_markers) {
       # add further attributes for markers output
       # include other types?
       # c("usage", "error", "warning", "info", "style", "box")

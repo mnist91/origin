@@ -24,7 +24,7 @@ originize_dir <- function(path,
                           add_base_packages = FALSE,
                           excluded_functions = list(),
                           verbose = FALSE,
-                          html = TRUE) {
+                          use_markers = TRUE) {
   
   if (!check_base_conflicts && add_base_packages) {
     stop("When adding base packages checking for potential conflicts is required!")
@@ -114,7 +114,7 @@ originize_dir <- function(path,
                 overwrite = overwrite,
                 ignoreComments = ignoreComments,
                 verbose = verbose,
-                html = html)
+                use_markers = use_markers)
     },
     files,
     scripts,
@@ -125,7 +125,7 @@ originize_dir <- function(path,
   
   
   if (verbose) {
-    if (html) {
+    if (use_markers) {
       rstudioapi::sourceMarkers(name = "origin",
                                 markers = Reduce(f = rbind,
                                                  x = lapply(X = results, 

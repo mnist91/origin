@@ -143,8 +143,8 @@ get_named_vec <- function(LIST, nms = names(LIST)) {
 # style a string for logging output
 # TODO: color codes as arguments
 # TODO: colors depending on background /theme
-add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
-  if(html) {
+add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRUE) {
+  if(use_markers) {
     ins_start_string <- '<text style="color: red;">'
     ins_end_string <- '</text>'
     mis_start_string <- '<text style="color: yellow;">'
@@ -223,7 +223,7 @@ add_package <- function(string, splits, pkg) {
 }
 
 # combined color highlighting for each line 
-prep_line_logging <- function(line, logging_comb, html) {
+prep_line_logging <- function(line, logging_comb, use_markers) {
   rel <- logging_comb$line == line
   
   matches <- get_named_vec(logging_comb$matches[rel], logging_comb$pkg[rel])
@@ -246,7 +246,7 @@ prep_line_logging <- function(line, logging_comb, html) {
                               pkg = names(replace_matches),
                               log_length = replace_lengths,
                               type = replace_types,
-                              html = html)
+                              use_markers = use_markers)
   
   data.frame(line = line,
              message = string_after)
