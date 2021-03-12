@@ -1,9 +1,8 @@
 #' Get All Exported Functions From a Package
 #'
-#' @param pkg `character(1)`
-#'   Name of package
+#' @param pkg string of a package name
 #'
-#' @return `character(1)`
+#' @return character vector of functions names
 #' @export
 #'
 #' @examples
@@ -28,14 +27,21 @@ getFunctions <- function(pkg) {
 }
 
 
-#' Extract relevant Function information
+#' Which functions are potentially used in the script
+#' 
+#' This is a fast check to extract potentialy used functions. It only checks if
+#' the function name strings are present in any way. This reduces the number
+#' of functions that must be considered more closely significantly. It speeds
+#' up all further steps
 #'
 #' @param script a script to check
 #' @param functions a vector with function names
 #' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param pkg package name from which the functions stem from
+#' @param verbose whether to provide informaiton to the user at runtime
 #'
 #' @return
-#' @export
+#' @noRd
 #'
 checkFunctions <- function(script,
                            functions,
@@ -120,21 +126,40 @@ checkFunctions <- function(script,
 }
 
 
-# named list to a named vector with names corresponding
-# to prior name of its list element
-# l <- list(rot = 1:3, blau = 1:2)
-# get_named_vec(l)
-# # >  rot  rot  rot blau blau
-# # >    1    2    3    1    2
-get_named_vec <- function(LIST, nms = names(LIST)) {
+#' Unlist a list into a vector with names equal to fromer list element name
+#'
+#' @param l a list to convert into a vector
+#' @param nms character vector of same length as list, defaults to the 
+#'   names of l
+#'
+#' @details the `base::unlist` function converts a list into a vector yet
+#'    assigns unique names to each vector element, More precisely, it adds
+#'     a number to the name of its list element. This function does not
+#'     create unique names but assigns the bare name of the list element
+#'     to all vector elements that stem from this list element
+#'   
+#' @return
+#' @export
+#'
+#' @examples
+#' named list to a named vector with names corresponding
+#' to prior name of its list element
+#' l <- list(rot = 1:3, blau = 1:2)
+#' un_list(l)
+#' # >  rot  rot  rot blau blau
+#' # >    1    2    3    1    2
+un_list <- function(l, nms = names(l)) {
   out <- unlist(
-    unname(
-      Map(function(x, nm) {
+    recursive = TRUE,
+    use.names = TRUE,
+    x = mapply(
+      FUN = function(x, nm) {
         setNames(x, rep(nm, length(x)))
       },
-      LIST,
-      nms
-      )
+      l,
+      nms,
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
     )
   )
   return(out)
@@ -144,7 +169,7 @@ get_named_vec <- function(LIST, nms = names(LIST)) {
 # TODO: color codes as arguments
 # TODO: colors depending on background /theme
 add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRUE) {
-  if(use_markers) {
+  if (use_markers) {
     ins_start_string <- '<text style="color: #00F9FF;">' # cyan
     ins_end_string <- '</text>'
     mis_start_string <- '<text style="color: #ffa500;">' # orange
@@ -199,7 +224,7 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRU
 prep_line_originize <- function(line, lines, matches, pkg, string) {
   rel <- lines == line
   
-  matches <- get_named_vec(matches[rel], pkg[rel])
+  matches <- un_list(matches[rel], pkg[rel])
   
   # account for functions that are exported by multiple packages
   # first evaluated function wins
@@ -226,7 +251,7 @@ add_package <- function(string, splits, pkg) {
 prep_line_logging <- function(line, logging_comb, use_markers) {
   rel <- logging_comb$line == line
   
-  matches <- get_named_vec(logging_comb$matches[rel], logging_comb$pkg[rel])
+  matches <- un_list(logging_comb$matches[rel], logging_comb$pkg[rel])
   match_length <- unlist(logging_comb$log_length[rel])
   match_type <- rep(logging_comb$type[rel], 
                     lapply(X = logging_comb$log_length[rel],
@@ -281,7 +306,7 @@ apply_changes <- function(ask_before_applying_changes, result) {
 
 # named character vector of functions with package name as names
 get_fun_duplicates <- function(functions) {
-  funs_unlisted <- get_named_vec(functions, nms = names(functions))
+  funs_unlisted <- un_list(functions, nms = names(functions))
   
   funs_duplicates <- funs_unlisted[which(duplicated(funs_unlisted))]
   dups <- funs_unlisted[funs_unlisted %in% funs_duplicates]

@@ -88,9 +88,25 @@ prep_verbose <- function(script,
 }
 
 
-# find potential missings in the data and store information
-# about type of missing, length of match and line
-get_matches <- function(text, line, regex,
+#' find potential missings in the data and store information
+#' about type of missing, length of match and line
+#'
+#' @param text character vector of relevant script
+#' @param line line information to each text element
+#' @param regex a regular expression, containing all function names in OR (pipe)
+#'   combinations.
+#' @param perl whether perl regular expressions should be used
+#' @param fixed whether the regex part is evaluated as is
+#' @param filter_nomatches whether to not return lines without a match
+#'
+#' @return list of match information, i.e. which line, text, position, and
+#'    match length
+#' @noRd
+#' 
+#' @examples
+get_matches <- function(text,
+                        line,
+                        regex,
                         perl = TRUE,
                         fixed = FALSE,
                         filter_nomatches = TRUE) {

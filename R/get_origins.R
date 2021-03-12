@@ -1,6 +1,7 @@
 #' Add Package Name to Function Calls
 #'
 #' @param pkg a package name
+#' @param script character vector of script lines
 #' @param file a path to a script
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
 #' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
@@ -8,8 +9,7 @@
 #' @param functions a vector with function names
 #'
 #' @noRd
-#' @return
-
+#' @return list that contains all information to where insert which package
 get_origins <- function(pkg,
                         script,
                         file = NULL,
