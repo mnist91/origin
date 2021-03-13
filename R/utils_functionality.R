@@ -168,14 +168,12 @@ un_list <- function(l, nms = names(l)) {
 # style a string for logging output
 # TODO: color codes as arguments
 # TODO: colors depending on background /theme
-add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRUE) {
+add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
   if (use_markers) {
-    ins_start_string <- '<text style="color: #00F9FF;">' # cyan
-    ins_end_string <- '</text>'
-    mis_start_string <- '<text style="color: #ffa500;">' # orange
-    mis_end_string <- '</text>'
-    spe_start_string <- '<text style="color: #b300b3;">' # purple
-    spe_end_string <- '</text>'
+    ins_start_string <- sprintf('<text style="color: %s;">', getOption("origin.color_added_package"))
+    mis_start_string <-  sprintf('<text style="color: %s;">', getOption("origin.color_missed_function"))
+    spe_start_string <-  sprintf('<text style="color: %s;">', getOption("origin.color_special_function"))
+    end_string <- '</text>'
   } else {
     # TODO: color codes abhängig von Theme
     miss_start_string <- '33m['
@@ -195,10 +193,8 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRU
                           last = c(len, nchar(str)))
       if(type == "missed") {
         start_string <- mis_start_string
-        end_string <- mis_end_string
       } else {
         start_string <- spe_start_string
-        end_string <- spe_end_string
       }
       paste(start_string, to_log[1], end_string, to_log[2], sep = "")
       
@@ -209,7 +205,7 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers = TRU
   )
   to_insert <- log_length == 0
   splitted[-1][to_insert] <- paste(ins_start_string, 
-                                   pkg[to_insert], ins_end_string,
+                                   pkg[to_insert], end_string,
                                    splitted[-1][to_insert],
                                    sep = "")
   
