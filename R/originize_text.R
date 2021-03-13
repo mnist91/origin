@@ -21,7 +21,7 @@ originize_text <- function(text,
                            add_base_packages = FALSE,
                            excluded_functions = list(),
                            verbose = TRUE,
-                           use_markers = TRUE) {
+                           use_markers = getOption("origin.use_markers_for_logging")) {
   
   if (!check_base_conflicts && add_base_packages) {
     stop("When adding base packages checking for potential conflicts is required!")

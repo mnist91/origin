@@ -20,7 +20,7 @@ originize <- function(script,
                       overwrite = FALSE,
                       ignoreComments = TRUE,
                       verbose = FALSE,
-                      use_markers = TRUE) {
+                      use_markers = getOption("origin.use_markers_for_logging")) {
   
   
   # get relevant function information

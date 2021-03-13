@@ -24,7 +24,7 @@ originize_dir <- function(path,
                           add_base_packages = FALSE,
                           excluded_functions = list(),
                           verbose = FALSE,
-                          use_markers = TRUE) {
+                          use_markers = getOption("origin.use_markers_for_logging")) {
   
   if (!check_base_conflicts && add_base_packages) {
     stop("When adding base packages checking for potential conflicts is required!")

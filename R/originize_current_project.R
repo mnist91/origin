@@ -24,7 +24,7 @@ originize_current_project <- function(path = ".",
                                       add_base_packages = FALSE,
                                       excluded_functions = list(),
                                       verbose = FALSE,
-                                      use_markers = TRUE) {
+                                      use_markers = getOption("origin.use_markers_for_logging")) {
   
   originize_dir(path = path,
                 pkgs = pkgs,
