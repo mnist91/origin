@@ -11,7 +11,7 @@
 #' @export
 #'
 originize_dir <- function(path,
-                          pkgs = .packages(),
+                          pkgs = getOption("origin.pkgs"),
                           recursive = TRUE,
                           files_pattern = "\\.R",
                           ignore_case = TRUE,

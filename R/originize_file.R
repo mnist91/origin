@@ -11,7 +11,7 @@
 #' @export
 #'
 originize_file <- function(file,
-                           pkgs = .packages(),
+                           pkgs = getOption("origin.pkgs"),
                            overwrite = TRUE,
                            ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
                            ignoreComments = TRUE,

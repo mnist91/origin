@@ -12,7 +12,7 @@
 #'
 originize_text <- function(text,
                            file = rstudioapi::getSourceEditorContext()$path,
-                           pkgs = .packages(),
+                           pkgs = getOption("origin.pkgs"),
                            overwrite = TRUE,
                            ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
                            ignoreComments = TRUE,

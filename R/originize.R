@@ -16,7 +16,7 @@
 originize <- function(script,
                       file,
                       functions,
-                      pkgs = .packages(),
+                      pkgs = getOption("origin.pkgs"),
                       overwrite = FALSE,
                       ignoreComments = TRUE,
                       verbose = FALSE,
