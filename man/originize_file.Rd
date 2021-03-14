@@ -6,16 +6,16 @@
 \usage{
 originize_file(
   file,
-  pkgs = .packages(),
+  pkgs = getOption("origin.pkgs"),
   overwrite = TRUE,
   ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
-  ignoreComments = TRUE,
+  ignore_comments = TRUE,
   check_conflicts = TRUE,
   check_base_conflicts = TRUE,
   add_base_packages = FALSE,
   excluded_functions = list(),
   verbose = FALSE,
-  use_markers = TRUE
+  use_markers = getOption("origin.use_markers_for_logging")
 )
 }
 \arguments{
@@ -23,9 +23,10 @@ originize_file(
 
 \item{pkgs}{a vector with package names}
 
-\item{overwrite}{a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.}
+\item{overwrite}{a boolean, if TRUE the file will be saved and overwritten.
+If FALSE the file is returned.}
 
-\item{ignoreComments}{a boolean, if TRUE lines starting with # are ignored}
+\item{ignore_comments}{a boolean, if TRUE lines starting with # are ignored}
 
 \item{verbose}{a boolean}
 
