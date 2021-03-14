@@ -29,20 +29,20 @@ testthat::test_that("checkFunctions has correct output", {
   # call function with different settings
   tmp1 <- checkFunctions(script,
                          functions,
-                         ignoreComments = TRUE,
+                         ignore_comments = TRUE,
                          pkg = NULL,
                          verbose = TRUE)
 
 
   tmp2 <- checkFunctions(script,
                          functions,
-                         ignoreComments = TRUE,
+                         ignore_comments = TRUE,
                          pkg = "this_pkg",
                          verbose = TRUE)
 
   tmp3 <- checkFunctions(script,
                          functions,
-                         ignoreComments = FALSE,
+                         ignore_comments = FALSE,
                          pkg = NULL,
                          verbose = FALSE)
 

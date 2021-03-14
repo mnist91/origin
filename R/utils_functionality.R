@@ -36,7 +36,7 @@ getFunctions <- function(pkg) {
 #'
 #' @param script a script to check
 #' @param functions a vector with function names
-#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param pkg package name from which the functions stem from
 #' @param verbose whether to provide informaiton to the user at runtime
 #'
@@ -45,7 +45,7 @@ getFunctions <- function(pkg) {
 #'
 checkFunctions <- function(script,
                            functions,
-                           ignoreComments = TRUE,
+                           ignore_comments = TRUE,
                            pkg = NULL,
                            verbose = TRUE) {
   # remove function with special characters like %, &, [] and :
@@ -105,7 +105,7 @@ checkFunctions <- function(script,
                         pattern = paste(functions_in_script, collapse = "|"))
   
   # ignore comment rows
-  if (ignoreComments) {
+  if (ignore_comments) {
     # starts with # or leading spaces and #
     # startsWithHashRegEx <- "(?<=^[ *]|^)#"
     lineComments <- grepl(x = trimws(script[line_matches]), pattern = "^#")

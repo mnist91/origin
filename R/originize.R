@@ -5,7 +5,7 @@
 #' @param functions vector of potentially relevant functions
 #' @param pkgs a vector with package names
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
-#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param verbose a boolean
 #' @param use_markers whether to use the markers tab of RStudio to present
 #'   the output (`TRUE`, default) or printing this information  in the console
@@ -18,7 +18,7 @@ originize <- function(script,
                       functions,
                       pkgs = getOption("origin.pkgs"),
                       overwrite = FALSE,
-                      ignoreComments = TRUE,
+                      ignore_comments = TRUE,
                       verbose = FALSE,
                       use_markers = getOption("origin.use_markers_for_logging")) {
   
@@ -27,7 +27,7 @@ originize <- function(script,
   l <- checkFunctions(script = script,
                       functions = unlist(functions),
                       verbose = verbose,
-                      ignoreComments = ignoreComments)
+                      ignore_comments = ignore_comments)
   
   # iterate over all functions and find position where package:: is necessary
   replacement_list <- 
@@ -37,7 +37,7 @@ originize <- function(script,
                   functions      = funs,
                   file           = file,
                   overwrite      = overwrite,
-                  ignoreComments = ignoreComments,
+                  ignore_comments = ignore_comments,
                   verbose        = verbose)
     },
     pkgs,

@@ -3,8 +3,9 @@
 #' @param pkg a package name
 #' @param script character vector of script lines
 #' @param file a path to a script
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
-#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
+#'    If FALSE the file is returned.
+#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param verbose a boolean
 #' @param functions a vector with function names
 #'
@@ -14,7 +15,7 @@ get_origins <- function(pkg,
                         script,
                         file = NULL,
                         overwrite = FALSE,
-                        ignoreComments = TRUE,
+                        ignore_comments = TRUE,
                         verbose = FALSE,
                         functions = NULL) {
   

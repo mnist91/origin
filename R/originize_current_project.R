@@ -3,7 +3,7 @@
 #' @param file a path to a script
 #' @param pkgs a vector with package names
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
-#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param excludeBasePackages a boolean, if TRUE base R functions are excluded
 #' @param verbose a boolean
 #'
@@ -18,7 +18,7 @@ originize_current_project <- function(path = ".",
                                       exclude_files = NULL,
                                       overwrite = TRUE,
                                       ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
-                                      ignoreComments = TRUE,
+                                      ignore_comments = TRUE,
                                       check_conflicts = TRUE,
                                       check_base_conflicts = TRUE,
                                       add_base_packages = FALSE,
@@ -34,7 +34,7 @@ originize_current_project <- function(path = ".",
                 exclude_files = exclude_files,
                 overwrite = overwrite,
                 ask_before_applying_changes = ask_before_applying_changes,
-                ignoreComments = ignoreComments,
+                ignore_comments = ignore_comments,
                 check_conflicts = check_conflicts,
                 check_base_conflicts = check_base_conflicts,
                 add_base_packages = add_base_packages,

@@ -20,7 +20,7 @@
 #   # call function with different settings
 #   tmp <- checkFunctions(script_prior,
 #                         functions,
-#                         ignoreComments = TRUE,
+#                         ignore_comments = TRUE,
 #                         pkg = "pkg",
 #                         verbose = TRUE)
 # 

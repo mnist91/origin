@@ -36,7 +36,7 @@ testthat::test_that("origin file", {
                    add_base_packages = FALSE,
                    ask_before_applying_changes = FALSE, 
                    excluded_functions = list(dplyr = "last"),
-                   ignoreComments = TRUE,
+                   ignore_comments = TRUE,
                    verbose = FALSE)
   # )
   
