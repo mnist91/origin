@@ -4,7 +4,7 @@
   optns_origin <- list(
     origin.ask_before_applying_changes = TRUE,
     origin.use_markers_for_logging = TRUE,
-    origin.pkgs = .packages()),
+    origin.pkgs = .packages(),
     origin.color_added_package = "#00F9FF",
     origin.color_missed_function = "#ffa500",
     origin.color_special_function = "#b300b3"

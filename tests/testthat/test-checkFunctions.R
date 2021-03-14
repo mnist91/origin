@@ -1,4 +1,4 @@
-testthat::test_that("checkFunctions has correct output", {
+testthat::test_that("check_functions has correct output", {
 
   # example input
   script <- c(
@@ -27,20 +27,20 @@ testthat::test_that("checkFunctions has correct output", {
   )
 
   # call function with different settings
-  tmp1 <- checkFunctions(script,
+  tmp1 <- check_functions(script,
                          functions,
                          ignore_comments = TRUE,
                          pkg = NULL,
                          verbose = TRUE)
 
 
-  tmp2 <- checkFunctions(script,
+  tmp2 <- check_functions(script,
                          functions,
                          ignore_comments = TRUE,
                          pkg = "this_pkg",
                          verbose = TRUE)
 
-  tmp3 <- checkFunctions(script,
+  tmp3 <- check_functions(script,
                          functions,
                          ignore_comments = FALSE,
                          pkg = NULL,

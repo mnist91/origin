@@ -18,7 +18,7 @@
 #   )
 # 
 #   # call function with different settings
-#   tmp <- checkFunctions(script_prior,
+#   tmp <- check_functions(script_prior,
 #                         functions,
 #                         ignore_comments = TRUE,
 #                         pkg = "pkg",

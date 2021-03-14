@@ -4,7 +4,8 @@
 #' @param file a path to a script
 #' @param functions vector of potentially relevant functions
 #' @param pkgs a vector with package names
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
+#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
+#'   If FALSE the file is returned.
 #' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param verbose a boolean
 #' @param use_markers whether to use the markers tab of RStudio to present
@@ -20,14 +21,15 @@ originize <- function(script,
                       overwrite = FALSE,
                       ignore_comments = TRUE,
                       verbose = FALSE,
-                      use_markers = getOption("origin.use_markers_for_logging")) {
+                      use_markers = 
+                        getOption("origin.use_markers_for_logging")) {
   
   
   # get relevant function information
-  l <- checkFunctions(script = script,
-                      functions = unlist(functions),
-                      verbose = verbose,
-                      ignore_comments = ignore_comments)
+  l <- check_functions(script = script,
+                       functions = unlist(functions),
+                       verbose = verbose,
+                       ignore_comments = ignore_comments)
   
   # iterate over all functions and find position where package:: is necessary
   replacement_list <- 
@@ -77,12 +79,13 @@ originize <- function(script,
   } else {
     
     # get positions of potential missined (special) functions
-    potential_missings <- prep_verbose(script = script,
-                                       line_matches = l$line_matches,
-                                       functions = unlist(functions),
-                                       functions_in_script = l$functions_in_script,
-                                       special_functions = l$special_functions,
-                                       special_matches = l$special_matches)
+    potential_missings <- 
+      prep_verbose(script = script,
+                   line_matches = l$line_matches,
+                   functions = unlist(functions),
+                   functions_in_script = l$functions_in_script,
+                   special_functions = l$special_functions,
+                   special_matches = l$special_matches)
     
     # combine positions of potential missings
     logging_comb <-  Reduce(

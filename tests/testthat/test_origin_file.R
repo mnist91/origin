@@ -6,7 +6,6 @@ target_file_path <- file.path(dir, "targetfile.R")
 # works only when package is build
 datapath <- system.file("testdata", package = "origin")
 
-#datapath <- file.path("inst", "testdata")
 test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
                        na.strings = "NA")
 writeLines(test_text$TARGET, con = target_file_path)
@@ -44,4 +43,3 @@ testthat::test_that("origin file", {
   
   testthat::expect_equal(testfile_after, test_text$TARGET)
 })
-

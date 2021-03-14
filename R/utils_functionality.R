@@ -6,16 +6,17 @@
 #' @export
 #'
 #' @examples
-#' getFunctions("data.table")
+#' get_exported_functions("data.table")
 #'
-getFunctions <- function(pkg) {
+get_exported_functions <- function(pkg) {
   # get all exported functions from a package --------------------------------
   # lists all exports of a package (incl. non functions)
   exports <- getNamespaceExports(pkg)
   
   is_function <- vapply(exports, 
                         FUN = function(x, ns) {
-                          inherits(x = getExportedValue(ns, x), what = "function")
+                          inherits(x = getExportedValue(ns, x),
+                                   what = "function")
                         },
                         FUN.VALUE = logical(1),
                         ns = getNamespace(pkg))
@@ -43,7 +44,7 @@ getFunctions <- function(pkg) {
 #' @return
 #' @noRd
 #'
-checkFunctions <- function(script,
+check_functions <- function(script,
                            functions,
                            ignore_comments = TRUE,
                            pkg = NULL,
@@ -57,12 +58,12 @@ checkFunctions <- function(script,
   
   # TODO: check performance of one script vs multiple scripts
   # any(grepl(pattern = .x, x = script, fixed = TRUE))
-  fullScript <- paste0(script, collapse = "")
+  full_script <- paste0(script, collapse = "")
   
   matches <- vapply(X = relevant_functions,
                     FUN = function(fun) {
                       grepl(pattern = fun,
-                            x = fullScript,
+                            x = full_script,
                             fixed = TRUE)
                     },
                     FUN.VALUE = logical(1))
@@ -73,7 +74,7 @@ checkFunctions <- function(script,
   special_matches <- vapply(X = functions[special_functions],
                             FUN = function(fun) {
                               grepl(pattern = fun,
-                                    x = fullScript,
+                                    x = full_script,
                                     fixed = TRUE)
                             },
                             FUN.VALUE = logical(1))
@@ -85,7 +86,7 @@ checkFunctions <- function(script,
       special_functions_in_script <-
         functions[special_functions][special_matches]
       
-      specialMatches <- which(
+      special_matches <- which(
         as.logical(
           Reduce(f = "+",
                  x = lapply(X = special_functions_in_script,
@@ -106,13 +107,13 @@ checkFunctions <- function(script,
   
   # ignore comment rows
   if (ignore_comments) {
-    # starts with # or leading spaces and #
+    # TODO: starts with # or leading spaces and #
     # startsWithHashRegEx <- "(?<=^[ *]|^)#"
-    lineComments <- grepl(x = trimws(script[line_matches]), pattern = "^#")
+    line_comments <- grepl(x = trimws(script[line_matches]), pattern = "^#")
     
     # ignore these line for the matching
-    lineCommentsMatches <- which(line_matches)[which(lineComments)]
-    line_matches[lineCommentsMatches] <- FALSE
+    line_comments_matches <- which(line_matches)[which(line_comments)]
+    line_matches[line_comments_matches] <- FALSE
     
   }
   
@@ -170,14 +171,17 @@ un_list <- function(l, nms = names(l)) {
 # TODO: colors depending on background /theme
 add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
   if (use_markers) {
-    ins_start_string <- sprintf('<text style="color: %s;">', getOption("origin.color_added_package"))
-    mis_start_string <-  sprintf('<text style="color: %s;">', getOption("origin.color_missed_function"))
-    spe_start_string <-  sprintf('<text style="color: %s;">', getOption("origin.color_special_function"))
-    end_string <- '</text>'
+    ins_start_string <- sprintf('<text style="color: %s;">',
+                                getOption("origin.color_added_package"))
+    mis_start_string <-  sprintf('<text style="color: %s;">',
+                                 getOption("origin.color_missed_function"))
+    spe_start_string <-  sprintf('<text style="color: %s;">',
+                                 getOption("origin.color_special_function"))
+    end_string <- "</text>"
   } else {
-    # TODO: color codes abhängig von Theme
-    miss_start_string <- '33m['
-    miss_end_string <- 'XXXX'
+    # TODO: color codes depending on theme
+    # miss_start_string <- "33m["
+    # miss_end_string <- "XXXX"
   }
   
   splitted <- substring(text = string,
@@ -191,7 +195,7 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
       to_log <- substring(text = str,
                           first = c(1, len + 1),
                           last = c(len, nchar(str)))
-      if(type == "missed") {
+      if (type == "missed") {
         start_string <- mis_start_string
       } else {
         start_string <- spe_start_string

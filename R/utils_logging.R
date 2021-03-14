@@ -28,7 +28,9 @@ prep_verbose <- function(script,
   # succeeded by a double colon OR a percentage sign OR a character
   funs_comb <- paste(functions_in_script, collapse = "|")
   funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
-  fun_regex <- paste0("(?<!::|[[:alnum:]])(", funs_prep, ")(?!::|%|[[:alnum:]])")
+  fun_regex <- paste0("(?<!::|[[:alnum:]])(",
+                      funs_prep,
+                      ")(?!::|%|[[:alnum:]])")
   
   
   list_pot_missings <- get_matches(line = which(line_matches),
@@ -50,7 +52,7 @@ prep_verbose <- function(script,
     special_functions_in_script <- functions[special_functions][special_matches]
     
     # lines with special functions
-    specialMatches <- which(as.logical(
+    special_matches <- which(as.logical(
       Reduce(f = "+", lapply(X = special_functions_in_script,
                              FUN = function(pattern) grepl(x = script,
                                                            pattern = pattern,
@@ -68,8 +70,8 @@ prep_verbose <- function(script,
     funs_prep <- gsub("<", "\\<", x = funs_prep)
     funs_prep <- gsub(">", "\\>", x = funs_prep)
     
-    list_specials <- get_matches(line = specialMatches,
-                                 text = script[specialMatches],
+    list_specials <- get_matches(line = special_matches,
+                                 text = script[special_matches],
                                  regex = funs_prep,
                                  perl = FALSE,
                                  fixed = FALSE,
@@ -143,4 +145,3 @@ get_matches <- function(text,
   return(out)
   
 }
-
