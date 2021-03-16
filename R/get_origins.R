@@ -6,7 +6,7 @@
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
 #'    If FALSE the file is returned.
 #' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
-#' @param verbose a boolean
+#' @template verbose
 #' @param functions a vector with function names
 #'
 #' @noRd

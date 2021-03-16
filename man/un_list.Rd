@@ -26,8 +26,6 @@ the `base::unlist` function converts a list into a vector yet
     to all vector elements that stem from this list element
 }
 \examples{
-named list to a named vector with names corresponding
-to prior name of its list element
 l <- list(rot = 1:3, blau = 1:2)
 un_list(l)
 # >  rot  rot  rot blau blau

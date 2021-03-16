@@ -1,12 +1,12 @@
 #' Add Explicit Package Names to its Functions
 #'
 #' @param file a path to a script
-#' @param pkgs a vector with package names
+#' @template pkgs
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
 #'   If FALSE the file is returned.
 #' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param excludeBasePackages a boolean, if TRUE base R functions are excluded
-#' @param verbose a boolean
+#' @template verbose
 #'
 #' @return
 #' @export

@@ -1,16 +1,18 @@
-#' Add Explicit Package Names to its Functions
+#' Wrapper function to be used as an RSTUDIO ADDIN
 #'
-#' @param file a path to a script
-#' @param pkgs a vector with package names
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
-#'    If FALSE the file is returned.
-#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
-#' @param excludeBasePackages a boolean, if TRUE base R functions are excluded
-#' @param verbose a boolean
+#' @param context informaiton of marked editor seciton in RStudio
+#' @template pkgs 
+#' @template overwrite 
+#' @template ask_before_applying_changes 
+#' @template ignore_comments 
+#' @template check_conflicts 
+#' @template check_base_conflicts 
+#' @template add_base_packages 
+#' @template excluded_functions 
+#' @template verbose 
+#' @template use_markers 
 #'
 #' @return
-#' @export
-#'
 originize_selection <- 
   function(context = rstudioapi::getSourceEditorContext(),
            pkgs = getOption("origin.pkgs"),

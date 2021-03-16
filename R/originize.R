@@ -3,11 +3,11 @@
 #' @param script character vector of script to originize
 #' @param file a path to a script
 #' @param functions vector of potentially relevant functions
-#' @param pkgs a vector with package names
+#' @template pkgs
 #' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
 #'   If FALSE the file is returned.
 #' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
-#' @param verbose a boolean
+#' @template verbose
 #' @param use_markers whether to use the markers tab of RStudio to present
 #'   the output (`TRUE`, default) or printing this information  in the console
 #'

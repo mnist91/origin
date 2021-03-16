@@ -22,14 +22,14 @@ originize_text(
 \arguments{
 \item{file}{a path to a script}
 
-\item{pkgs}{a vector with package names}
+\item{pkgs}{a character vector with package names}
 
 \item{overwrite}{a boolean, if TRUE the file will be saved and overwritten.
 If FALSE the file is returned.}
 
 \item{ignore_comments}{a boolean, if TRUE lines starting with # are ignored}
 
-\item{verbose}{a boolean}
+\item{verbose}{a boolean. If TRUE, origin provides feedback about its steps.}
 
 \item{excludeBasePackages}{a boolean, if TRUE base R functions are excluded}
 }
