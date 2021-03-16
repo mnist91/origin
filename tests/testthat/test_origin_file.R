@@ -7,7 +7,8 @@ target_file_path <- file.path(dir, "targetfile.R")
 datapath <- system.file("testdata", package = "origin")
 
 test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
-                       na.strings = "NA")
+                       na.strings = "NA",
+                       stringsAsFactors = FALSE)
 writeLines(test_text$TARGET, con = target_file_path)
 
 
@@ -36,7 +37,8 @@ testthat::test_that("origin file", {
                    ask_before_applying_changes = FALSE, 
                    excluded_functions = list(dplyr = "last"),
                    ignore_comments = TRUE,
-                   verbose = FALSE)
+                   use_markers = TRUE,
+                   verbose = TRUE)
   # )
   
   testfile_after <- readLines(test_file_path)

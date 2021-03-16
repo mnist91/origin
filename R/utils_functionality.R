@@ -39,7 +39,7 @@ get_exported_functions <- function(pkg) {
 #' @param functions a vector with function names
 #' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param pkg package name from which the functions stem from
-#' @param verbose whether to provide informaiton to the user at runtime
+#' @template verbose
 #'
 #' @return
 #' @noRd
@@ -143,8 +143,6 @@ check_functions <- function(script,
 #' @export
 #'
 #' @examples
-#' named list to a named vector with names corresponding
-#' to prior name of its list element
 #' l <- list(rot = 1:3, blau = 1:2)
 #' un_list(l)
 #' # >  rot  rot  rot blau blau
@@ -234,7 +232,8 @@ prep_line_originize <- function(line, lines, matches, pkg, string) {
                               pkg = names(replace_matches))
   
   data.frame(line = line,
-             string = string_after)
+             string = string_after,
+             stringsAsFactors = FALSE)
   
 }
 
@@ -274,7 +273,8 @@ prep_line_logging <- function(line, logging_comb, use_markers) {
                               use_markers = use_markers)
   
   data.frame(line = line,
-             message = string_after)
+             message = string_after,
+             stringsAsFactors = FALSE)
   
 }
 
