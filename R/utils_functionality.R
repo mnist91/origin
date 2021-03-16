@@ -165,7 +165,6 @@ un_list <- function(l, nms = names(l)) {
 }
 
 # style a string for logging output
-# TODO: color codes as arguments
 # TODO: colors depending on background /theme
 add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
   if (use_markers) {
@@ -176,10 +175,16 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
     spe_start_string <-  sprintf('<text style="color: %s;">',
                                  getOption("origin.color_special_function"))
     end_string <- "</text>"
+    start_wrapper <- "<div>"
+    end_wrapper <- "</div"
   } else {
     # TODO: color codes depending on theme
-    # miss_start_string <- "33m["
-    # miss_end_string <- "XXXX"
+    ins_start_string <- "\033[36m"
+    mis_start_string <- "\033[31m"
+    spe_start_string <- "\033[33m"
+    end_string <- "\033[39m"
+    start_wrapper <- "\033[39m"
+    end_wrapper <- "\033[39m"
   }
   
   splitted <- substring(text = string,
@@ -211,9 +216,11 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
                                    splitted[-1][to_insert],
                                    sep = "")
   
-  out <- paste0(splitted[1],
+  out <- paste0(start_wrapper,
+                splitted[1],
                 paste(splitted[-1],
-                      collapse = ""))
+                      collapse = ""),
+                end_wrapper)
   
   return(out)
 }
@@ -314,33 +321,6 @@ get_fun_duplicates <- function(functions) {
   return(dups)
 }
 
-
-# print warning regarding conflicts
-solve_fun_duplicates <- function(dups, pkgs) {
-  # Require User interaction if duplicates are detected
-  crayon_danger <- crayon::combine_styles(crayon::red,
-                                          crayon::underline,
-                                          crayon::bold)
-  cat(crayon_danger("Used functions in mutliple Packages!"), "\n")
-  dups_with_package <- by(names(dups), dups, paste, collapse = ", ")
-  
-  cat(paste(dups_with_package, ": ", names(dups_with_package),
-            collapse = "\n", sep = ""),
-      "\n")
-  cat("Order in which relevant packges are evaluated;\n\n")
-  cat(paste(pkgs[pkgs %in% names(dups)], collapse = " >> "), "\n")
-  
-  cat("Do you want to proceed?\n")
-  if (interactive()) {
-    answer <- menu(choices = c("YES", "NO"))
-  } else {
-    answer <- 1
-  }
-  if (answer != 1) {
-    stop("Execution halted")
-  }
-  
-}
 
 
 # exclude functions from originizing

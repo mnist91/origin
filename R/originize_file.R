@@ -107,6 +107,9 @@ originize_file <-
                                   markers = result$logging_data)
       } else {
         # TODO
+        cat(paste(paste0(result$logging_data$line, ": ",
+                         result$logging_data$message), 
+                  collapse = "\n"))
       }
     }
     
