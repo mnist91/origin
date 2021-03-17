@@ -28,7 +28,9 @@ prep_verbose <- function(script,
   # succeeded by a double colon OR a percentage sign OR a character
   funs_comb <- paste(functions_in_script, collapse = "|")
   funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
-  fun_regex <- paste0("(?<!::|[[:alnum:]])(", funs_prep, ")(?!::|%|[[:alnum:]])")
+  fun_regex <- paste0("(?<!::|[[:alnum:]])(",
+                      funs_prep,
+                      ")(?!::|%|[[:alnum:]])")
   
   
   list_pot_missings <- get_matches(line = which(line_matches),
@@ -50,7 +52,7 @@ prep_verbose <- function(script,
     special_functions_in_script <- functions[special_functions][special_matches]
     
     # lines with special functions
-    specialMatches <- which(as.logical(
+    special_matches <- which(as.logical(
       Reduce(f = "+", lapply(X = special_functions_in_script,
                              FUN = function(pattern) grepl(x = script,
                                                            pattern = pattern,
@@ -68,8 +70,8 @@ prep_verbose <- function(script,
     funs_prep <- gsub("<", "\\<", x = funs_prep)
     funs_prep <- gsub(">", "\\>", x = funs_prep)
     
-    list_specials <- get_matches(line = specialMatches,
-                                 text = script[specialMatches],
+    list_specials <- get_matches(line = special_matches,
+                                 text = script[special_matches],
                                  regex = funs_prep,
                                  perl = FALSE,
                                  fixed = FALSE,
@@ -88,9 +90,23 @@ prep_verbose <- function(script,
 }
 
 
-# find potential missings in the data and store information
-# about type of missing, length of match and line
-get_matches <- function(text, line, regex,
+#' find potential missings in the data and store information
+#' about type of missing, length of match and line
+#'
+#' @param text character vector of relevant script
+#' @param line line information to each text element
+#' @param regex a regular expression, containing all function names in OR (pipe)
+#'   combinations.
+#' @param perl whether perl regular expressions should be used
+#' @param fixed whether the regex part is evaluated as is
+#' @param filter_nomatches whether to not return lines without a match
+#'
+#' @return list of match information, i.e. which line, text, position, and
+#'    match length
+#' @noRd
+get_matches <- function(text,
+                        line,
+                        regex,
                         perl = TRUE,
                         fixed = FALSE,
                         filter_nomatches = TRUE) {
@@ -125,6 +141,39 @@ get_matches <- function(text, line, regex,
   }
   
   return(out)
+  
+}
+
+
+
+
+# print warning regarding conflicts
+#' @importFrom utils menu
+solve_fun_duplicates <- function(dups, pkgs) {
+  # Require User interaction if duplicates are detected
+  
+  # bold, red and underlined text
+  cat("\033[31m\033[4m\033[1m",
+      "Used functions in mutliple Packages!",
+      "\033[22m\033[24m\033[39m",
+      "\n")
+  dups_with_package <- by(names(dups), dups, paste, collapse = ", ")
+  
+  cat(paste(dups_with_package, ": ", names(dups_with_package),
+            collapse = "\n", sep = ""),
+      "\n")
+  cat("Order in which relevant packges are evaluated;\n\n")
+  cat(paste(pkgs[pkgs %in% names(dups)], collapse = " >> "), "\n")
+  
+  cat("Do you want to proceed?\n")
+  if (interactive()) {
+    answer <- menu(choices = c("YES", "NO"))
+  } else {
+    answer <- 1
+  }
+  if (answer != 1) {
+    stop("Execution halted")
+  }
   
 }
 

@@ -2,38 +2,57 @@
 % Please edit documentation in R/originize_selection.R
 \name{originize_selection}
 \alias{originize_selection}
-\title{Add Explicit Package Names to its Functions}
+\title{Wrapper function to be used as an RSTUDIO ADDIN}
 \usage{
 originize_selection(
   context = rstudioapi::getSourceEditorContext(),
-  pkgs = .packages(),
+  pkgs = getOption("origin.pkgs"),
   overwrite = TRUE,
-  ask_before_applying_changes = TRUE,
-  ignoreComments = TRUE,
+  ask_before_applying_changes = getOption("origin.ask_before_applying_changes"),
+  ignore_comments = TRUE,
   check_conflicts = TRUE,
   check_base_conflicts = TRUE,
   add_base_packages = FALSE,
   excluded_functions = list(),
   verbose = TRUE,
-  html = TRUE
+  use_markers = getOption("origin.use_markers_for_logging")
 )
 }
 \arguments{
-\item{pkgs}{a vector with package names}
+\item{context}{informaiton of marked editor seciton in RStudio}
 
-\item{overwrite}{a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.}
+\item{pkgs}{a character vector with package names}
 
-\item{ignoreComments}{a boolean, if TRUE lines starting with # are ignored}
+\item{overwrite}{a boolean, if TRUE the file will be saved and overwritten.
+If FALSE the file is returned.}
 
-\item{verbose}{a boolean}
+\item{ask_before_applying_changes}{a boolean. If TRUE, the user has to approve
+changes made by origin prior to applying them}
 
-\item{file}{a path to a script}
+\item{ignore_comments}{a boolean, if TRUE lines starting with # are ignored}
 
-\item{excludeBasePackages}{a boolean, if TRUE base R functions are excluded}
-}
-\value{
+\item{check_conflicts}{a boolean. If TRUE, possible namespace conflicts are
+checked and, if there are any, user input is required. See also}
 
+\item{check_base_conflicts}{a boolean. If TRUE; base R functions are also
+included in checking for conflicts}
+
+\item{add_base_packages}{a boolean. If TRUE, base R functions are handled
+like all other packages and added via `::`}
+
+\item{excluded_functions}{a list. Either an unnamed list of function names
+as strings. Then these functions are excluded from all packages and never 
+considered in origin. Or a named list with character vectors, Then 
+the name of the list element refers to a package and the given functions 
+are only excluded from this package. A very explicit way to handle
+namespace conflicts}
+
+\item{verbose}{a boolean. If TRUE, origin provides feedback about its steps.}
+
+\item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
+to track changes and show issues. FALSE prints the same informaiton in
+the console.}
 }
 \description{
-Add Explicit Package Names to its Functions
+Wrapper function to be used as an RSTUDIO ADDIN
 }

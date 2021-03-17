@@ -1,22 +1,22 @@
 #' Get All Exported Functions From a Package
 #'
-#' @param pkg `character(1)`
-#'   Name of package
+#' @param pkg string of a package name
 #'
-#' @return `character(1)`
+#' @return character vector of functions names
 #' @export
 #'
 #' @examples
-#' getFunctions("data.table")
+#' get_exported_functions("data.table")
 #'
-getFunctions <- function(pkg) {
+get_exported_functions <- function(pkg) {
   # get all exported functions from a package --------------------------------
   # lists all exports of a package (incl. non functions)
   exports <- getNamespaceExports(pkg)
   
   is_function <- vapply(exports, 
                         FUN = function(x, ns) {
-                          inherits(x = getExportedValue(ns, x), what = "function")
+                          inherits(x = getExportedValue(ns, x),
+                                   what = "function")
                         },
                         FUN.VALUE = logical(1),
                         ns = getNamespace(pkg))
@@ -28,18 +28,25 @@ getFunctions <- function(pkg) {
 }
 
 
-#' Extract relevant Function information
+#' Which functions are potentially used in the script
+#' 
+#' This is a fast check to extract potentialy used functions. It only checks if
+#' the function name strings are present in any way. This reduces the number
+#' of functions that must be considered more closely significantly. It speeds
+#' up all further steps
 #'
 #' @param script a script to check
 #' @param functions a vector with function names
-#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
+#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
+#' @param pkg package name from which the functions stem from
+#' @template verbose
 #'
 #' @return
-#' @export
+#' @noRd
 #'
-checkFunctions <- function(script,
+check_functions <- function(script,
                            functions,
-                           ignoreComments = TRUE,
+                           ignore_comments = TRUE,
                            pkg = NULL,
                            verbose = TRUE) {
   # remove function with special characters like %, &, [] and :
@@ -49,14 +56,12 @@ checkFunctions <- function(script,
   # functions. This isn't a check if it is a function or an object,
   # but a simple regular expression
   
-  # TODO: check performance of one script vs multiple scripts
-  # any(grepl(pattern = .x, x = script, fixed = TRUE))
-  fullScript <- paste0(script, collapse = "")
+  full_script <- paste0(script, collapse = "")
   
   matches <- vapply(X = relevant_functions,
                     FUN = function(fun) {
                       grepl(pattern = fun,
-                            x = fullScript,
+                            x = full_script,
                             fixed = TRUE)
                     },
                     FUN.VALUE = logical(1))
@@ -67,7 +72,7 @@ checkFunctions <- function(script,
   special_matches <- vapply(X = functions[special_functions],
                             FUN = function(fun) {
                               grepl(pattern = fun,
-                                    x = fullScript,
+                                    x = full_script,
                                     fixed = TRUE)
                             },
                             FUN.VALUE = logical(1))
@@ -79,7 +84,7 @@ checkFunctions <- function(script,
       special_functions_in_script <-
         functions[special_functions][special_matches]
       
-      specialMatches <- which(
+      special_matches <- which(
         as.logical(
           Reduce(f = "+",
                  x = lapply(X = special_functions_in_script,
@@ -99,14 +104,12 @@ checkFunctions <- function(script,
                         pattern = paste(functions_in_script, collapse = "|"))
   
   # ignore comment rows
-  if (ignoreComments) {
-    # starts with # or leading spaces and #
-    # startsWithHashRegEx <- "(?<=^[ *]|^)#"
-    lineComments <- grepl(x = trimws(script[line_matches]), pattern = "^#")
+  if (ignore_comments) {
+    line_comments <- grepl(x = trimws(script[line_matches]), pattern = "^#")
     
     # ignore these line for the matching
-    lineCommentsMatches <- which(line_matches)[which(lineComments)]
-    line_matches[lineCommentsMatches] <- FALSE
+    line_comments_matches <- which(line_matches)[which(line_comments)]
+    line_matches[line_comments_matches] <- FALSE
     
   }
   
@@ -120,41 +123,66 @@ checkFunctions <- function(script,
 }
 
 
-# named list to a named vector with names corresponding
-# to prior name of its list element
-# l <- list(rot = 1:3, blau = 1:2)
-# get_named_vec(l)
-# # >  rot  rot  rot blau blau
-# # >    1    2    3    1    2
-get_named_vec <- function(LIST, nms = names(LIST)) {
+#' Unlist a list into a vector with names equal to fromer list element name
+#'
+#' @param l a list to convert into a vector
+#' @param nms character vector of same length as list, defaults to the 
+#'   names of l
+#'
+#' @details the `base::unlist` function converts a list into a vector yet
+#'    assigns unique names to each vector element, More precisely, it adds
+#'     a number to the name of its list element. This function does not
+#'     create unique names but assigns the bare name of the list element
+#'     to all vector elements that stem from this list element
+#'   
+#' @return named vector
+#' @export
+#'
+#' @examples
+#' l <- list(rot = 1:3, blau = 1:2)
+#' un_list(l)
+#' # >  rot  rot  rot blau blau
+#' # >    1    2    3    1    2
+#' @importFrom stats setNames
+
+un_list <- function(l, nms = names(l)) {
   out <- unlist(
-    unname(
-      Map(function(x, nm) {
+    recursive = TRUE,
+    use.names = TRUE,
+    x = mapply(
+      FUN = function(x, nm) {
         setNames(x, rep(nm, length(x)))
       },
-      LIST,
-      nms
-      )
+      l,
+      nms,
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
     )
   )
   return(out)
 }
 
 # style a string for logging output
-# TODO: color codes as arguments
 # TODO: colors depending on background /theme
-add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
-  if(html) {
-    ins_start_string <- '<text style="color: red;">'
-    ins_end_string <- '</text>'
-    mis_start_string <- '<text style="color: yellow;">'
-    mis_end_string <- '</text>'
-    spe_start_string <- '<text style="color: green;">'
-    spe_end_string <- '</text>'
+add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
+  if (use_markers) {
+    ins_start_string <- sprintf('<text style="color: %s;">',
+                                getOption("origin.color_added_package"))
+    mis_start_string <-  sprintf('<text style="color: %s;">',
+                                 getOption("origin.color_missed_function"))
+    spe_start_string <-  sprintf('<text style="color: %s;">',
+                                 getOption("origin.color_special_function"))
+    end_string <- "</text>"
+    start_wrapper <- "<div>"
+    end_wrapper <- "</div"
   } else {
-    # TODO: color codes abhängig von Theme
-    miss_start_string <- '33m['
-    miss_end_string <- 'XXXX'
+    # TODO: color codes depending on theme
+    ins_start_string <- "\033[36m"
+    mis_start_string <- "\033[31m"
+    spe_start_string <- "\033[33m"
+    end_string <- "\033[39m"
+    start_wrapper <- "\033[39m"
+    end_wrapper <- "\033[39m"
   }
   
   splitted <- substring(text = string,
@@ -168,12 +196,10 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
       to_log <- substring(text = str,
                           first = c(1, len + 1),
                           last = c(len, nchar(str)))
-      if(type == "missed") {
+      if (type == "missed") {
         start_string <- mis_start_string
-        end_string <- mis_end_string
       } else {
         start_string <- spe_start_string
-        end_string <- spe_end_string
       }
       paste(start_string, to_log[1], end_string, to_log[2], sep = "")
       
@@ -184,13 +210,15 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
   )
   to_insert <- log_length == 0
   splitted[-1][to_insert] <- paste(ins_start_string, 
-                                   pkg[to_insert], ins_end_string,
+                                   pkg[to_insert], end_string,
                                    splitted[-1][to_insert],
                                    sep = "")
   
-  out <- paste0(splitted[1],
+  out <- paste0(start_wrapper,
+                splitted[1],
                 paste(splitted[-1],
-                      collapse = ""))
+                      collapse = ""),
+                end_wrapper)
   
   return(out)
 }
@@ -199,7 +227,7 @@ add_logging <- function(string, splits, pkg, log_length, type, html = TRUE) {
 prep_line_originize <- function(line, lines, matches, pkg, string) {
   rel <- lines == line
   
-  matches <- get_named_vec(matches[rel], pkg[rel])
+  matches <- un_list(matches[rel], pkg[rel])
   
   # account for functions that are exported by multiple packages
   # first evaluated function wins
@@ -209,7 +237,8 @@ prep_line_originize <- function(line, lines, matches, pkg, string) {
                               pkg = names(replace_matches))
   
   data.frame(line = line,
-             string = string_after)
+             string = string_after,
+             stringsAsFactors = FALSE)
   
 }
 
@@ -223,10 +252,10 @@ add_package <- function(string, splits, pkg) {
 }
 
 # combined color highlighting for each line 
-prep_line_logging <- function(line, logging_comb, html) {
+prep_line_logging <- function(line, logging_comb, use_markers) {
   rel <- logging_comb$line == line
   
-  matches <- get_named_vec(logging_comb$matches[rel], logging_comb$pkg[rel])
+  matches <- un_list(logging_comb$matches[rel], logging_comb$pkg[rel])
   match_length <- unlist(logging_comb$log_length[rel])
   match_type <- rep(logging_comb$type[rel], 
                     lapply(X = logging_comb$log_length[rel],
@@ -246,10 +275,11 @@ prep_line_logging <- function(line, logging_comb, html) {
                               pkg = names(replace_matches),
                               log_length = replace_lengths,
                               type = replace_types,
-                              html = html)
+                              use_markers = use_markers)
   
   data.frame(line = line,
-             message = string_after)
+             message = string_after,
+             stringsAsFactors = FALSE)
   
 }
 
@@ -281,7 +311,7 @@ apply_changes <- function(ask_before_applying_changes, result) {
 
 # named character vector of functions with package name as names
 get_fun_duplicates <- function(functions) {
-  funs_unlisted <- get_named_vec(functions, nms = names(functions))
+  funs_unlisted <- un_list(functions, nms = names(functions))
   
   funs_duplicates <- funs_unlisted[which(duplicated(funs_unlisted))]
   dups <- funs_unlisted[funs_unlisted %in% funs_duplicates]
@@ -289,33 +319,6 @@ get_fun_duplicates <- function(functions) {
   return(dups)
 }
 
-
-# print warning regarding conflicts
-solve_fun_duplicates <- function(dups, pkgs) {
-  # Require User interaction if duplicates are detected
-  crayon_danger <- crayon::combine_styles(crayon::red,
-                                          crayon::underline,
-                                          crayon::bold)
-  cat(crayon_danger("Used functions in mutliple Packages!"), "\n")
-  dups_with_package <- by(names(dups), dups, paste, collapse = ", ")
-  
-  cat(paste(dups_with_package, ": ", names(dups_with_package),
-            collapse = "\n", sep = ""),
-      "\n")
-  cat("Order in which relevant packges are evaluated;\n\n")
-  cat(paste(pkgs[pkgs %in% names(dups)], collapse = " >> "), "\n")
-  
-  cat("Do you want to proceed?\n")
-  if (interactive()) {
-    answer <- menu(choices = c("YES", "NO"))
-  } else {
-    answer <- 1
-  }
-  if (answer != 1) {
-    stop("Execution halted")
-  }
-  
-}
 
 
 # exclude functions from originizing

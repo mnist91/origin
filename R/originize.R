@@ -1,29 +1,20 @@
-#' Add Explicit Package Names to its Functions
-#'
-#' @param file a path to a script
-#' @param pkgs a vector with package names
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten. If FALSE the file is returned.
-#' @param ignoreComments a boolean, if TRUE lines starting with # are ignored
-#' @param verbose a boolean
-#'
-#' @return
-#' @export
-#'
+# Helper function
 originize <- function(script,
                       file,
                       functions,
-                      pkgs = .packages(),
+                      pkgs = getOption("origin.pkgs"),
                       overwrite = FALSE,
-                      ignoreComments = TRUE,
+                      ignore_comments = TRUE,
                       verbose = FALSE,
-                      html = TRUE) {
+                      use_markers = 
+                        getOption("origin.use_markers_for_logging")) {
   
   
   # get relevant function information
-  l <- checkFunctions(script = script,
-                      functions = unlist(functions),
-                      verbose = verbose,
-                      ignoreComments = ignoreComments)
+  l <- check_functions(script = script,
+                       functions = unlist(functions),
+                       verbose = verbose,
+                       ignore_comments = ignore_comments)
   
   # iterate over all functions and find position where package:: is necessary
   replacement_list <- 
@@ -33,7 +24,7 @@ originize <- function(script,
                   functions      = funs,
                   file           = file,
                   overwrite      = overwrite,
-                  ignoreComments = ignoreComments,
+                  ignore_comments = ignore_comments,
                   verbose        = verbose)
     },
     pkgs,
@@ -73,12 +64,13 @@ originize <- function(script,
   } else {
     
     # get positions of potential missined (special) functions
-    potential_missings <- prep_verbose(script = script,
-                                       line_matches = l$line_matches,
-                                       functions = unlist(functions),
-                                       functions_in_script = l$functions_in_script,
-                                       special_functions = l$special_functions,
-                                       special_matches = l$special_matches)
+    potential_missings <- 
+      prep_verbose(script = script,
+                   line_matches = l$line_matches,
+                   functions = unlist(functions),
+                   functions_in_script = l$functions_in_script,
+                   special_functions = l$special_functions,
+                   special_matches = l$special_matches)
     
     # combine positions of potential missings
     logging_comb <-  Reduce(
@@ -96,7 +88,7 @@ originize <- function(script,
       X = sort(unique(logging_comb$line)), 
       FUN = prep_line_logging,
       logging_comb = logging_comb,
-      html = html)
+      use_markers = use_markers)
     
     # combine all lines
     logging_data <- Reduce(rbind, fixed_lines_list)
@@ -104,10 +96,10 @@ originize <- function(script,
     
     
     
-    if (html) {
+    if (use_markers) {
       # add further attributes for markers output
       # include other types?
-      # c("usage", "error", "warning", "info", "style", "box")
+      # TODO: "usage", "error", "warning", "info", "style", "box"
       logging_data$type <- "usage"
       logging_data$file <- file
       logging_data$column <- 1

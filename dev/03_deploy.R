@@ -9,7 +9,7 @@
 devtools::check()
 rhub::check_for_cran()
 
-usethis::use_version("0.0.0.9000")
+usethis::use_version("0.0.1")
 
 # Roxygen
 devtools::document()

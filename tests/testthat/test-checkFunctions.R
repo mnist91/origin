@@ -1,4 +1,4 @@
-test_that("checkFunctions has correct output", {
+testthat::test_that("check_functions has correct output", {
 
   # example input
   script <- c(
@@ -11,44 +11,44 @@ test_that("checkFunctions has correct output", {
 
   # expected results
   res1 <- res2 <- list(
-    matches = c(TRUE, TRUE),
+    matches = c(nrow = TRUE, n_row = TRUE),
     line_matches = c(TRUE, FALSE, TRUE, TRUE),
-    special_matches = TRUE,
+    special_matches = c(`%like%` = TRUE),
     special_functions = c(FALSE, TRUE, FALSE),
     functions_in_script = c("nrow", "n_row")
   )
 
   res3 <- list(
-    matches = c(TRUE, TRUE),
+    matches = c(nrow = TRUE, n_row = TRUE),
     line_matches = c(TRUE, TRUE, TRUE, TRUE),
-    special_matches = TRUE,
+    special_matches = c(`%like%` = TRUE),
     special_functions = c(FALSE, TRUE, FALSE),
     functions_in_script = c("nrow", "n_row")
   )
 
   # call function with different settings
-  tmp1 <- checkFunctions(script,
+  tmp1 <- check_functions(script,
                          functions,
-                         ignoreComments = TRUE,
+                         ignore_comments = TRUE,
                          pkg = NULL,
                          verbose = TRUE)
 
 
-  tmp2 <- checkFunctions(script,
+  tmp2 <- check_functions(script,
                          functions,
-                         ignoreComments = TRUE,
+                         ignore_comments = TRUE,
                          pkg = "this_pkg",
                          verbose = TRUE)
 
-  tmp3 <- checkFunctions(script,
+  tmp3 <- check_functions(script,
                          functions,
-                         ignoreComments = FALSE,
+                         ignore_comments = FALSE,
                          pkg = NULL,
                          verbose = FALSE)
 
   # compare results
-  expect_equal(tmp1, res1)
-  expect_equal(tmp2, res2)
-  expect_equal(tmp3, res3)
+  testthat::expect_equal(tmp1, res1)
+  testthat::expect_equal(tmp2, res2)
+  testthat::expect_equal(tmp3, res3)
 
 })
