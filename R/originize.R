@@ -1,19 +1,4 @@
-#' Add Explicit Package Names to its Functions
-#'
-#' @param script character vector of script to originize
-#' @param file a path to a script
-#' @param functions vector of potentially relevant functions
-#' @template pkgs
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
-#'   If FALSE the file is returned.
-#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
-#' @template verbose
-#' @param use_markers whether to use the markers tab of RStudio to present
-#'   the output (`TRUE`, default) or printing this information  in the console
-#'
-#' @return
-#' @noRd
-#'
+# Helper function
 originize <- function(script,
                       file,
                       functions,
@@ -114,7 +99,7 @@ originize <- function(script,
     if (use_markers) {
       # add further attributes for markers output
       # include other types?
-      # c("usage", "error", "warning", "info", "style", "box")
+      # TODO: "usage", "error", "warning", "info", "style", "box"
       logging_data$type <- "usage"
       logging_data$file <- file
       logging_data$column <- 1

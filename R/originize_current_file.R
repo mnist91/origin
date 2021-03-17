@@ -16,8 +16,7 @@
 #' @template use_markers
 #'
 #' @return
-#' @export
-#'
+#' @noRd
 originize_current_file <- 
   function(file = rstudioapi::getSourceEditorContext()$path,
            pkgs = getOption("origin.pkgs"),

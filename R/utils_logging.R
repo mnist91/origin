@@ -104,8 +104,6 @@ prep_verbose <- function(script,
 #' @return list of match information, i.e. which line, text, position, and
 #'    match length
 #' @noRd
-#' 
-#' @examples
 get_matches <- function(text,
                         line,
                         regex,
@@ -150,6 +148,7 @@ get_matches <- function(text,
 
 
 # print warning regarding conflicts
+#' @importFrom utils menu
 solve_fun_duplicates <- function(dups, pkgs) {
   # Require User interaction if duplicates are detected
   

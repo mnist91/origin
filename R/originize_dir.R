@@ -1,14 +1,23 @@
 #' Add Explicit Package Names to its Functions
 #'
-#' @param file a path to a script
-#' @template pkgs
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
-#'    If FALSE the file is returned.
-#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
-#' @param excludeBasePackages a boolean, if TRUE base R functions are excluded
-#' @template verbose
 #'
-#' @return
+#' @param path path to a directory
+#' @template  pkgs 
+#' @param recursive see \link[base]{list.files} 
+#' @param files_pattern see \link[base]{list.files}
+#' @param ignore_case see \link[base]{list.files}
+#' @param exclude_files see \link[base]{list.files}
+#' @template overwrite 
+#' @template ask_before_applying_changes 
+#' @template ignore_comments 
+#' @template check_conflicts 
+#' @template check_base_conflicts 
+#' @template add_base_packages 
+#' @template excluded_functions 
+#' @template verbose 
+#' @template use_markers 
+#'
+#' @return NULL
 #' @export
 #'
 originize_dir <-

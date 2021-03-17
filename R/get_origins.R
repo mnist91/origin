@@ -2,10 +2,9 @@
 #'
 #' @param pkg a package name
 #' @param script character vector of script lines
-#' @param file a path to a script
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
-#'    If FALSE the file is returned.
-#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
+#' @template file 
+#' @template overwrite
+#' @template ignore_comments
 #' @template verbose
 #' @param functions a vector with function names
 #'

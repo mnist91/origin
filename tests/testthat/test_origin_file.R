@@ -12,12 +12,8 @@ test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
 writeLines(test_text$TARGET, con = target_file_path)
 
 
-# nur für renv um zum testen verfügbar zu sein
-library("data.table", include.only = NULL)
-library("dplyr", include.only = NULL)
-
 # only until the package is build, then this line can be removed
-# invisible(lapply(list.files("R", full.names = TRUE), FUN = source))
+invisible(lapply(list.files("R", full.names = TRUE), FUN = source))
 
 # Unit tests
 testthat::test_that("origin file", {
@@ -37,8 +33,8 @@ testthat::test_that("origin file", {
                    ask_before_applying_changes = FALSE, 
                    excluded_functions = list(dplyr = "last"),
                    ignore_comments = TRUE,
-                   use_markers = TRUE,
-                   verbose = TRUE)
+                   use_markers = FALSE,
+                   verbose = FALSE)
   # )
   
   testfile_after <- readLines(test_file_path)

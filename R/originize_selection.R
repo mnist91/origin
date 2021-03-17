@@ -12,7 +12,7 @@
 #' @template verbose 
 #' @template use_markers 
 #'
-#' @return
+#' @return NULL
 originize_selection <- 
   function(context = rstudioapi::getSourceEditorContext(),
            pkgs = getOption("origin.pkgs"),

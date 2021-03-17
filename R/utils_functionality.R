@@ -56,8 +56,6 @@ check_functions <- function(script,
   # functions. This isn't a check if it is a function or an object,
   # but a simple regular expression
   
-  # TODO: check performance of one script vs multiple scripts
-  # any(grepl(pattern = .x, x = script, fixed = TRUE))
   full_script <- paste0(script, collapse = "")
   
   matches <- vapply(X = relevant_functions,
@@ -107,8 +105,6 @@ check_functions <- function(script,
   
   # ignore comment rows
   if (ignore_comments) {
-    # TODO: starts with # or leading spaces and #
-    # startsWithHashRegEx <- "(?<=^[ *]|^)#"
     line_comments <- grepl(x = trimws(script[line_matches]), pattern = "^#")
     
     # ignore these line for the matching
@@ -139,7 +135,7 @@ check_functions <- function(script,
 #'     create unique names but assigns the bare name of the list element
 #'     to all vector elements that stem from this list element
 #'   
-#' @return
+#' @return named vector
 #' @export
 #'
 #' @examples
@@ -147,6 +143,8 @@ check_functions <- function(script,
 #' un_list(l)
 #' # >  rot  rot  rot blau blau
 #' # >    1    2    3    1    2
+#' @importFrom stats setNames
+
 un_list <- function(l, nms = names(l)) {
   out <- unlist(
     recursive = TRUE,

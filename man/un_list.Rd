@@ -13,7 +13,7 @@ un_list(l, nms = names(l))
 names of l}
 }
 \value{
-
+named vector
 }
 \description{
 Unlist a list into a vector with names equal to fromer list element name

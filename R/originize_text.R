@@ -1,19 +1,23 @@
 #' Add Explicit Package Names to its Functions
 #'
-#' @param file a path to a script
-#' @template pkgs
-#' @param overwrite a boolean, if TRUE the file will be saved and overwritten.
-#'   If FALSE the file is returned.
-#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
-#' @param excludeBasePackages a boolean, if TRUE base R functions are excluded
-#' @template verbose
 #'
-#' @return
+#' @param text string to originize
+#' @template  pkgs 
+#' @template overwrite 
+#' @template ask_before_applying_changes 
+#' @template ignore_comments 
+#' @template check_conflicts 
+#' @template check_base_conflicts 
+#' @template add_base_packages 
+#' @template excluded_functions 
+#' @template verbose 
+#' @template use_markers 
+#'
+#' @return NULL
 #' @export
 #'
 originize_text <- 
   function(text,
-           file = rstudioapi::getSourceEditorContext()$path,
            pkgs = getOption("origin.pkgs"),
            overwrite = TRUE,
            ask_before_applying_changes = 
@@ -31,6 +35,7 @@ originize_text <-
            "potential conflicts is required!")
     }
     
+    file <- rstudioapi::getSourceEditorContext()$path
     # if funciton is run in a unsaved script, use root path a dummy path
     # needed for sourceMarkers
     if (file == "") {

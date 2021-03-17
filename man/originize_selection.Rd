@@ -2,7 +2,7 @@
 % Please edit documentation in R/originize_selection.R
 \name{originize_selection}
 \alias{originize_selection}
-\title{Title}
+\title{Wrapper function to be used as an RSTUDIO ADDIN}
 \usage{
 originize_selection(
   context = rstudioapi::getSourceEditorContext(),
@@ -53,9 +53,6 @@ namespace conflicts}
 to track changes and show issues. FALSE prints the same informaiton in
 the console.}
 }
-\value{
-
-}
 \description{
-Title
+Wrapper function to be used as an RSTUDIO ADDIN
 }
