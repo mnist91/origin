@@ -41,10 +41,6 @@ originize_file <-
     script <- readLines(file)
     
     
-    # TODO: save as internal data
-    base_r_packages <- c("stats", "graphics", "grDevices", "datasets",
-                         "utils", "methods", "base")
-    
     # exclude base R packages from checks for duplicates
     if (!check_base_conflicts) {
       pkgs <- setdiff(pkgs, base_r_packages)
