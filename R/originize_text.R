@@ -106,15 +106,10 @@ originize_text <-
                         verbose = verbose,
                         use_markers = use_markers)
     
+    # invoke logging
     if (verbose) {
-      if (use_markers) {
-        rstudioapi::sourceMarkers(name = "origin", markers = result$logging_data)
-      } else {
-        # TODO
-      }
+      run_logging(result$logging_data, use_markers = use_markers)
     }
-    
-    
     
     
     return(paste(result$to_write$script, collapse = "\n"))

@@ -30,7 +30,7 @@ originize_file <-
     
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
-      "potential conflicts is required!")
+           "potential conflicts is required!")
     }
     
     if (!file.exists(file)) {
@@ -100,16 +100,9 @@ originize_file <-
                         verbose = verbose,
                         use_markers = use_markers)
     
+    # invoke logging
     if (verbose) {
-      if (use_markers) {
-        rstudioapi::sourceMarkers(name = "origin",
-                                  markers = result$logging_data)
-      } else {
-        # TODO
-        cat(paste(paste0(result$logging_data$line, ": ",
-                         result$logging_data$message), 
-                  collapse = "\n"))
-      }
+      run_logging(result$logging_data, use_markers = use_markers)
     }
     
     if (overwrite) {

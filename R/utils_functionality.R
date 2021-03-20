@@ -251,37 +251,6 @@ add_package <- function(string, splits, pkg) {
   return(out)
 }
 
-# combined color highlighting for each line 
-prep_line_logging <- function(line, logging_comb, use_markers) {
-  rel <- logging_comb$line == line
-  
-  matches <- un_list(logging_comb$matches[rel], logging_comb$pkg[rel])
-  match_length <- unlist(logging_comb$log_length[rel])
-  match_type <- rep(logging_comb$type[rel], 
-                    lapply(X = logging_comb$log_length[rel],
-                           FUN = length))
-  dups <- !duplicated(matches)
-  replace_matches <- matches[dups]
-  replace_lengths <- match_length[dups]
-  replace_types <- match_type[dups]
-  ord <- order(replace_matches)
-  
-  replace_matches <- replace_matches[ord]
-  replace_lengths <- replace_lengths[ord]
-  replace_types <- replace_types[ord]
-  
-  string_after <- add_logging(string = logging_comb$string[rel][1],
-                              splits = replace_matches,
-                              pkg = names(replace_matches),
-                              log_length = replace_lengths,
-                              type = replace_types,
-                              use_markers = use_markers)
-  
-  data.frame(line = line,
-             message = string_after,
-             stringsAsFactors = FALSE)
-  
-}
 
 # keep results of greprex where a match has been found
 comb_matches <- function(x, y) {

@@ -103,23 +103,18 @@ originize_selection <-
                         ignore_comments = ignore_comments,
                         verbose = verbose,
                         use_markers = use_markers)
-    
+
+    # invoke logging
     if (verbose) {
       selected_context <- context$selection[[1]]$range
       selected_lines <- selected_context$start[1]:selected_context$end[1]
       # in case the last line has been empty, strsplit does not create an empty
       # character. Hence, the script object is one element shorter than 
       # lines swlected and the assignment would fial
-      
       result$logging_data$line <- selected_lines[result$logging_data$line]
-      if (use_markers) {
-        
-        rstudioapi::sourceMarkers(name = "origin", markers = result$logging_data)
-      } else {
-        # TODO
-      }
+      
+      run_logging(result$logging_data, use_markers = use_markers)
     }
-    
     
     
     out <- paste(result$to_write$script, collapse = "\n")

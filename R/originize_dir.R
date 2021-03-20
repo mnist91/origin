@@ -131,19 +131,15 @@ originize_dir <-
       USE.NAMES = TRUE
     )
     
-    
-    
+
+    # invoke logging
     if (verbose) {
-      if (use_markers) {
-        rstudioapi::sourceMarkers(
-          name = "origin",
-          markers = Reduce(f = rbind,
-                           x = lapply(X = results, 
-                                      FUN = function(l) l$logging_data)))
-      } else {
-        # TODO
-      }
+      run_logging(Reduce(f = rbind,
+                         x = lapply(X = results, 
+                                    FUN = function(l) l$logging_data)),
+                  use_markers = use_markers)
     }
+    
     
     if (overwrite) {
       apply_changes(ask_before_applying_changes = ask_before_applying_changes,
