@@ -28,9 +28,12 @@ prep_verbose <- function(script,
   # succeeded by a double colon OR a percentage sign OR a character
   funs_comb <- paste(functions_in_script, collapse = "|")
   funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
-  fun_regex <- paste0("(?<!::|[[:alnum:]])(",
+  
+  # do not consider string matches that are pre- or succeeded by a numeric,
+  # character, doublecolon, underscore or dot
+  fun_regex <- paste0("(?<!::|[[:alnum:]]|\\.|\\|)(",
                       funs_prep,
-                      ")(?!::|%|[[:alnum:]])")
+                      ")(?!::|%|[[:alnum:]]|\\.|\\|)")
   
   
   list_pot_missings <- get_matches(line = which(line_matches),
@@ -253,13 +256,13 @@ set_marker_type <- function(x,
   # each marker entry has assigned one type only
   if (use_markers) {
     mapping <- list(insert = "info",
-                   special = "box",
-                   missed = "warning")
+                    special = "box",
+                    missed = "warning")
     type_order <- c("usage", "info", "style", "box", "warning", "error")
   } else {
     mapping <- list(insert = "-",
-                   special = "o",
-                   missed = "x")
+                    special = "o",
+                    missed = "x")
     type_order <- c("-", "o", "x")
   }
   
@@ -281,18 +284,17 @@ run_logging <- function(dat, use_markers) {
                               markers = dat)
   } else {
     
-    invisible(
-      lapply(unique(dat$file), function(x) {
-        sub_dat <- dat[dat$file == x, ]
-        
-        cat(paste("\n", sub_dat$file[1],
-                  paste(sub_dat$type, " ",
-                        sub_dat$line, ": ",
-                        sub_dat$message,
-                        collapse = "\n"),
-                  sep = "\n"))
-      })
-    )
+    lapply(unique(dat$file), function(x) {
+      sub_dat <- dat[dat$file == x, ]
+      
+      cat(paste("\n", sub_dat$file[1],
+                paste(sub_dat$type, " ",
+                      sub_dat$line, ": ",
+                      sub_dat$message,
+                      collapse = "\n"),
+                sep = "\n"))
+    })
   }
   
+  return(invisible(NULL))
 }
