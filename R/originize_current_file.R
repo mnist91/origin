@@ -28,7 +28,7 @@ originize_current_file <-
            check_base_conflicts = TRUE,
            add_base_packages = FALSE,
            excluded_functions = list(),
-           verbose = FALSE,
+           verbose = TRUE,
            use_markers = getOption("origin.use_markers_for_logging")) {
     
     originize_file(file,
