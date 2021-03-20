@@ -1,24 +1,24 @@
 #' Originize all files in the current R Project
 #'
 #' @param path defualts to the project root path
-#' @template  pkgs 
+#' @template pkgs
 #' @param recursive see \link[base]{list.files}
 #' @param files_pattern see \link[base]{list.files}
 #' @param ignore_case see \link[base]{list.files}
 #' @param exclude_files see \link[base]{list.files}
-#' @template overwrite 
-#' @template ask_before_applying_changes 
-#' @template ignore_comments 
-#' @template check_conflicts 
-#' @template check_base_conflicts 
-#' @template add_base_packages 
-#' @template excluded_functions 
-#' @template verbose 
-#' @template use_markers 
+#' @template overwrite
+#' @template ask_before_applying_changes
+#' @template ignore_comments
+#' @template check_conflicts
+#' @template check_base_conflicts
+#' @template add_base_packages
+#' @template excluded_functions
+#' @template verbose
+#' @template use_markers
 #'
 #' @return
 #' @noRd
-originize_current_project <- 
+originize_current_project <-
   function(path = ".",
            pkgs = getOption("origin.pkgs"),
            recursive = TRUE,
@@ -26,7 +26,7 @@ originize_current_project <-
            ignore_case = TRUE,
            exclude_files = NULL,
            overwrite = TRUE,
-           ask_before_applying_changes = 
+           ask_before_applying_changes =
              getOption("origin.ask_before_applying_changes"),
            ignore_comments = TRUE,
            check_conflicts = TRUE,
@@ -35,7 +35,7 @@ originize_current_project <-
            excluded_functions = list(),
            verbose = FALSE,
            use_markers = getOption("origin.use_markers_for_logging")) {
-    
+  
     originize_dir(path = path,
                   pkgs = pkgs,
                   recursive = recursive,

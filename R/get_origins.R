@@ -2,7 +2,7 @@
 #'
 #' @param pkg a package name
 #' @param script character vector of script lines
-#' @template file 
+#' @template file
 #' @template overwrite
 #' @template ignore_comments
 #' @template verbose
