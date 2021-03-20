@@ -263,7 +263,7 @@ comb_matches <- function(x, y) {
 # assign new script
 apply_changes <- function(ask_before_applying_changes, result) {
   if (ask_before_applying_changes && interactive()) {
-    cat("n\Happy with the result? \U0001f600\n\n")
+    cat("\nHappy with the result? \U0001f600\n\n")
     answer <- menu(choices = c("YES", "NO"))
     if (answer != 1) {
       message("No changes made!")
