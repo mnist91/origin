@@ -246,23 +246,18 @@ prep_line_logging <- function(line, logging_comb, use_markers) {
 #'
 #' @noRd
 #' @return string
-# highlight_types <- c("missed", "insert")
-# set_marker_type(highlight_types, use_markers = TRUE)
-# #> [1] "warning"
-# set_marker_type(highlight_types, use_markers = FALSE)
-# #> [1] "x"
 set_marker_type <- function(x,
                             use_markers = TRUE) {
   
   # all available markers type options in order of importance
   # each marker entry has assigned one type only
   if (use_markers) {
-    mapping = list(insert = "info",
+    mapping <- list(insert = "info",
                    special = "box",
                    missed = "warning")
     type_order <- c("usage", "info", "style", "box", "warning", "error")
   } else {
-    mapping = list(insert = "-",
+    mapping <- list(insert = "-",
                    special = "o",
                    missed = "x")
     type_order <- c("-", "o", "x")

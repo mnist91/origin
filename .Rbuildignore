@@ -7,3 +7,5 @@
 ^dev
 ^\.github$
 ^data-raw$
+.lintr
+man-roxygen

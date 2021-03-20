@@ -13,7 +13,7 @@ writeLines(test_text$TARGET, con = target_file_path)
 
 
 # only until the package is build, then this line can be removed
-invisible(lapply(list.files("R", full.names = TRUE), FUN = source))
+# devtools::load_all()
 
 # Unit tests
 testthat::test_that("origin file", {
