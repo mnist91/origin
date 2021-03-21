@@ -17,6 +17,7 @@ testthat::test_that("origin file", {
   print("in testthat")
   print(paste("test_text:", class(test_text$TESTSKRIPT)))
   print( test_text$TESTSKRIPT)
+
   writeLines(test_text$TARGET, con = target_file_path)
   print("step1")
   writeLines(test_text$TESTSKRIPT, con = test_file_path)
