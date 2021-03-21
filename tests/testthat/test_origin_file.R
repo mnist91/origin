@@ -14,14 +14,17 @@ testthat::test_that("origin file", {
   test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
                          na.strings = "NA",
                          encoding = "UTF-8",
+                         fileEncoding = "UTF-8",
                          stringsAsFactors = FALSE)
   print("in testthat")
-  print(paste("test_text:", class(test_text$TESTSKRIPT)))
+  print(paste("class:", class(test_text$TESTSKRIPT)))
+  print(paste("test_text1:", class(test_text$TESTSKRIPT[1])))
+  print(paste("test_text2:", class(test_text$TESTSKRIPT[2])))
   print( test_text$TESTSKRIPT)
 
-  writeLines(test_text$TARGET, encoding = "UTF-8", con = target_file_path)
+  writeLines(test_text$TARGET, con = target_file_path)
   print("step1")
-  writeLines(test_text$TESTSKRIPT, encoding = "UTF-8", con = test_file_path)
+  writeLines(test_text$TESTSKRIPT, con = test_file_path)
   print("step2")
   script <- readLines(test_file_path)
 
