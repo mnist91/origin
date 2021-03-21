@@ -16,5 +16,5 @@ character vector of functions names
 Get All Exported Functions From a Package
 }
 \examples{
-get_exported_functions("data.table")
+get_exported_functions("base")
 }

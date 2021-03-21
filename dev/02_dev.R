@@ -7,7 +7,8 @@
 ## Dependencies ----
 ## Add one line by package you want to add as dependency
 usethis::use_package("rstudioapi")
-
+usethis::use_package("dplyr", "Suggests")
+usethis::use_package("data.table", "Suggests")
 ## Add internal datasets ----
 ## If you have data in your package
 usethis::use_data_raw( name = "my_dataset", open = FALSE )

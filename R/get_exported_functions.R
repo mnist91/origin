@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-#' get_exported_functions("data.table")
+#' get_exported_functions("base")
 get_exported_functions <- function(pkg) {
   # get all exported functions from a package --------------------------------
   # lists all exports of a package (incl. non functions)

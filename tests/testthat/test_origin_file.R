@@ -12,6 +12,7 @@ test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
 writeLines(test_text$TARGET, con = target_file_path)
 
 
+
 # Unit tests
 testthat::test_that("origin file", {
   writeLines(test_text$TESTSKRIPT, con = test_file_path)
