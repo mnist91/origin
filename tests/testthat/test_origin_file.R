@@ -12,14 +12,11 @@ test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
 writeLines(test_text$TARGET, con = target_file_path)
 
 
-# only until the package is build, then this line can be removed
-# devtools::load_all()
-
 # Unit tests
 testthat::test_that("origin file", {
   writeLines(test_text$TESTSKRIPT, con = test_file_path)
   script <- readLines(test_file_path)
-  
+
   # In einem Schritt, mit crosschecks
   # capture.output(
     originize_file(test_file_path,
@@ -30,14 +27,14 @@ testthat::test_that("origin file", {
                             ),
                    overwrite = TRUE,
                    add_base_packages = FALSE,
-                   ask_before_applying_changes = FALSE, 
+                   ask_before_applying_changes = FALSE,
                    excluded_functions = list(dplyr = "last"),
                    ignore_comments = TRUE,
                    use_markers = FALSE,
                    verbose = FALSE)
   # )
-  
+
   testfile_after <- readLines(test_file_path)
-  
+
   testthat::expect_equal(testfile_after, test_text$TARGET)
 })
