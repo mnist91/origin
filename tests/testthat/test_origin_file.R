@@ -18,9 +18,10 @@ testthat::test_that("origin file", {
                          stringsAsFactors = FALSE)
   print("in testthat")
   print(paste("class:", class(test_text$TESTSKRIPT)))
-  print(paste("test_text1:", class(test_text$TESTSKRIPT[1])))
-  print(paste("test_text2:", class(test_text$TESTSKRIPT[2])))
-  print( test_text$TESTSKRIPT)
+  print(paste("class:", class(test_text$TARGET)))
+  print(paste("test_text1:", test_text$TESTSKRIPT[1]))
+  print(paste("test_text2:", test_text$TESTSKRIPT[2]))
+  print( test_text[1:5, ])
 
   writeLines(test_text$TARGET, con = target_file_path)
   print("step1")
