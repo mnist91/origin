@@ -93,3 +93,11 @@ get_origins <- function(pkg,
 
   return(orig_list)
 }
+
+
+# keep results of greprex where a match has been found
+comb_matches <- function(x, y) {
+  x <- x[x != -1]
+  y <- y[y != -1]
+  c(x, y)
+}

@@ -65,12 +65,12 @@ originize <- function(script,
 
     # get positions of potential missined (special) functions
     potential_missings <-
-      prep_verbose(script = script,
-                   line_matches = l$line_matches,
-                   functions = unlist(functions),
-                   functions_in_script = l$functions_in_script,
-                   special_functions = l$special_functions,
-                   special_matches = l$special_matches)
+      get_potential_missings(script = script,
+                             line_matches = l$line_matches,
+                             functions = unlist(functions),
+                             functions_in_script = l$functions_in_script,
+                             special_functions = l$special_functions,
+                             special_matches = l$special_matches)
 
     # combine positions of potential missings
     logging_comb <-  Reduce(
