@@ -16,7 +16,7 @@ LazyData: true
 Imports: 
     rstudioapi
 Suggests: 
-    testthat (>= 3.0.0),
+    testthat,
     dplyr,
     data.table
 Config/testthat/edition: 3
