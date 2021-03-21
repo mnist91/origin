@@ -14,20 +14,18 @@ testthat::test_that("origin file", {
   test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
                          na.strings = "NA",
                          encoding = "UTF-8",
-                         fileEncoding = "UTF-8",
                          stringsAsFactors = FALSE)
-  print("in testthat")
-  print(paste("class:", class(test_text$TESTSKRIPT)))
-  print(paste("class:", class(test_text$TARGET)))
-  print(paste("test_text1:", test_text$TESTSKRIPT[1]))
-  print(paste("test_text2:", test_text$TESTSKRIPT[2]))
+
+  nms <- names(test_text)
+  print(paste("names:", nms))
+  print(paste("class TArGET:", class(test_text[, grepl("TARGET", nms, fixed = TRUE)])))
+  print(paste("class TESTSKRIPT:", class(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)])))
   print( test_text[1:5, ])
 
-  writeLines(test_text$TARGET, con = target_file_path)
+  writeLines(test_text[, grepl("TARGET", nms, fixed = TRUE)], con = target_file_path)
   print("step1")
-  writeLines(test_text$TESTSKRIPT, con = test_file_path)
+  writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path)
   print("step2")
-  script <- readLines(test_file_path)
 
   # In einem Schritt, mit crosschecks
   # capture.output(
@@ -48,5 +46,5 @@ testthat::test_that("origin file", {
 
   testfile_after <- readLines(test_file_path)
 
-  testthat::expect_equal(testfile_after, test_text$TARGET)
+  testthat::expect_equal(testfile_after, test_text[, grepl("TARGET", nms, fixed = TRUE)])
 })
