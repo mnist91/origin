@@ -16,26 +16,26 @@ prep_verbose <- function(script,
                          functions_in_script,
                          special_functions = NULL,
                          special_matches = FALSE) {
-  
+
   # lines where a function name occurred, but no changed happened
   # not comprehensive, since there might be line where one function was
   # recognized, but not another
   potential_missings <- script[line_matches]
-  
-  # check for functions 
+
+  # check for functions
   # special regex characters in functions like dots must be escaped
   # function names  should not be preceded by a double colon OR character nor
   # succeeded by a double colon OR a percentage sign OR a character
   funs_comb <- paste(functions_in_script, collapse = "|")
   funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
-  
+
   # do not consider string matches that are pre- or succeeded by a numeric,
   # character, doublecolon, underscore or dot
   fun_regex <- paste0("(?<!::|[[:alnum:]]|\\.|\\|)(",
                       funs_prep,
                       ")(?!::|%|[[:alnum:]]|\\.|\\|)")
-  
-  
+
+
   list_pot_missings <- get_matches(line = which(line_matches),
                                    text = potential_missings,
                                    regex = fun_regex,
@@ -43,17 +43,17 @@ prep_verbose <- function(script,
                                    fixed = FALSE,
                                    filter_nomatches = TRUE)
   n_potentials <- length(list_pot_missings$line)
-  list_pot_missings <- c(list_pot_missings, 
+  list_pot_missings <- c(list_pot_missings,
                          list(pkg = rep("", n_potentials),
                               type = rep("missed", n_potentials)
                          ))
-  
+
   # did special functions such as "%like" or %>% which are not used with
   # PACAKGE::FUNCTION occur
   if (any(special_matches)) {
-    
+
     special_functions_in_script <- functions[special_functions][special_matches]
-    
+
     # lines with special functions
     special_matches <- which(as.logical(
       Reduce(f = "+", lapply(X = special_functions_in_script,
@@ -61,9 +61,9 @@ prep_verbose <- function(script,
                                                            pattern = pattern,
                                                            fixed = TRUE)))
     ))
-    
+
     funs_comb <- paste(special_functions_in_script, collapse = "|")
-    
+
     # potential special characters that need do be escaped in regexes
     funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
     funs_prep <- gsub("\\%", "\\\\%", x = funs_prep)
@@ -72,7 +72,7 @@ prep_verbose <- function(script,
     funs_prep <- gsub("\\$", "\\\\$", x = funs_prep)
     funs_prep <- gsub("<", "\\<", x = funs_prep)
     funs_prep <- gsub(">", "\\>", x = funs_prep)
-    
+
     list_specials <- get_matches(line = special_matches,
                                  text = script[special_matches],
                                  regex = funs_prep,
@@ -80,14 +80,14 @@ prep_verbose <- function(script,
                                  fixed = FALSE,
                                  filter_nomatches = TRUE)
     n_specials <-  length(list_specials$line)
-    list_specials <- c(list_specials, 
+    list_specials <- c(list_specials,
                        list(pkg = rep("", n_specials),
                             type = rep("special", n_specials)
                        ))
   } else {
     list_specials <- NULL
   }
-  
+
   out <- list(specials = list_specials, pot_missings = list_pot_missings)
   return(out)
 }
@@ -117,14 +117,14 @@ get_matches <- function(text,
                       text = text,
                       perl = perl,
                       fixed = fixed)
-  
+
   if (filter_nomatches) {
     has_matches <- vapply(X = matches,
                           FUN = function(x) any(x != -1),
                           FUN.VALUE = logical(1))
-    
+
     matches <- matches[has_matches]
-    
+
     out <- list(line = line[has_matches],
                 string = text[has_matches],
                 matches = lapply(matches,
@@ -140,11 +140,11 @@ get_matches <- function(text,
                 log_length = lapply(matches,
                                     FUN = attr,
                                     which = "match.length"))
-    
+
   }
-  
+
   return(out)
-  
+
 }
 
 
@@ -154,20 +154,20 @@ get_matches <- function(text,
 #' @importFrom utils menu
 solve_fun_duplicates <- function(dups, pkgs) {
   # Require User interaction if duplicates are detected
-  
+
   # bold, red and underlined text
   cat("\033[31m\033[4m\033[1m",
       "Used functions in mutliple Packages!",
       "\033[22m\033[24m\033[39m",
       "\n")
   dups_with_package <- by(names(dups), dups, paste, collapse = ", ")
-  
+
   cat(paste(dups_with_package, ": ", names(dups_with_package),
             collapse = "\n", sep = ""),
       "\n")
   cat("Order in which relevant packges are evaluated;\n\n")
   cat(paste(pkgs[pkgs %in% names(dups)], collapse = " >> "), "\n")
-  
+
   cat("Do you want to proceed?\n")
   if (interactive()) {
     answer <- menu(choices = c("YES", "NO"))
@@ -177,7 +177,7 @@ solve_fun_duplicates <- function(dups, pkgs) {
   if (answer != 1) {
     stop("Execution halted")
   }
-  
+
 }
 
 
@@ -185,28 +185,28 @@ solve_fun_duplicates <- function(dups, pkgs) {
 #' Set color highlighting for each line
 #'
 #' @param line Current line to style.
-#' @param logging_comb 
-#' @param use_markers 
+#' @param logging_comb
+#' @param use_markers
 #'
 #' @return data.frame
 #' @noRd
 prep_line_logging <- function(line, logging_comb, use_markers) {
-  # Each line can bear multiple insertions / 
+  # Each line can bear multiple insertions /
   # missings / specials. Since each of these types come in a separate element,
   # all elements connected to the line have to be extracted
   rel <- logging_comb$line == line
-  
+
   # named vector of positions to insert or highlight text. starting position
   matches <- un_list(logging_comb$matches[rel], logging_comb$pkg[rel])
-  
+
   # how many characters to highlight starting from the matches position
   match_length <- unlist(logging_comb$log_length[rel])
-  
+
   # kind of highlighting. either insert, missed or special
-  match_type <- rep(logging_comb$type[rel], 
+  match_type <- rep(logging_comb$type[rel],
                     lapply(X = logging_comb$log_length[rel],
                            FUN = length))
-  
+
   # insertions and missings are determined separately. Therefore, each insertion
   # is regularly a missing as well. In this step the insertion beats the missing
   # since it has been evaluated priorly.
@@ -216,13 +216,13 @@ prep_line_logging <- function(line, logging_comb, use_markers) {
   replace_matches <- matches[dups]
   replace_lengths <- match_length[dups]
   replace_types <- match_type[dups]
-  
+
   # order highlighting by column position in line
   ord <- order(replace_matches)
   replace_matches <- replace_matches[ord]
   replace_lengths <- replace_lengths[ord]
   replace_types <- replace_types[ord]
-  
+
   # add the colour highlighting
   string_after <- add_logging(string = logging_comb$string[rel][1],
                               splits = replace_matches,
@@ -230,7 +230,7 @@ prep_line_logging <- function(line, logging_comb, use_markers) {
                               log_length = replace_lengths,
                               type = replace_types,
                               use_markers = use_markers)
-  
+
   # return information for usage in markers
   # TODO: check which is necessary outside of use_markers
   data.frame(line = line,
@@ -238,20 +238,20 @@ prep_line_logging <- function(line, logging_comb, use_markers) {
              type = set_marker_type(replace_types, use_markers),
              column = min(replace_matches),
              stringsAsFactors = FALSE)
-  
+
 }
 
 
 #' Determine (marker) type for each line
 #'
 #' @param x vector of highlighting types of the subset insert, special, missed
-#' @template use_markers 
+#' @template use_markers
 #'
 #' @noRd
 #' @return string
 set_marker_type <- function(x,
                             use_markers = TRUE) {
-  
+
   # all available markers type options in order of importance
   # each marker entry has assigned one type only
   if (use_markers) {
@@ -265,13 +265,13 @@ set_marker_type <- function(x,
                     missed = "x")
     type_order <- c("-", "o", "x")
   }
-  
+
   # which type is mapped onto which kind of logging
   relevant_types <- type_order[type_order %in% unlist(mapping)]
-  
+
   # which present logging type is most important
   highest_present_type <- max(which(names(mapping) %in% unique(x)))
-  
+
   return(relevant_types[highest_present_type])
 }
 
@@ -283,10 +283,10 @@ run_logging <- function(dat, use_markers) {
     rstudioapi::sourceMarkers(name = "origin",
                               markers = dat)
   } else {
-    
+
     lapply(unique(dat$file), function(x) {
       sub_dat <- dat[dat$file == x, ]
-      
+
       cat(paste("\n", sub_dat$file[1],
                 paste(sub_dat$type, " ",
                       sub_dat$line, ": ",
@@ -295,6 +295,6 @@ run_logging <- function(dat, use_markers) {
                 sep = "\n"))
     })
   }
-  
+
   return(invisible(NULL))
 }

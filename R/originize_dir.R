@@ -2,20 +2,20 @@
 #'
 #'
 #' @param path path to a directory
-#' @template  pkgs 
-#' @param recursive see \link[base]{list.files} 
+#' @template pkgs
+#' @param recursive see \link[base]{list.files}
 #' @param files_pattern see \link[base]{list.files}
 #' @param ignore_case see \link[base]{list.files}
 #' @param exclude_files see \link[base]{list.files}
-#' @template overwrite 
-#' @template ask_before_applying_changes 
-#' @template ignore_comments 
-#' @template check_conflicts 
-#' @template check_base_conflicts 
-#' @template add_base_packages 
-#' @template excluded_functions 
-#' @template verbose 
-#' @template use_markers 
+#' @template overwrite
+#' @template ask_before_applying_changes
+#' @template ignore_comments
+#' @template check_conflicts
+#' @template check_base_conflicts
+#' @template add_base_packages
+#' @template excluded_functions
+#' @template verbose
+#' @template use_markers
 #'
 #' @return NULL
 #' @export
@@ -28,7 +28,7 @@ originize_dir <-
            ignore_case = TRUE,
            exclude_files = NULL,
            overwrite = TRUE,
-           ask_before_applying_changes = 
+           ask_before_applying_changes =
              getOption("origin.ask_before_applying_changes"),
            ignore_comments = TRUE,
            check_conflicts = TRUE,
@@ -37,54 +37,54 @@ originize_dir <-
            excluded_functions = list(),
            verbose = FALSE,
            use_markers = getOption("origin.use_markers_for_logging")) {
-    
+
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
                   "potential conflicts is required!")
     }
-    
+
     files <- list.files(path = path,
                         full.names = TRUE,
                         include.dirs = FALSE,
                         recursive = recursive,
-                        pattern = files_pattern, 
+                        pattern = files_pattern,
                         ignore.case = ignore_case)
-    
-    
+
+
     # TODO: non absolute paths
     if (any(!exclude_files %in% files)) {
       stop("File to exclude not in given path\n",
            exclude_files[!exclude_files %in% files])
     }
-    
+
     # read file
     scripts <- lapply(files, readLines)
-    
+
     # exclude base R packages from checks for duplicates
     if (!check_base_conflicts) {
       pkgs <- setdiff(pkgs, base_r_packages)
     }
-    
+
     # get all exported functions from each package
-    functions <- setNames(object = lapply(X   = pkgs, 
-                                          FUN = get_exported_functions), 
+    functions <- setNames(object = lapply(X   = pkgs,
+                                          FUN = get_exported_functions),
                           nm     = pkgs)
-    
+
     # exclude unwanted functions
     if (!is.null(excluded_functions) && length(excluded_functions) > 0) {
       functions <- exclude_functions(functions, excluded_functions)
     }
-    
-    
+
+
     # DUPLICATES ---------------------------------------------------------------
     # find functions, that are called within multiple packages
     # a automatic assignment is not possible in such cases
     # a deterministic order is chosen
-    
+
     if (check_conflicts) {
       # get duplicate functions
-      dups <- get_fun_duplicates(functions)  
-      
+      dups <- get_fun_duplicates(functions)
+
       script_collapsed <- paste(lapply(X = scripts,
                                        FUN = paste,
                                        collapse = ""),
@@ -95,24 +95,24 @@ originize_dir <-
                                      grepl(pattern = f,
                                            x = script_collapsed,
                                            fixed = TRUE)
-                                   }, 
+                                   },
                                    FUN.VALUE = logical(1),
                                    USE.NAMES = TRUE)
-      
+
       # Require User interaction if duplicates are detected
       if (any(dup_funs_in_script)) {
         solve_fun_duplicates(dups = dups[dup_funs_in_script],
                              pkgs = pkgs)
       }
     }
-    
+
     # do not consider base packages in originizing
     if (!add_base_packages) {
       pkgs <- setdiff(pkgs, base_r_packages)
       functions <- functions[!names(functions) %in% base_r_packages]
     }
-    
-    
+
+
     # apply originize function to each file/script
     results <- mapply(
       FUN = function(f, s) {
@@ -130,23 +130,23 @@ originize_dir <-
       SIMPLIFY = FALSE,
       USE.NAMES = TRUE
     )
-    
+
 
     # invoke logging
     if (verbose) {
       run_logging(Reduce(f = rbind,
-                         x = lapply(X = results, 
+                         x = lapply(X = results,
                                     FUN = function(l) l$logging_data)),
                   use_markers = use_markers)
     }
-    
-    
+
+
     if (overwrite) {
       apply_changes(ask_before_applying_changes = ask_before_applying_changes,
                     result = results)
     }
-    
-    
-    
+
+
+
     return(invisible(NULL))
   }

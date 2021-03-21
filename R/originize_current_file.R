@@ -1,4 +1,4 @@
-#' Add Explicit Package Names to its Functions
+#' Addin Function to originize currently opened file
 #'
 #' Simple wrapper to originize_file with default of currently opened script.
 #' Mainly for usage as an RStudio Addin.
@@ -30,7 +30,7 @@ originize_current_file <-
            excluded_functions = list(),
            verbose = TRUE,
            use_markers = getOption("origin.use_markers_for_logging")) {
-  
+
     originize_file(file,
                    pkgs = pkgs,
                    overwrite = overwrite,

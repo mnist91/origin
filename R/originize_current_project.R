@@ -35,7 +35,7 @@ originize_current_project <-
            excluded_functions = list(),
            verbose = FALSE,
            use_markers = getOption("origin.use_markers_for_logging")) {
-  
+
     originize_dir(path = path,
                   pkgs = pkgs,
                   recursive = recursive,
