@@ -1,5 +1,10 @@
-# print warning regarding conflicts
-# User input is required when called in an interactive context, e.g. RStudio
+#' print warning regarding conflicts
+#' User input is required when called in an interactive context, e.g. RStudio
+#' @param dups duplicate functions
+#' @param pkgs vector of checked packages to determine order
+#'
+#' @noRd
+#' @importFrom utils menu
 solve_fun_duplicates <- function(dups, pkgs) {
   # Require User interaction if duplicates are detected
 

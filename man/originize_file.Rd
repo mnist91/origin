@@ -2,7 +2,7 @@
 % Please edit documentation in R/originize_file.R
 \name{originize_file}
 \alias{originize_file}
-\title{Add Explicit Package Names to its Functions}
+\title{Originize a specific file}
 \usage{
 originize_file(
   file,
@@ -54,5 +54,5 @@ to track changes and show issues. FALSE prints the same informaiton in
 the console.}
 }
 \description{
-Add Explicit Package Names to its Functions
+Originize a specific file
 }
