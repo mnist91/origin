@@ -26,6 +26,7 @@ devtools::build_vignettes()
 ## Code coverage ----
 ## (You'll need GitHub there)
 usethis::use_github()
+usethis::use_github_action("test-coverage")
 
 # You're now set! ----
 # go to dev/03_deploy.R

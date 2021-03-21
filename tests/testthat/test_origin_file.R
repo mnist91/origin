@@ -16,16 +16,11 @@ testthat::test_that("origin file", {
                          encoding = "UTF-8",
                          stringsAsFactors = FALSE)
 
+  # windows adds X.U.FEFF to the first variable name in read.csv2.
+  # Therefore, the following bulletproof way to access the correct variable / vector
   nms <- names(test_text)
-  print(paste("names:", nms))
-  print(paste("class TArGET:", class(test_text[, grepl("TARGET", nms, fixed = TRUE)])))
-  print(paste("class TESTSKRIPT:", class(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)])))
-  print( test_text[1:5, ])
-
   writeLines(test_text[, grepl("TARGET", nms, fixed = TRUE)], con = target_file_path)
-  print("step1")
   writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path)
-  print("step2")
 
   # In einem Schritt, mit crosschecks
   # capture.output(
