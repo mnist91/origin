@@ -15,14 +15,15 @@ testthat::test_that("origin file", {
                          na.strings = "NA",
                          stringsAsFactors = FALSE)
   print("in testthat")
-  print(paste("datapath:",datapath))
-  print(paste("target_file_path:",target_file_path))
-  print(paste("test_file_path:",test_file_path))
   print(paste("nrow:",nrow(test_text)))
   print(paste("names:",names(test_text)))
   print(paste("test_text:",test_text[1, ]))
+  print(paste("test_text:", class(test_text$TARGET)))
+  print(paste("test_text:", class(test_text$TESTSKRIPT)))
   writeLines(test_text$TARGET, con = target_file_path)
+  print("step1")
   writeLines(test_text$TESTSKRIPT, con = test_file_path)
+  print("step2")
   script <- readLines(test_file_path)
 
   # In einem Schritt, mit crosschecks
