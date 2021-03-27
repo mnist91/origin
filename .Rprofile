@@ -1,2 +1,2 @@
 source("renv/activate.R")
-Sys.setenv(CODECOV_TOKEN='dd2c5633-da60-41be-8c05-7fb1359bc6a7')
+Sys.setenv(CODECOV_TOKEN='b044750c-7f42-4875-a95c-2e8a3c3a694b')
