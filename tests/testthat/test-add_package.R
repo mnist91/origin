@@ -2,7 +2,7 @@ testthat::test_that("Insert packages in a single line where needed", {
 
   # created by testscript file
   # code:
-  # debugonce(prep_line_originize)
+  # Exclude Linting
   # lapply(FUN = function(x) x[combined$line %in% c(80, 30)], combined)
   input_list <- list(string = list("map(iris, .f =bind_cols)",
                                    "map(iris, .f =bind_cols)",

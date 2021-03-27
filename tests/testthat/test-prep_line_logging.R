@@ -1,7 +1,8 @@
 testthat::test_that("Preparation of new file by line", {
 
-  # erzeugt durch testscript file
-  # code: lapply(FUN = function(x) x[logging_comb$line %in% c(80, 30, 33)], logging_comb) %>% dput
+  # created by testscript file
+  # Exclude Linting
+  # lapply(FUN = function(x) x[logging_comb$line %in% c(80, 30, 33)], logging_comb) %>% dput
   input_list <- list(line = c(30L, 33L, 80L, 80L, 30L, 33L, 30L, 33L, 80L),
                      string = c("iris %>% filter(Species == \"setosa\") %>% filter(Spepal.Length > 3) %>% filter(TRUE)",
                                 "iris %>% filter(filter) %>% filter(Spepal.Length > 3)",
