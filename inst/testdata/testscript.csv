@@ -79,3 +79,18 @@ map(iris, bind_cols);purrr::map(iris, bind_cols)
 map(iris, ;purrr::map(iris, 
     .f = bind_cols);    .f = dplyr::bind_cols)
 map(iris, .f =bind_cols);purrr::map(iris, .f =dplyr::bind_cols)
+;
+# exclamation mark;# exclamation mark
+if (!is.data.table(dt)) TRUE;if (!data.table::is.data.table(dt)) TRUE
+;
+# square brackets;# square brackets
+dt[as.IDate(myvar)];dt[data.table::as.IDate(myvar)]
+;
+# curly brackets;# curly brackets
+myfun <- function(x) {copy(x)};myfun <- function(x) {data.table::copy(x)}
+;
+# mathematical operators;# mathematical operators
+2*n_distinct(tib$VAR1)+n_distinct(tib$VAR1)-n_distinct(tib$VAR1)/n_distinct(tib$VAR1)^n_distinct(tib$VAR1);2*dplyr::n_distinct(tib$VAR1)+dplyr::n_distinct(tib$VAR1)-dplyr::n_distinct(tib$VAR1)/dplyr::n_distinct(tib$VAR1)^dplyr::n_distinct(tib$VAR1)
+;
+# comparisons;# comparisons
+3>n(tib)&n(tib)<2&3<n(tib)|5>=n(tib)|n(tib)==n(tib2);3>dplyr::n(tib)&dplyr::n(tib)<2&3<dplyr::n(tib)|5>=dplyr::n(tib)|dplyr::n(tib)==dplyr::n(tib2)
