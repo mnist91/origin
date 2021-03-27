@@ -15,8 +15,8 @@ testthat::test_that("Preparation of new file by line", {
   result <- data.frame(
     line = c(30L, 80L),
     string = c('iris %>% dplyr::filter(Species == "setosa") %>% dplyr::filter(Spepal.Length > 3) %>% dplyr::filter(TRUE)',
-               "purrr::map(iris, .f =dplyr::bind_cols)"
-    ))
+               "purrr::map(iris, .f =dplyr::bind_cols)"),
+    stringsAsFactors = FALSE)
 
   # multiple insertions yet same package
   testthat::expect_equal(

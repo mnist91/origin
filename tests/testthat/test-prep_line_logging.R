@@ -28,15 +28,18 @@ testthat::test_that("Preparation of new file by line", {
   result <- list(data.frame(line = 30L,
                             message = "\033[39miris \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Species == \"setosa\") \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Spepal.Length > 3) \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(TRUE)\033[39m",
                             type = "o",
-                            column = 6),
+                            column = 6,
+                            stringsAsFactors = FALSE),
                  data.frame(line = 33L,
                             message = "\033[39miris \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(\033[31mfilter\033[39m) \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Spepal.Length > 3)\033[39m",
                             type = "x",
-                            column = 6),
+                            column = 6,
+                            stringsAsFactors = FALSE),
                  data.frame(line = 80L,
                             message = "\033[39m\033[36mpurrr::\033[39mmap(iris, .f =\033[36mdplyr::\033[39mbind_cols)\033[39m",
                             type = "-",
-                            column = 1))
+                            column = 1,
+                            stringsAsFactors = FALSE))
 
 
   testthat::expect_equal(
@@ -61,15 +64,18 @@ testthat::test_that("Preparation of new file by line", {
   result <- list(data.frame(line = 30L,
                             message = "<div>iris <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(Species == \"setosa\") <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(Spepal.Length > 3) <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(TRUE)</div",
                             type = "box",
-                            column = 6),
+                            column = 6,
+                            stringsAsFactors = FALSE),
                  data.frame(line = 33L,
                             message = "<div>iris <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(<text style=\"color: #ff0000;\">filter</text>) <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(Spepal.Length > 3)</div",
                             type = "warning",
-                            column = 6),
+                            column = 6,
+                            stringsAsFactors = FALSE),
                  data.frame(line = 80L,
                             message = "<div><text style=\"color: #00F9FF;\">purrr::</text>map(iris, .f =<text style=\"color: #00F9FF;\">dplyr::</text>bind_cols)</div",
                             type = "info",
-                            column = 1))
+                            column = 1,
+                            stringsAsFactors = FALSE))
   # mutliple insertions yet different packages
   testthat::expect_equal(
     object = lapply(
