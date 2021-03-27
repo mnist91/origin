@@ -86,7 +86,12 @@ originize <- function(script,
     fixed_lines_list <- lapply(
       X = sort(unique(logging_comb$line)),
       FUN = prep_line_logging,
-      logging_comb = logging_comb,
+      lines = logging_comb$line,
+      matches = logging_comb$matches,
+      pkg = logging_comb$pkg,
+      log_length = logging_comb$log_length,
+      type = logging_comb$type,
+      string = logging_comb$string,
       use_markers = use_markers)
 
     # combine all lines

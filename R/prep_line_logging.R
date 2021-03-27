@@ -1,26 +1,34 @@
 #' Set color highlighting for each line
 #'
 #' @param line Current line to style.
-#' @param logging_comb list with all infromation necessary for logging
+#' @param lines integer vector of line information.
+#' @param
 #' @template use_markers
 #'
 #' @return data.frame
 #' @noRd
-prep_line_logging <- function(line, logging_comb, use_markers) {
+prep_line_logging <- function(line,
+                              lines,
+                              matches,
+                              pkg,
+                              log_length,
+                              type,
+                              string,
+                              use_markers) {
   # Each line can bear multiple insertions /
   # missings / specials. Since each of these types come in a separate element,
   # all elements connected to the line have to be extracted
-  rel <- logging_comb$line == line
+  rel <- lines == line
 
   # named vector of positions to insert or highlight text. starting position
-  matches <- un_list(logging_comb$matches[rel], logging_comb$pkg[rel])
+  matches <- un_list(matches[rel], pkg[rel])
 
   # how many characters to highlight starting from the matches position
-  match_length <- unlist(logging_comb$log_length[rel])
+  match_length <- unlist(log_length[rel])
 
   # kind of highlighting. either insert, missed or special
-  match_type <- rep(logging_comb$type[rel],
-                    lapply(X = logging_comb$log_length[rel],
+  match_type <- rep(type[rel],
+                    lapply(X = log_length[rel],
                            FUN = length))
 
   # insertions and missings are determined separately. Therefore, each insertion
@@ -40,7 +48,7 @@ prep_line_logging <- function(line, logging_comb, use_markers) {
   replace_types <- replace_types[ord]
 
   # add the colour highlighting
-  string_after <- add_logging(string = logging_comb$string[rel][1],
+  string_after <- add_logging(string = string[rel][1],
                               splits = replace_matches,
                               pkg = names(replace_matches),
                               log_length = replace_lengths,
