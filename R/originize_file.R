@@ -37,6 +37,7 @@ originize_file <-
       stop("No file in this path\n", file)
     }
 
+
     # read file
     script <- readLines(file)
 
@@ -45,6 +46,25 @@ originize_file <-
     if (!check_base_conflicts) {
       pkgs <- setdiff(pkgs, base_r_packages)
     }
+
+    if (length(pkgs) == 0) {
+      stop("No packages selected")
+    }
+
+    # exclude non-installed packages
+    installed_pkgs <- rownames(utils::installed.packages())
+    if(length(miss_pkgs <- setdiff(pkgs, installed_pkgs)) > 0) {
+      warning("Desired packages not installed:", paste(miss_pkgs, collapse = ", "))
+    }
+
+    pkgs <- intersect(pkgs, utils::rownames(installed.packages()))
+
+    # check if still packages available
+    if (length(pkgs) == 0) {
+      stop("No loaded packages selected")
+    }
+
+
 
     # get all exported functions from each package
     functions <- setNames(object = lapply(X   = pkgs,
@@ -56,6 +76,9 @@ originize_file <-
       functions <- exclude_functions(functions, excluded_functions)
     }
 
+    if (length(functions) == 0) {
+      stop("No nonexcluded functions in desired packages")
+    }
 
     # DUPLICATES ---------------------------------------------------------------
     # find functions, that are called within multiple packages
@@ -88,6 +111,10 @@ originize_file <-
     if (!add_base_packages) {
       pkgs <- setdiff(pkgs, base_r_packages)
       functions <- functions[!names(functions) %in% base_r_packages]
+    }
+
+    if (length(functions) == 0) {
+      stop("No nonexcluded functions in desired packages")
     }
 
 
