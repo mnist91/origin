@@ -97,11 +97,11 @@ originize <- function(script,
     # combine all lines
     logging_data <- Reduce(rbind, fixed_lines_list)
 
-    logging_data$file <- file
-
-    if (use_markers) {
+    if (use_markers && !is.null(logging_data)) {
       attr(logging_data$message, which = "class") <- c("html", "character")
     }
+
+    logging_data$file <- file
 
     script[fixed_lines_dat$line] <- fixed_lines_dat$string
 
