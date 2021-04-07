@@ -27,17 +27,17 @@ testthat::test_that("Preparation of new file by line", {
   # use_markers == FALSE -------------------------------------------------------
   result <- list(data.frame(line = 30L,
                             message = "\033[39miris \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Species == \"setosa\") \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Spepal.Length > 3) \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(TRUE)\033[39m",
-                            type = "o",
+                            type = "s",
                             column = 6,
                             stringsAsFactors = FALSE),
                  data.frame(line = 33L,
                             message = "\033[39miris \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(\033[31mfilter\033[39m) \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Spepal.Length > 3)\033[39m",
-                            type = "x",
+                            type = "-",
                             column = 6,
                             stringsAsFactors = FALSE),
                  data.frame(line = 80L,
                             message = "\033[39m\033[36mpurrr::\033[39mmap(iris, .f =\033[36mdplyr::\033[39mbind_cols)\033[39m",
-                            type = "-",
+                            type = "+",
                             column = 1,
                             stringsAsFactors = FALSE))
 
