@@ -5,7 +5,7 @@ linters: with_defaults(
   closed_curly_linter = lintr::closed_curly_linter(allow_single_line = FALSE),
   commas_linter = lintr::commas_linter,
   commented_code_linter = lintr::commented_code_linter,
-  complexity_limit = lintr::cyclocomp_linter(complexity_limit = 25),
+  complexity_limit = lintr::cyclocomp_linter(complexity_limit = 30),
   object_name_linter = lintr::object_name_linter(styles = "snake_case"),
   object_length_linter = lintr::object_length_linter(length = 30L),
   equals_na_linter = lintr::equals_na_linter,
