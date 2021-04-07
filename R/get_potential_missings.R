@@ -31,9 +31,9 @@ get_potential_missings <- function(script,
 
   # do not consider string matches that are pre- or succeeded by a numeric,
   # character, doublecolon, underscore or dot
-  fun_regex <- paste0("(?<!::|[[:alnum:]]|\\.|\\|)(",
+  fun_regex <- paste0("(?<!::|[[:alnum:]]|\\.|_|\\|)(",
                       funs_prep,
-                      ")(?!::|%|[[:alnum:]]|\\.|\\|)")
+                      ")(?!::|%|[[:alnum:]]|\\.|_|\\|)")
 
 
   list_pot_missings <- get_matches(line = which(line_matches),
