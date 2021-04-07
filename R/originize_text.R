@@ -46,71 +46,20 @@ originize_text <-
     # read file
     script <- strsplit(text, split = "\\n")
 
-    # exclude base R packages from checks for duplicates
-    if (!check_base_conflicts) {
-      pkgs <- setdiff(pkgs, base_r_packages)
-    }
-
-    # get all exported functions from each package
-    functions <- setNames(object = lapply(X   = pkgs,
-                                          FUN = get_exported_functions),
-                          nm     = pkgs)
-
-    # exclude unwanted functions
-    if (!is.null(excluded_functions) && length(excluded_functions) > 0) {
-      functions <- exclude_functions(functions, excluded_functions)
-    }
-
-
-    # DUPLICATES ---------------------------------------------------------------
-    # find functions, that are called within multiple packages
-    # a automatic assignment is not possible in such cases
-    # a deterministic order is chosen
-
-    if (check_conflicts) {
-      # get duplicate functions
-      dups <- get_fun_duplicates(functions)
-
-      script_collapsed <- paste(script, collapse = "")
-      # which duplicates are in the script
-      dup_funs_in_script <- vapply(X = dups,
-                                   FUN = function(f) {
-                                     grepl(pattern = f,
-                                           x = script_collapsed,
-                                           fixed = TRUE)
-                                   },
-                                   FUN.VALUE = logical(1),
-                                   USE.NAMES = TRUE)
-
-      # Require User interaction if duplicates are detected
-      if (any(dup_funs_in_script)) {
-        solve_fun_duplicates(dups = dups[dup_funs_in_script],
-                             pkgs = pkgs)
-      }
-    }
-
-    # do not consider base packages in originizing
-    if (!add_base_packages) {
-      pkgs <- setdiff(pkgs, base_r_packages)
-      functions <- functions[!names(functions) %in% base_r_packages]
-    }
+    out <- originize_wrap(scripts = list(script),
+                          files = files,
+                          type = "writeLines",
+                          pkgs = pkgs,
+                          overwrite = overwrite,
+                          ask_before_applying_changes = ask_before_applying_changes,
+                          ignore_comments = ignore_comments,
+                          check_conflicts = check_conflicts,
+                          check_base_conflicts = check_base_conflicts,
+                          add_base_packages = add_base_packages,
+                          excluded_functions = excluded_functions,
+                          verbose = verbose,
+                          use_markers = use_markers)
 
 
-
-    result <- originize(script = script,
-                        file = file,
-                        functions = functions,
-                        pkgs = pkgs,
-                        overwrite = overwrite,
-                        ignore_comments = ignore_comments,
-                        verbose = verbose,
-                        use_markers = use_markers)
-
-    # invoke logging
-    if (verbose) {
-      run_logging(result$logging_data, use_markers = use_markers)
-    }
-
-
-    return(paste(result$to_write$script, collapse = "\n"))
+    return(out)
   }

@@ -60,93 +60,18 @@ originize_dir <-
     # read file
     scripts <- lapply(files, readLines)
 
-    # exclude base R packages from checks for duplicates
-    if (!check_base_conflicts) {
-      pkgs <- setdiff(pkgs, base_r_packages)
+    originize_wrap(scripts = scripts,
+                   files = files,
+                   type = "writeLines",
+                   pkgs = pkgs,
+                   overwrite = overwrite,
+                   ask_before_applying_changes = ask_before_applying_changes,
+                   ignore_comments = ignore_comments,
+                   check_conflicts = check_conflicts,
+                   check_base_conflicts = check_base_conflicts,
+                   add_base_packages = add_base_packages,
+                   excluded_functions = excluded_functions,
+                   verbose = verbose,
+                   use_markers = use_markers)
+
     }
-
-    # get all exported functions from each package
-    functions <- setNames(object = lapply(X   = pkgs,
-                                          FUN = get_exported_functions),
-                          nm     = pkgs)
-
-    # exclude unwanted functions
-    if (!is.null(excluded_functions) && length(excluded_functions) > 0) {
-      functions <- exclude_functions(functions, excluded_functions)
-    }
-
-
-    # DUPLICATES ---------------------------------------------------------------
-    # find functions, that are called within multiple packages
-    # a automatic assignment is not possible in such cases
-    # a deterministic order is chosen
-
-    if (check_conflicts) {
-      # get duplicate functions
-      dups <- get_fun_duplicates(functions)
-
-      script_collapsed <- paste(lapply(X = scripts,
-                                       FUN = paste,
-                                       collapse = ""),
-                                collapse = "")
-      # which duplicates are in the script
-      dup_funs_in_script <- vapply(X = dups,
-                                   FUN = function(f) {
-                                     grepl(pattern = f,
-                                           x = script_collapsed,
-                                           fixed = TRUE)
-                                   },
-                                   FUN.VALUE = logical(1),
-                                   USE.NAMES = TRUE)
-
-      # Require User interaction if duplicates are detected
-      if (any(dup_funs_in_script)) {
-        solve_fun_duplicates(dups = dups[dup_funs_in_script],
-                             pkgs = pkgs)
-      }
-    }
-
-    # do not consider base packages in originizing
-    if (!add_base_packages) {
-      pkgs <- setdiff(pkgs, base_r_packages)
-      functions <- functions[!names(functions) %in% base_r_packages]
-    }
-
-
-    # apply originize function to each file/script
-    results <- mapply(
-      FUN = function(f, s) {
-        originize(file = f,
-                  script = s,
-                  functions = functions,
-                  pkgs = pkgs,
-                  overwrite = overwrite,
-                  ignore_comments = ignore_comments,
-                  verbose = verbose,
-                  use_markers = use_markers)
-      },
-      files,
-      scripts,
-      SIMPLIFY = FALSE,
-      USE.NAMES = TRUE
-    )
-
-
-    # invoke logging
-    if (verbose) {
-      run_logging(Reduce(f = rbind,
-                         x = lapply(X = results,
-                                    FUN = function(l) l$logging_data)),
-                  use_markers = use_markers)
-    }
-
-
-    if (overwrite) {
-      apply_changes(ask_before_applying_changes = ask_before_applying_changes,
-                    result = results)
-    }
-
-
-
-    return(invisible(NULL))
-  }

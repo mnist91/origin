@@ -22,10 +22,10 @@ set_marker_type <- function(x,
                     missed = "warning")
     type_order <- c("usage", "info", "style", "box", "warning", "error")
   } else {
-    mapping <- list(insert = "-",
-                    special = "o",
-                    missed = "x")
-    type_order <- c("-", "o", "x")
+    mapping <- list(insert = "+",
+                    special = "s",
+                    missed = "-")
+    type_order <- c("+", "s", "-")
   }
 
   # which type is mapped onto which kind of logging
