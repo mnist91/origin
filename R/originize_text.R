@@ -48,7 +48,7 @@ originize_text <-
 
     out <- originize_wrap(scripts = list(script),
                           files = files,
-                          type = "writeLines",
+                          type = "paste",
                           pkgs = pkgs,
                           overwrite = overwrite,
                           ask_before_applying_changes = ask_before_applying_changes,

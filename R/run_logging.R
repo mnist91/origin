@@ -1,6 +1,11 @@
 # invoke logging either via markers tab or console output
 run_logging <- function(dat, use_markers) {
 
+  if (length(dat$line) == 0) {
+    message("No functions detected in script(s)")
+    return(invisible(NULL))
+  }
+
   # infoke markers tab
   if (use_markers) {
     rstudioapi::sourceMarkers(name = "origin",

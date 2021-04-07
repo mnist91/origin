@@ -48,7 +48,7 @@ originize_selection <-
 
     originize_wrap(scripts = list(script),
                    files = file,
-                   type = "writeLines",
+                   type = "insertText",
                    pkgs = pkgs,
                    overwrite = overwrite,
                    ask_before_applying_changes = ask_before_applying_changes,

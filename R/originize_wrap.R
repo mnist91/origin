@@ -140,16 +140,15 @@ originize_wrap <-
       USE.NAMES = TRUE
     )
 
-
     # invoke logging
     if (verbose) {
       if (type == "insertText") {
         # in case the last line of a script is empty, strsplit does not create an empty
         # character. Hence, the script object is one element shorter than
         # lines selected and the assignment would fial
-        results$logging_data$line <- selected_lines[results$logging_data$line]
+        results[[1]]$logging_data$line <- selected_lines[results[[1]]$logging_data$line]
 
-        run_logging(results$logging_data, use_markers = use_markers)
+        run_logging(results[[1]]$logging_data, use_markers = use_markers)
       } else {
         run_logging(Reduce(f = rbind,
                            x = lapply(X = results,
@@ -164,19 +163,17 @@ originize_wrap <-
         apply_changes(ask_before_applying_changes = ask_before_applying_changes,
                       result = results,
                       init_script = scripts)
+
+        # return plane text
+      } else if (type == "paste") {
+        return(paste(results[[1]]$to_write$script, collapse = "\n"))
+
+        # insert Text via apistudioapi
+      } else if (type == "insertText") {
+        to_insert <- paste(results[[1]]$to_write$script, collapse = "\n")
+        rstudioapi::insertText(to_insert)
+
       }
-
-
-      # return plane text
-    } else if (type == "paste") {
-      return(paste(results$to_write$script, collapse = "\n"))
-
-
-      # insert Text via apistudioapi
-    } else if (type == "insertText") {
-      to_insert <- paste(results$to_write$script, collapse = "\n")
-      rstudioapi::insertText(to_insert)
-
     }
 
     return(invisible(NULL))
