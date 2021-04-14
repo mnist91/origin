@@ -14,13 +14,13 @@ testthat::test_that("Exclude Functions named and unnamed", {
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
                          list(dplyr = c("mutate", "filter", "summarize"),
-                              stats = c("aggregate")))
+                              stats = "aggregate"))
 
   # exclude multiple specified functions
   excl_list <- list(dplyr = c("filter", "mutate"))
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
-                         list(dplyr = c("summarize"),
+                         list(dplyr = "summarize",
                               stats = c("aggregate", "filter")))
 
   # exclude multiple functions of two packages
@@ -28,21 +28,21 @@ testthat::test_that("Exclude Functions named and unnamed", {
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
                          list(dplyr = c("filter", "summarize"),
-                              stats = c("aggregate")))
+                              stats = "aggregate"))
 
   # exclude unspecified function
   excl_list <- list("filter")
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
                          list(dplyr = c("mutate", "summarize"),
-                              stats = c("aggregate")))
+                              stats = "aggregate"))
 
   # exclude specific and unspecified function
   excl_list <- list(dplyr = "filter", "aggregate")
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
                          list(dplyr = c("mutate", "summarize"),
-                              stats = c("filter")))
+                              stats = "filter"))
 
   # exclude multiple unspecified functions
   excl_list <- list("filter", "aggregate")
@@ -55,7 +55,7 @@ testthat::test_that("Exclude Functions named and unnamed", {
   excl_list <- list(dplyr = "filter", dplyr = "mutate")
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
-                         list(dplyr = c("summarize"),
+                         list(dplyr = "summarize",
                               stats = c("aggregate", "filter")))
 
   # exclude mutltiple specific functions by several calls and issue warning

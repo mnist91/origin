@@ -31,7 +31,7 @@ testthat::test_that("check_functions has correct output", {
     line_matches = c(FALSE, FALSE, FALSE, FALSE),
     special_matches = c(`%like%` = TRUE),
     special_functions = c(FALSE, TRUE, FALSE),
-    functions_in_script = c("setDT")
+    functions_in_script = "setDT"
   )
 
   # call function with different settings
