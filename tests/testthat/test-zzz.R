@@ -1,4 +1,5 @@
 testthat::test_that("package initialization", {
+
   # reset origin options
   nms <- names(options())
   nms <- nms[grepl("^origin\\.", nms)]
