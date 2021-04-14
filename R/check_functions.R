@@ -1,6 +1,6 @@
 #' Which functions are potentially used in the script
 #'
-#' This is a fast check to extract potentialy used functions. It only checks if
+#' This is a fast check to extract potentially used functions. It only checks if
 #' the function name strings are present in any way. This reduces the number
 #' of functions that must be considered more closely significantly. It speeds
 #' up all further steps
@@ -48,30 +48,18 @@ check_functions <- function(script,
                             FUN.VALUE = logical(1))
 
   # no matching functions
-  if (!any(matches)) {
-
-    if (any(special_matches)) {
-      special_functions_in_script <-
-        functions[special_functions][special_matches]
-
-      special_matches <- which(
-        as.logical(
-          Reduce(f = "+",
-                 x = lapply(X = special_functions_in_script,
-                            FUN = function(pattern) {
-                              grepl(x = script,
-                                    pattern = pattern,
-                                    fixed = TRUE)
-                            }))
-        ))
-    }
+  if (!any(matches) && !any(special_matches)) {
     return(NULL)
   }
 
   # reduce the number of script rows to check, by selecting only those which
   # contain a function name
-  line_matches <- grepl(x = script,
-                        pattern = paste(functions_in_script, collapse = "|"))
+  if (any(matches)) {
+    line_matches <- grepl(x = script,
+                          pattern = paste(functions_in_script, collapse = "|"))
+  } else {
+    line_matches <- rep(FALSE, length(script))
+  }
 
   # ignore comment rows
   if (ignore_comments) {

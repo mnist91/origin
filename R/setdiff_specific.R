@@ -1,7 +1,7 @@
 # exclude functions from specific packages
 setdiff_specific <- function(funs, pkg, excl) {
   # functions to exclude from the current package
-  to_exclude <- unlist(excl[names(excl) == pkg])
+  to_exclude <- unlist(excl[names(excl) %in% pkg])
 
   # excludable functions in the current package
   matches <- funs %in% to_exclude
