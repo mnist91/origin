@@ -26,6 +26,14 @@ testthat::test_that("check_functions has correct output", {
     functions_in_script = c("nrow", "n_row")
   )
 
+  res4 <- list(
+    matches = c(setDT = FALSE),
+    line_matches = c(FALSE, FALSE, FALSE, FALSE),
+    special_matches = c(`%like%` = TRUE),
+    special_functions = c(FALSE, TRUE, FALSE),
+    functions_in_script = c("setDT")
+  )
+
   # call function with different settings
   tmp1 <- check_functions(script,
                          functions,
@@ -46,9 +54,17 @@ testthat::test_that("check_functions has correct output", {
                          pkg = NULL,
                          verbose = FALSE)
 
+  functions <- c("setDT", "%sdfn%")
+  tmp4 <- check_functions(script,
+                         functions,
+                         ignore_comments = FALSE,
+                         pkg = NULL,
+                         verbose = FALSE)
+
   # compare results
   testthat::expect_equal(tmp1, res1)
   testthat::expect_equal(tmp2, res2)
   testthat::expect_equal(tmp3, res3)
+  testthat::expect_null(tmp4)
 
 })
