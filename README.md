@@ -23,7 +23,7 @@ write short code first and adapt it later.
 
 
 ## Usage
-To originize code either use the delivered RStdudio addins or call the `origin`
+To originize code either use the delivered RStudio addins or call the `origin`
 functions directly, i.e. `origin::originize_file` or `origin::originize_dir`.
 
 ```
