@@ -2,7 +2,10 @@
 #'
 #' @param line Current line to style.
 #' @param lines integer vector of line information.
-#' @param
+#' @param matches logical vector
+#' @param pkg character of current package
+#' @param log_length boolean whether to use log_length
+#' @param type character which type is present
 #' @template use_markers
 #'
 #' @return data.frame

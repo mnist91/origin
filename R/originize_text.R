@@ -47,7 +47,7 @@ originize_text <-
     script <- strsplit(text, split = "\\n")
 
     out <- originize_wrap(scripts = list(script),
-                          files = files,
+                          files = file,
                           type = "paste",
                           pkgs = pkgs,
                           overwrite = overwrite,

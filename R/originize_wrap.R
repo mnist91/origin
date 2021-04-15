@@ -2,6 +2,9 @@
 #'
 #'
 #' @param scripts list of script(s) to originize
+#' @param files character vector of file paths to originize
+#' @param type character type of final output, either paste, insertText, or
+#'   writeLines
 #' @template pkgs
 #' @template overwrite
 #' @template ask_before_applying_changes
@@ -12,9 +15,10 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
+#' @param selected_lines logical, only necessary for originize selection
 #'
 #' @return NULL
-#' @export
+#' @noRd
 #'
 originize_wrap <-
   function(scripts,
