@@ -8,7 +8,7 @@
 | lints         | [![main-lints](https://github.com/mnist91/origin/actions/workflows/lints.yml/badge.svg?branch=main)](https://github.com/mnist91/origin/actions/workflows/lints.yml) | [![dev-lints](https://github.com/mnist91/origin/actions/workflows/lints.yml/badge.svg?branch=dev)](https://github.com/mnist91/origin/actions/workflows/lints.yml) |
 
 
-An R package that adds package:: to functions to be more explicit
+An R package that adds `package::` to functions to be more explicit
 
 
 To install the latest version use `remotes::install_github("mnist91/origin")`
@@ -28,7 +28,6 @@ functions directly, i.e. `origin::originize_file` or `origin::originize_dir`.
 
 ```
 origin::originize_file("testfile.R", pkgs = c("dplyr", "data.table"))
-
 ```
 
 ### Settings
