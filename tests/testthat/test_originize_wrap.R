@@ -114,7 +114,7 @@ testthat::test_that("Do origin wrapper function checks work", {
   testthat::expect_message(originize_wrap(scripts = list(script),
                                         files = test_file_path,
                                         type = "writeLines",
-                                        pkgs = "devtools",
+                                        pkgs = "testthat",
                                         add_base_packages = FALSE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
