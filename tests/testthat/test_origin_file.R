@@ -41,7 +41,8 @@ testthat::test_that("origin file", {
 
   testfile_after <- readLines(test_file_path)
 
-  testthat::expect_equal(testfile_after, test_text[, grepl("TARGET", nms, fixed = TRUE)])
+  testthat::expect_equal(testfile_after,
+                         test_text[, grepl("TARGET", nms, fixed = TRUE)])
 
   # with verbose
   # reset data
@@ -66,5 +67,7 @@ testthat::test_that("origin file", {
 
   testfile_after <- readLines(test_file_path)
 
-  testthat::expect_equal(testfile_after, test_text[, grepl("TARGET", nms, fixed = TRUE)])
+  testthat::expect_equal(testfile_after,
+                         test_text[, grepl("TARGET", nms, fixed = TRUE)])
+
 })

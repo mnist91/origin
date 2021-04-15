@@ -39,13 +39,13 @@ originize_wrap <-
 
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
-           "potential conflicts is required!")
+           "potential conflicts is required.")
     }
 
     if (ask_before_applying_changes && !verbose) {
       stop(paste("Without verbose == TRUE no changes are visible before",
                  "applying. `verbose` must be TRUE if",
-                 "ask_before_applying_changes is TRUE"))
+                 "ask_before_applying_changes is TRUE."))
     }
 
     # exclude base R packages from checks for duplicates
@@ -55,7 +55,7 @@ originize_wrap <-
 
     if (length(pkgs) == 0) {
       stop(paste("No packages specified. Please use either",
-                 "`options(origin.pkgs)` or the `pkgs` argument"))
+                 "`options(origin.pkgs)` or the `pkgs` argument."))
     }
 
     # get all exported functions from each package
@@ -63,17 +63,17 @@ originize_wrap <-
                                           FUN = get_exported_functions),
                           nm     = pkgs)
 
-    if (length(functions) == 0) {
-      stop("Given packages do no export functions")
+    if (length(unlist(functions)) == 0) {
+      stop("Given packages do no export functions.")
     }
 
     # exclude unwanted functions
-    if (!is.null(excluded_functions) && length(excluded_functions) > 0) {
+    if (length(excluded_functions) > 0) {
       functions <- exclude_functions(functions, excluded_functions)
     }
 
-    if (length(functions) == 0) {
-      stop("You excluded all exported functions from the given packages")
+    if (length(unlist(functions)) == 0) {
+      stop("You excluded all exported functions from the given packages.")
     }
 
 
@@ -114,14 +114,14 @@ originize_wrap <-
     }
 
     if (length(pkgs) == 0) {
-      stop(paste("No packages specified.Please use either `options(origin.pkgs)`",
+      stop(paste("No packages specified. Please use either `options(origin.pkgs)`",
                  "or the `pkgs` argument. If you desire to use base",
-                 "packages, inspect the `add_base_packages` argument"))
+                 "packages, inspect the `add_base_packages` argument."))
     }
 
 
-    if (length(functions) == 0) {
-      stop("No non-excluded exported functions in given packages")
+    if (length(unlist(functions)) == 0) {
+      stop("No non-excluded exported functions in given packages.")
     }
 
 

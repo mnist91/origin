@@ -12,10 +12,10 @@ apply_changes <- function(ask_before_applying_changes, result, init_script) {
     message("No unspecified functions detected. Script remains as is.")
     return(invisible(NULL))
 
-
     # if changes were made, ask user if those can be overwrite the files
   } else {
 
+    # nocov start
     if (ask_before_applying_changes && interactive()) {
       cat("\nHappy with the result? \U0001f600\n\n")
       answer <- menu(choices = c("YES", "NO"))
@@ -24,6 +24,7 @@ apply_changes <- function(ask_before_applying_changes, result, init_script) {
         return(invisible(NULL))
       }
     }
+    # nocov end
 
     # extract non-empty new scripts
     new_scripts <- Filter(result, f = function(l) !is.null(l$to_write$script))
