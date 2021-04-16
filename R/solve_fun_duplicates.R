@@ -23,12 +23,12 @@ solve_fun_duplicates <- function(dups, pkgs) {
 
   cat("Do you want to proceed?\n")
   if (interactive()) {
-    answer <- menu(choices = c("YES", "NO"))
+    answer <- menu(choices = c("YES", "NO")) # nocov
   } else {
     answer <- 1
   }
   if (answer != 1) {
-    stop("Execution halted")
+    stop("Execution halted") # nocov
   }
 
   return(invisible(NULL))
