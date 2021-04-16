@@ -170,7 +170,15 @@ originize_wrap <-
 
         # return plane text
       } else if (type == "paste") {
-        return(paste(results[[1]]$to_write$script, collapse = "\n"))
+        script_out <- results[[1]]$to_write$script
+
+        # replace character(0) by "" for more consistent testing
+        script_out <- rapply(object = script_out,
+                             f = function(x) {
+                               ifelse(length(x) == 0, "", x)
+                             },
+                             how = "replace")
+        return(paste(script_out, collapse = "\n"))
 
         # insert Text via apistudioapi
       } else if (type == "insertText") {
