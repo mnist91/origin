@@ -30,17 +30,17 @@ originize_text <-
            verbose = TRUE,
            use_markers = getOption("origin.use_markers_for_logging")) {
 
-    if (!check_base_conflicts && add_base_packages) {
-      stop("When adding base packages checking for ",
-           "potential conflicts is required!")
+    if (interactive()) {
+      file <- rstudioapi::getSourceEditorContext()$path # nocov
+    } else {
+      file <- ""
     }
 
-    file <- rstudioapi::getSourceEditorContext()$path
-    # if funciton is run in a unsaved script, use root path a dummy path
+    # if function is run in a unsaved script, use root path a dummy path
     # needed for sourceMarkers
     if (file == "") {
       # TODO: .
-      file <- "."
+      file <- "." #nocov
     }
 
     # read file
