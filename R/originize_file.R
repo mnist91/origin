@@ -16,17 +16,17 @@
 #' @export
 originize_file <-
   function(file,
-           pkgs = getOption("origin.pkgs"),
-           overwrite = TRUE,
+           pkgs = getOption("origin.pkgs", .packages()),
+           overwrite = getOption("origin.overwrite", TRUE),
            ask_before_applying_changes =
-             getOption("origin.ask_before_applying_changes"),
-           ignore_comments = TRUE,
-           check_conflicts = TRUE,
-           check_base_conflicts = TRUE,
-           add_base_packages = FALSE,
-           excluded_functions = list(),
-           verbose = FALSE,
-           use_markers = getOption("origin.use_markers_for_logging")) {
+             getOption("origin.ask_before_applying_changes", TRUE),
+           ignore_comments = getOption("origin.ignore_comments", TRUE),
+           check_conflicts = getOption("origin.check_conflicts", TRUE),
+           check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
+           add_base_packages = getOption("origin.add_base_packages", FALSE),
+           excluded_functions = getOption("origin.excluded_functions", list()),
+           verbose = getOption("origin.verbose", FALSE),
+           use_markers = getOption("origin.use_markers_for_logging", TRUE)) {
 
     if (!file.exists(file)) {
       stop("No file in this path\n", file)

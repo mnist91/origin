@@ -22,21 +22,21 @@
 #'
 originize_dir <-
   function(path,
-           pkgs = getOption("origin.pkgs"),
+           pkgs = getOption("origin.pkgs", .packages()),
            recursive = TRUE,
            files_pattern = "\\.R",
            ignore_case = TRUE,
            exclude_files = NULL,
-           overwrite = TRUE,
+           overwrite = getOption("origin.overwrite", TRUE),
            ask_before_applying_changes =
-             getOption("origin.ask_before_applying_changes"),
-           ignore_comments = TRUE,
-           check_conflicts = TRUE,
-           check_base_conflicts = TRUE,
-           add_base_packages = FALSE,
-           excluded_functions = list(),
-           verbose = FALSE,
-           use_markers = getOption("origin.use_markers_for_logging")) {
+             getOption("origin.ask_before_applying_changes", TRUE),
+           ignore_comments = getOption("origin.ignore_comments", TRUE),
+           check_conflicts = getOption("origin.check_conflicts", TRUE),
+           check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
+           add_base_packages = getOption("origin.add_base_packages", FALSE),
+           excluded_functions = getOption("origin.excluded_functions", list()),
+           verbose = getOption("origin.verbose", FALSE),
+           use_markers = getOption("origin.use_markers_for_logging", TRUE)) {
 
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
