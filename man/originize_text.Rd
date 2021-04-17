@@ -50,7 +50,7 @@ namespace conflicts}
 \item{verbose}{a boolean. If TRUE, origin provides feedback about its steps.}
 
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
-to track changes and show issues. FALSE prints the same informaiton in
+to track changes and show issues. FALSE prints the same information in
 the console.}
 }
 \description{

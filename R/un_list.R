@@ -1,4 +1,4 @@
-#' Unlist a list into a vector with names equal to fromer list element name
+#' Unlist a list into a vector with names equal to former list element name
 #'
 #' The regular `base::unlist()` function creates a named vector in which each
 #' element has a name corresponding to the list element it belonged to priorly

@@ -19,7 +19,7 @@ originize_selection(
 )
 }
 \arguments{
-\item{context}{informaiton of marked editor seciton in RStudio}
+\item{context}{information of marked editor section in RStudio}
 
 \item{pkgs}{a character vector with package names}
 
@@ -50,7 +50,7 @@ namespace conflicts}
 \item{verbose}{a boolean. If TRUE, origin provides feedback about its steps.}
 
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
-to track changes and show issues. FALSE prints the same informaiton in
+to track changes and show issues. FALSE prints the same information in
 the console.}
 }
 \description{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/un_list.R
 \name{un_list}
 \alias{un_list}
-\title{Unlist a list into a vector with names equal to fromer list element name}
+\title{Unlist a list into a vector with names equal to former list element name}
 \usage{
 un_list(l, nms = names(l))
 }

@@ -36,7 +36,7 @@ Most argument defaults of `origin` functions can be set via `options()`.
   - `origin.pkgs`: which packages to check for functions used in the code
   - `origin.ask_before_applying_changes`: whether changes should be applied
   immediately or the user must approve them first
-  - `origin.use_markers_for_logging`: whether to use the Markers tab in Rstudio
+  - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio
   - `origin.color_added_package`: hex code highlighting insertions
   - `origin.color_missed_function`: hex code highlighting potential missings
   - `origin.color_special_function`: hex code highlighting special functions (see discussion)
@@ -46,10 +46,10 @@ By default, `orgigin` considers all loaded packages as given by `.packages()`
 except base R packages (`base`, `methods`, `stats`, `utils`, `graphics`, 
 `datasets`). For the current list of loaded packages also check `search()`.
 Note that, in case of namespace conflicts, the order in the search list 
-determines which namespace maskes which. `origin` uses the same rule as R
+determines which namespace masks which. `origin` uses the same rule as R
 that the latest loaded package maskes the other packages. Therefore, in case
 there is a potential namespace conflict in your code, the changes made by 
-`origin` should yield the same result as before but beeing more explicit
+`origin` should yield the same result as before but being more explicit
 about it. Since this can break code functionality, `origin` issues a warning and 
 user input is required. 
 
@@ -57,7 +57,7 @@ user input is required.
 
 
 ### Discussion
-Whether ot not to add `package::` to each (imported) function is a controversial
+Whether ot not to add `package::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
 issue in the R community. 
 
 Pros
@@ -74,7 +74,15 @@ Cons
 - longer code
 - special functions like `%between%` cannot be called via `data.table::%between%`
 and work arounds are still required here. Either use 
-```
-library(data.table, include.only = "%between%")
-`%between%` <- data.table::`%between%`
-```
+  ```
+  library(data.table, include.only = "%between%")
+  `%between%` <- data.table::`%between%`
+  ```
+- calling `library()` on top of a script clearly indicates which packages are
+  needed. A not yet installed package throws an error right away, not until
+  a function cannot be found later in the script. However, one can use 
+  the `include_only` argument and set it to `NULL`. No functions are loaded
+  into the namesapce then.
+  ```
+  library(data.table, include_only = NULL)
+  ``` 

@@ -1,6 +1,6 @@
 #' Wrapper function to be used as an RSTUDIO ADDIN
 #'
-#' @param context informaiton of marked editor seciton in RStudio
+#' @param context information of marked editor section in RStudio
 #' @template pkgs
 #' @template overwrite
 #' @template ask_before_applying_changes
