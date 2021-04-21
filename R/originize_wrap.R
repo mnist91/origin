@@ -55,7 +55,7 @@ originize_wrap <-
 
     if (length(pkgs) == 0) {
       stop(paste("No packages specified. Please use either",
-                 "`options(origin.pkgs)` or the `pkgs` argument."))
+                 "`options(origin.pkgs = c('pkg', ...))` or the `pkgs` argument."))
     }
 
     # get all exported functions from each package
@@ -114,9 +114,9 @@ originize_wrap <-
     }
 
     if (length(pkgs) == 0) {
-      stop(paste("No packages specified. Please use either `options(origin.pkgs)`",
+      stop(paste("No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))`",
                  "or the `pkgs` argument. If you desire to use base",
-                 "packages, inspect the `add_base_packages` argument."))
+                 "packages, inspect the `add_base_packages` argument/option."))
     }
 
 

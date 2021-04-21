@@ -14,7 +14,7 @@
     origin.check_base_conflicts = TRUE,
     origin.add_base_packages = FALSE,
     origin.excluded_functions = list(),
-    origin.verbose = FALSE
+    origin.verbose = TRUE
   )
 
   to_set <- !(names(optns_origin) %in% names(optns))

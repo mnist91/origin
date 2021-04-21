@@ -48,7 +48,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         check_base_conflicts = TRUE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
-                         regexp = "No packages specified. Please use either `options(origin.pkgs)` or the `pkgs` argument.",
+                         regexp = "No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))` or the `pkgs` argument.",
                          fixed = TRUE)
 
   # zero length packages
@@ -59,7 +59,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         check_base_conflicts = FALSE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
-                         regexp = "No packages specified. Please use either `options(origin.pkgs)` or the `pkgs` argument.",
+                         regexp = "No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))` or the `pkgs` argument.",
                          fixed = TRUE)
 
   # do not check base functions but only use base functions
@@ -70,9 +70,9 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         check_base_conflicts = TRUE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
-                         regexp = paste("No packages specified. Please use either `options(origin.pkgs)`",
+                         regexp = paste("No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))`",
                                         "or the `pkgs` argument. If you desire to use base",
-                                        "packages, inspect the `add_base_packages` argument."),
+                                        "packages, inspect the `add_base_packages` argument/option."),
                          fixed = TRUE)
 
   # packages do not export functions
