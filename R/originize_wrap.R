@@ -116,7 +116,7 @@ originize_wrap <-
     if (length(pkgs) == 0) {
       stop(paste("No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))`",
                  "or the `pkgs` argument. If you desire to use base",
-                 "packages, inspect the `add_base_packages` argument/option."))
+                 "packages, inspect the `add_base_packages` argument/option.")) # Exclude Linting
     }
 
 
