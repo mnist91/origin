@@ -4,6 +4,8 @@ Title: An R Package That Adds `package::` to Functions to Be More Explicit
 Version: 0.1.0
 Author: Matthias Nistler
 Maintainer: The package maintainer <yourself@somewhere.net>
+URL: https://github.com/mnist91/origin
+BugReports: https://github.com/mnist91/origin/issues
 Description: The pure functionality of this package is to add package:: 
   to function, i.e. `mutate(mtcars, new_var = 1)` becomes  `dplyr::mutate(mtcars, new_var = 1)`.
   It is up to the user to determine which packages should be used explicitly, whether
