@@ -72,7 +72,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         ask_before_applying_changes = FALSE),
                          regexp = paste("No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))`",
                                         "or the `pkgs` argument. If you desire to use base",
-                                        "packages, inspect the `add_base_packages` argument/option."),
+                                        "packages, inspect the `add_base_packages` argument/option."), # Exclude Linting
                          fixed = TRUE)
 
   # packages do not export functions
