@@ -63,7 +63,7 @@ except the standard R packages (`base`, `methods`, `stats`, `utils`, `graphics`,
 `datasets`). For the current list of loaded packages also check `search()`.
 Note that, in case of namespace conflicts, the order in the search list 
 determines which namespace masks which. `origin` uses the same rule as R, i.e.
-the latest loaded package maskes the other packages. Therefore, in case
+the latest loaded package masks the other packages. Therefore, in case
 there is a potential namespace conflict in your code, the changes made by 
 `origin` should yield the same result as before but being more explicit
 about it. Since this can break code functionality, `origin` issues a warning and 
@@ -77,7 +77,7 @@ To overwrite the default just use a character vector of package names.
 
 
 ### Discussion
-Whether ot not to add `package::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
+Whether or not to add `package::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
 issue in the R community. 
 
 Pros
@@ -93,7 +93,7 @@ Cons
 - more writing required
 - longer code
 - special functions like `%between%` cannot be called via `data.table::%between%`
-and work arounds are still required here. Either use 
+and workarounds are still required here. Either use 
   ```
   library(data.table, include.only = "%between%")
   `%between%` <- data.table::`%between%`
