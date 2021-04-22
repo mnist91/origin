@@ -59,7 +59,8 @@ originize_selection <-
                    excluded_functions = excluded_functions,
                    verbose = verbose,
                    use_markers = use_markers,
-                   selected_lines = selected_lines)
+                   selected_lines = selected_lines,
+                   context = context)
 
     return(invisible(NULL))
   }

@@ -16,6 +16,7 @@
 #' @template verbose
 #' @template use_markers
 #' @param selected_lines logical, only necessary for originize selection
+#' @param context a document context regarding the selected r script
 #'
 #' @return NULL
 #' @noRd
@@ -35,7 +36,8 @@ originize_wrap <-
            excluded_functions = list(),
            verbose = FALSE,
            use_markers = getOption("origin.use_markers_for_logging"),
-           selected_lines = NULL) {
+           selected_lines = NULL,
+           context = NULL) {
 
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
@@ -183,7 +185,18 @@ originize_wrap <-
         # insert Text via apistudioapi
       } else if (type == "insertText") {
         to_insert <- paste(results[[1]]$to_write$script, collapse = "\n")
-        rstudioapi::insertText(to_insert)
+
+        selected_range <- context$selection[1][[1]]$range
+
+        # if end of selection is at beginning of a new line, extra line
+        # break is required to keep the same document structure
+        if (selected_range$end[2] == 1) {
+          to_insert <- paste0(to_insert, "\n")
+        }
+
+        rstudioapi::insertText(text = to_insert,
+                               location = context$selection[1][[1]]$range,
+                               id = context$id)
 
       }
     }
