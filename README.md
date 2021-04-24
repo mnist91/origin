@@ -34,27 +34,27 @@ origin::originize_file("testfile.R", pkgs = c("dplyr", "data.table"))
 Most argument defaults of `origin` functions can be set via `options()`. 
 This is especially usefull when using the RStudio Addins.
 
-  - `origin.pkgs`: which packages to check for functions used in the code
+  - `origin.pkgs`: which packages to check for functions used in the code (see **Cpnsidered Packages**).
   - `origin.ask_before_applying_changes`: whether changes should be applied
-  immediately or the user must approve them first
-  - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio
-  - `origin.color_added_package`: hex code highlighting insertions
-  - `origin.color_missed_function`: hex code highlighting potential missings
-  - `origin.color_special_function`: hex code highlighting special functions (see discussion)
+  immediately or the user must approve them first.
   - `origin.overwrite = TRUE`: actually insert `pkg::` into the code. Otherwise,
   logging shows only what *would* happen. Note that `ask_before_applying_changes`
-  still allows to keep control over your code before origin changes anything.
-  - `origin.ignore_comments = TRUE`: should comments be ignored
+  still allows to keep control over your code before `origin` changes anything.
   - `origin.check_conflicts = TRUE`: should `origin` check for potential 
   namespace conflicts, i.e. a used function is defined in more than one considered
   package. User input is required to solve the issue. 
   Strongly encouraged to be set to `TRUE`.
+  - `origin.add_base_packages = FALSE`: should base packages also be added e.g., `base::sum()`.
   - `origin.check_base_conflicts = TRUE`: Should origin also check for conflicts
   with base R functions.
-  - `origin.add_base_packages = FALSE`: should base packages also added e.g., `base::sum()`
   - `origin.excluded_functions = list()`: a list of functions to exclude from checking. See details.
+  - `origin.ignore_comments = TRUE`: should comments be ignored.
   - `origin.verbose = TRUE`: some sort of logging is performed, either in the 
   console or via the markers tab in RStudio.
+  - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio.
+  - `origin.color_added_package`: hex code highlighting insertions.
+  - `origin.color_missed_function`: hex code highlighting potential missings.
+  - `origin.color_special_function`: hex code highlighting special functions (see discussion).
 
 
 ### Considered Packages
@@ -71,7 +71,45 @@ user input is required.
 
 To overwrite the default just use a character vector of package names.
 
-### 
+### Exclude Functions
+
+Especially usefull to solve **namespace conflicts** or ignore special functions
+like the pipe operator `%>%`. Listed functions are not considered by `origin` 
+neither in adding `pkg::` nor logging. It is a list of function names. When unnamed, the 
+function is generally excluded. To be more specific, a named list exlcudes functions
+from these packages only. 
+
+Examples:
+
+```
+# unnamed list
+opitions(origin.exlcuded_functions = list("last", "%>%", "%<>%"))
+
+# named list
+opitions(origin.exlcuded_functions = list(data.table = c("last", %between%),
+                                          magrittr = c("%>%", "%<>%")))
+
+# both named and unnamed
+opitions(origin.exlcuded_functions = list(data.table = c("last", %between%),
+                                          "%>%", "%<>%"))
+```
+### Logging Interpretation
+The logging highlights three cases:
+- insertion: `pkg::` is inserted prior to a function
+- missing: an object that has the same name as a function 
+           but not undoubtly used as a function. In R it is usually no problem
+           to have variables that name like functions (data or df are popular examples).
+           While it is always clear when a function is directly used as one, functions
+           can also be arguments of other functions, most famously in functional programming 
+           like the *apply family or purrr. `origin` highlights such cases in 
+           the logging output.
+- special: functions like `%>%` are exported by packages but cannot be called
+           with the `pkg::` convention. Such functions are highlighted by default
+           to point the user that these stem from a package. When using 
+           dplyr-style code, consider to exlcude the pipe-operator via 
+           `exclude_functions`.
+                                
+
 
 
 
@@ -101,8 +139,8 @@ and workarounds are still required here. Either use
 - calling `library()` on top of a script clearly indicates which packages are
   needed. A not yet installed package throws an error right away, not until
   a function cannot be found later in the script. However, one can use 
-  the `include_only` argument and set it to `NULL`. No functions are loaded
-  into the namesapce then.
+  the `include_only` argument and set it to `NULL`. No functions are attached
+  into the search list then.
   ```
   library(data.table, include_only = NULL)
   ``` 
