@@ -165,41 +165,13 @@ originize_wrap <-
 
     if (overwrite) {
       # overwrite script files
-      if (type == "writeLines") {
-        apply_changes(ask_before_applying_changes = ask_before_applying_changes,
-                      result = results,
-                      init_script = scripts)
+      out <- apply_changes(ask_before_applying_changes = ask_before_applying_changes,
+                           result = results,
+                           init_script = scripts,
+                           type = type,
+                           context = context)
 
-        # return plane text
-      } else if (type == "paste") {
-        script_out <- results[[1]]$to_write$script
-
-        # replace character(0) by "" for more consistent testing
-        script_out <- rapply(object = script_out,
-                             f = function(x) {
-                               ifelse(length(x) == 0, "", x)
-                             },
-                             how = "replace")
-        return(paste(script_out, collapse = "\n"))
-
-        # insert Text via apistudioapi
-      } else if (type == "insertText") {
-        to_insert <- paste(results[[1]]$to_write$script, collapse = "\n")
-
-        selected_range <- context$selection[1][[1]]$range
-
-        # if end of selection is at beginning of a new line, extra line
-        # break is required to keep the same document structure
-        if (selected_range$end[2] == 1) {
-          to_insert <- paste0(to_insert, "\n")
-        }
-
-        rstudioapi::insertText(text = to_insert,
-                               location = context$selection[1][[1]]$range,
-                               id = context$id)
-
-      }
     }
 
-    return(invisible(NULL))
+    return(invisible(out))
   }
