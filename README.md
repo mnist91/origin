@@ -22,6 +22,9 @@ convert legacy code into the `package::` convention as well as it allows you to
 write short code first and adapt it later. 
 
 
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/demo_originize_file.gif" width="650px" />
+
+
 ### Usage
 To originize code either use the delivered RStudio addins or call the `origin`
 functions directly, i.e. `origin::originize_file` or `origin::originize_dir`.
