@@ -5,10 +5,10 @@
 \title{Add Explicit Package Names to its Functions}
 \usage{
 originize_dir(
-  path,
+  path = ".",
   pkgs = getOption("origin.pkgs", .packages()),
   recursive = TRUE,
-  files_pattern = "\\\\.R",
+  files_pattern = "\\\\.R$",
   ignore_case = TRUE,
   exclude_files = NULL,
   overwrite = getOption("origin.overwrite", TRUE),

@@ -58,7 +58,7 @@ originize_dir <-
     }
 
     n_files <- length(files)
-    If (n_files > 20 || any(grepl("renv|packrat", files))) {
+    if (n_files > 20 || any(grepl("renv|packrat", files))) {
       cat(sprintf("You are about to originize %s files.\nProceed?", n_files))
       if (interactive()) {
         answer <- menu(choices = c("YES", "NO", "Show files")) # nocov
@@ -88,7 +88,7 @@ originize_dir <-
     if (all(empty_scripts)) {
       message("All provided scripts are empty")
       return(invisible(NULL))
-    } else if (any(empty_script)) {
+    } else if (any(empty_scripts)) {
       scripts <- scripts[!empty_scripts]
       files <- files[!empty_scripts]
     }
