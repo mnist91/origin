@@ -52,7 +52,7 @@ originize_wrap <-
 
     # exclude base R packages from checks for duplicates
     if (!check_base_conflicts) {
-      pkgs <- setdiff(pkgs, base_r_packages)
+      pkgs <- setdiff(pkgs, getOption("defaultPackages"))
     }
 
     if (length(pkgs) == 0) {
@@ -111,8 +111,8 @@ originize_wrap <-
 
     # do not consider base packages in originizing
     if (!add_base_packages) {
-      pkgs <- setdiff(pkgs, base_r_packages)
-      functions <- functions[!names(functions) %in% base_r_packages]
+      pkgs <- setdiff(pkgs, getOption("defaultPackages"))
+      functions <- functions[!names(functions) %in% getOption("defaultPackages")]
     }
 
     if (length(pkgs) == 0) {
