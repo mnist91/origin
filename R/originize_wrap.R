@@ -157,8 +157,10 @@ originize_wrap <-
         run_logging(results[[1]]$logging_data, use_markers = use_markers)
       } else {
         run_logging(Reduce(f = rbind,
-                           x = lapply(X = results,
-                                      FUN = function(l) l$logging_data)),
+                           # exclude empty logs by Filter()
+                           x = Filter(function(dat) !is.null(dat$line),
+                                      lapply(X = results,
+                                      FUN = function(l) l$logging_data))),
                     use_markers = use_markers)
       }
     }
