@@ -83,7 +83,7 @@ originize_dir <-
     scripts <- lapply(files, readLines)
 
     # check for empty scripts
-    empty_scripts <- vapply(scripts, length) == 0
+    empty_scripts <- vapply(X = scripts, FUN = length, FUN.VALUE = integer(1)) == 0
 
     if (all(empty_scripts)) {
       message("All provided scripts are empty")
