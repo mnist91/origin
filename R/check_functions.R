@@ -20,7 +20,14 @@ check_functions <- function(script,
                             pkg = NULL,
                             verbose = TRUE) {
   # remove function with special characters like %, &, [] and :
-  special_functions <- grepl(functions, pattern = "\\&|\\:|\\]|\\[|%")
+  special_function_tokens <- c("*", "%", "?", "^", "$", "(", ")", "[",
+                               "]", "{", "}")
+  special_functions <- grepl(functions,
+                             pattern = paste0("[",
+                                             paste(escape_strings(special_function_tokens),
+                                                   collapse = "|"),
+                                             "]"
+                                             ))
   relevant_functions <- functions[!special_functions]
   # reduce the number of functions to check, by selecting possible (occurring)
   # functions. This isn't a check if it is a function or an object,
@@ -55,8 +62,9 @@ check_functions <- function(script,
   # reduce the number of script rows to check, by selecting only those which
   # contain a function name
   if (any(matches)) {
-    line_matches <- grepl(x = script,
-                          pattern = paste(functions_in_script, collapse = "|"))
+    line_matches <- grepl(
+      x = script,
+      pattern = paste(escape_strings(functions_in_script), collapse = "|"))
   } else {
     line_matches <- rep(FALSE, length(script))
   }

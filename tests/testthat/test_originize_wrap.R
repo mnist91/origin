@@ -68,6 +68,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         type = "writeLines",
                                         pkgs = "base",
                                         check_base_conflicts = TRUE,
+                                        add_base_packages = FALSE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
                          regexp = paste("No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))`",

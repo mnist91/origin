@@ -26,8 +26,7 @@ get_potential_missings <- function(script,
   # special regex characters in functions like dots must be escaped
   # function names  should not be preceded by a double colon OR character nor
   # succeeded by a double colon OR a percentage sign OR a character
-  funs_comb <- paste(functions_in_script, collapse = "|")
-  funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
+  funs_prep <- paste(escape_strings(functions_in_script), collapse = "|")
 
   # do not consider string matches that are pre- or succeeded by a numeric,
   # character, doublecolon, underscore or dot
@@ -62,16 +61,7 @@ get_potential_missings <- function(script,
                                                            fixed = TRUE)))
     ))
 
-    funs_comb <- paste(special_functions_in_script, collapse = "|")
-
-    # potential special characters that need do be escaped in regexes
-    funs_prep <- gsub("\\.", "\\\\.", x = funs_comb)
-    funs_prep <- gsub("\\%", "\\\\%", x = funs_prep)
-    funs_prep <- gsub("\\[", "\\\\[", x = funs_prep)
-    funs_prep <- gsub("\\]", "\\\\]", x = funs_prep)
-    funs_prep <- gsub("\\$", "\\\\$", x = funs_prep)
-    funs_prep <- gsub("<", "\\<", x = funs_prep)
-    funs_prep <- gsub(">", "\\>", x = funs_prep)
+    funs_prep <- paste(escape_strings(special_functions_in_script), collapse = "|")
 
     list_specials <- get_matches(line = special_matches,
                                  text = script[special_matches],
