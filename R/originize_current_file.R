@@ -19,7 +19,7 @@
 #' @noRd
 originize_current_file <-
   function(file = rstudioapi::getSourceEditorContext()$path,
-           pkgs = getOption("origin.pkgs"),
+           pkgs = getOption("origin.pkgs", .packages()),
            overwrite = getOption("origin.overwrite"),
            ask_before_applying_changes =
              getOption("origin.ask_before_applying_changes"),

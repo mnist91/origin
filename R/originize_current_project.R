@@ -20,7 +20,7 @@
 #' @noRd
 originize_current_project <-
   function(path = ".",
-           pkgs = getOption("origin.pkgs"),
+           pkgs = getOption("origin.pkgs", .packages()),
            recursive = TRUE,
            files_pattern = "\\.R",
            ignore_case = TRUE,

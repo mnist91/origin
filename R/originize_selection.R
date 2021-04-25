@@ -15,7 +15,7 @@
 #' @return NULL
 originize_selection <-
   function(context = rstudioapi::getSourceEditorContext(),
-           pkgs = getOption("origin.pkgs"),
+           pkgs = getOption("origin.pkgs", .packages()),
            overwrite = getOption("origin.overwrite"),
            ask_before_applying_changes =
              getOption("origin.ask_before_applying_changes"),

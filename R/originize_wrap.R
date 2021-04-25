@@ -25,7 +25,7 @@ originize_wrap <-
   function(scripts,
            files,
            type,
-           pkgs = getOption("origin.pkgs"),
+           pkgs = getOption("origin.pkgs", .packages()),
            overwrite = TRUE,
            ask_before_applying_changes =
              getOption("origin.ask_before_applying_changes"),
