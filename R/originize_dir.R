@@ -40,7 +40,7 @@ originize_dir <-
 
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
-                  "potential conflicts is required!")
+           "potential conflicts is required!")
     }
 
     files <- list.files(path = path,
@@ -57,8 +57,41 @@ originize_dir <-
            exclude_files[!exclude_files %in% files])
     }
 
+    n_files <- length(files)
+    If (n_files > 20 || any(grepl("renv|packrat", files))) {
+      cat(sprintf("You are about to originize %s files.\nProceed?", n_files))
+      if (interactive()) {
+        answer <- menu(choices = c("YES", "NO", "Show files")) # nocov
+      } else {
+        answer <- 1
+      }
+
+      if (answer == 2) {
+        stop("Execution halted") # nocov
+      } else if (answer == 3) {
+        print(files)
+        cat("\nProceed?")
+        answer2 <- menu(choices = c("YES", "NO")) # nocov
+
+        if (answer2 == 2) {
+          stop("Execution halted") # nocov
+        }
+      }
+    }
+
     # read file
     scripts <- lapply(files, readLines)
+
+    # check for empty scripts
+    empty_scripts <- vapply(scripts, length) == 0
+
+    if (all(empty_scripts)) {
+      message("All provided scripts are empty")
+      return(invisible(NULL))
+    } else if (any(empty_script)) {
+      scripts <- scripts[!empty_scripts]
+      files <- files[!empty_scripts]
+    }
 
     originize_wrap(scripts = scripts,
                    files = files,
@@ -74,4 +107,4 @@ originize_dir <-
                    verbose = verbose,
                    use_markers = use_markers)
 
-    }
+  }
