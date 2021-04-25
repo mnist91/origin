@@ -41,7 +41,7 @@ get_origins <- function(pkg,
   funs_prep <- paste0(escape_strings(functions_in_script), collapse = "|")
 
   # tokens that can occur right before a function calls
-  pattern_regex <- paste0("(?<=[[:blank:],;=&/\\-<>~@\\!\\|\\$\\?\\*\\^\\+\\(\\[\\{]|^)(",
+  pattern_regex <- paste0("(?<=[[:blank:],;=&/\\-<>~@\\!\\|\\?\\*\\^\\+\\(\\[\\{]|^)(",
                           funs_prep,
                           ") *\\(")
 
