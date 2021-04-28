@@ -173,6 +173,8 @@ originize_wrap <-
                            type = type,
                            context = context)
 
+    } else {
+      out <- NULL
     }
 
     return(invisible(out))
