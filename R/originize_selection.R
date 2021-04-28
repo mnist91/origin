@@ -27,6 +27,11 @@ originize_selection <-
            verbose = getOption("origin.verbose"),
            use_markers = getOption("origin.use_markers_for_logging")) {
 
+    if (is.null(context)) {
+      message("Nothing selected")
+      return(invisible(NULL))
+    }
+
     file <- context$path
 
     # if funciton is run in a unsaved script, use root path a dummy path
