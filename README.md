@@ -8,7 +8,7 @@
 | lints         | [![main-lints](https://github.com/mnist91/origin/actions/workflows/lints.yml/badge.svg?branch=main)](https://github.com/mnist91/origin/actions/workflows/lints.yml) | [![dev-lints](https://github.com/mnist91/origin/actions/workflows/lints.yml/badge.svg?branch=dev)](https://github.com/mnist91/origin/actions/workflows/lints.yml) |
 
 
-An R package that adds `package::` to functions to be more explicit
+An R package that adds `pkg::` to functions to be more explicit
 
 
 To install the latest version use `remotes::install_github("mnist91/origin")`
@@ -18,7 +18,7 @@ To install the latest version use `remotes::install_github("mnist91/origin")`
 
 `origin` adds the correct package specification to all functions in your script
 while giving full control about the outcome. This makes it much easier to both
-convert legacy code into the `package::` convention as well as it allows you to 
+convert legacy code into the `pkg::fun()` convention as well as it allows you to 
 write short code first and adapt it later. 
 
 
@@ -57,7 +57,7 @@ This is especially usefull when using the RStudio Addins.
   - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio.
   - `origin.color_added_package`: hex code highlighting insertions.
   - `origin.color_missed_function`: hex code highlighting potential missings.
-  - `origin.color_special_function`: hex code highlighting special functions (see discussion).
+  - `origin.color_special_function`: hex code highlighting infix functions (see discussion).
 
 
 ### Considered Packages
@@ -76,7 +76,7 @@ To overwrite the default just use a character vector of package names.
 
 ### Exclude Functions
 
-Especially usefull to solve **namespace conflicts** or ignore special functions
+Especially usefull to solve **namespace conflicts** or ignore infix functions
 like the pipe operator `%>%`. Listed functions are not considered by `origin` 
 neither in adding `pkg::` nor logging. It is a list of function names. When unnamed, the 
 function is generally excluded. To be more specific, a named list exlcudes functions
@@ -106,8 +106,8 @@ The logging highlights three cases:
            can also be arguments of other functions, most famously in functional programming 
            like the *apply family or purrr. `origin` highlights such cases in 
            the logging output.
-- special: functions like `%>%` are exported by packages but cannot be called
-           with the `pkg::` convention. Such functions are highlighted by default
+- infix: functions like `%>%` are exported by packages but cannot be called
+           with the `pkg::fun()` convention. Such functions are highlighted by default
            to point the user that these stem from a package. When using 
            dplyr-style code, consider to exlcude the pipe-operator via 
            `exclude_functions`.
@@ -118,8 +118,8 @@ The logging highlights three cases:
 
 
 ### Discussion
-Whether or not to add `package::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
-issue in the R community. 
+Whether or not to add `pkg::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
+[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org/namespace.html#imports) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favour of it.
 
 Pros
 
@@ -133,11 +133,11 @@ Cons
 - (minimal) performance issue
 - more writing required
 - longer code
-- special functions like `%between%` cannot be called via `data.table::%between%`
+- infix functions like `%>%` cannot be called via `magrittr::%>%`
 and workarounds are still required here. Either use 
   ```
-  library(data.table, include.only = "%between%")
-  `%between%` <- data.table::`%between%`
+  library(magrittr, include.only = "%>%")
+  `%>%` <- magrittr::`%>%`
   ```
 - calling `library()` on top of a script clearly indicates which packages are
   needed. A not yet installed package throws an error right away, not until
@@ -145,5 +145,5 @@ and workarounds are still required here. Either use
   the `include_only` argument and set it to `NULL`. No functions are attached
   into the search list then.
   ```
-  library(data.table, include_only = NULL)
+  library(magrittr, include_only = NULL)
   ``` 
