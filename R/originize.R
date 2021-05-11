@@ -11,11 +11,14 @@ originize <- function(script,
 
 
   # get relevant function information
-  l <- check_functions(script = script,
+  fun_list <- check_functions(script = script,
                        functions = unlist(functions),
                        verbose = verbose,
                        ignore_comments = ignore_comments)
 
+  if (length(fun_list$line_matches) == 0) {
+    return(NULL)
+  }
   # iterate over all functions and find position where package:: is necessary
   replacement_list <-
     Map(f = function(pkg, funs) {
@@ -66,11 +69,11 @@ originize <- function(script,
     # get positions of potential missined (special) functions
     potential_missings <-
       get_potential_missings(script = script,
-                             line_matches = l$line_matches,
+                             line_matches = fun_list$line_matches,
                              functions = unlist(functions),
-                             functions_in_script = l$functions_in_script,
-                             special_functions = l$special_functions,
-                             special_matches = l$special_matches)
+                             functions_in_script = fun_list$functions_in_script,
+                             special_functions = fun_list$special_functions,
+                             special_matches = fun_list$special_matches)
 
     # combine positions of potential missings
     logging_comb <-  Reduce(

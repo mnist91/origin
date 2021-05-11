@@ -146,6 +146,14 @@ originize_wrap <-
       USE.NAMES = TRUE
     )
 
+    # nothing to log
+    if (all(vapply(X = results,
+                   FUN = function(dat) is.null(dat$line),
+                   FUN.VALUE = logical(1)))) {
+      message("Nothing detected")
+      return(NULL)
+    }
+
     # invoke logging
     if (verbose) {
       if (type == "insertText") {
