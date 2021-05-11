@@ -119,7 +119,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         add_base_packages = FALSE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
-                         regexp = "No unspecified functions detected. Script remains as is.",
+                         regexp = "Nothing detected",
                          fixed = TRUE)
 
 

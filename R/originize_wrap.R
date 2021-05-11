@@ -148,7 +148,7 @@ originize_wrap <-
 
     # nothing to log
     if (all(vapply(X = results,
-                   FUN = function(dat) is.null(dat$line),
+                   FUN = function(dat) is.null(dat$logging_data$line),
                    FUN.VALUE = logical(1)))) {
       message("Nothing detected")
       return(NULL)

@@ -12,9 +12,9 @@ originize <- function(script,
 
   # get relevant function information
   fun_list <- check_functions(script = script,
-                       functions = unlist(functions),
-                       verbose = verbose,
-                       ignore_comments = ignore_comments)
+                              functions = unlist(functions),
+                              verbose = verbose,
+                              ignore_comments = ignore_comments)
 
   if (length(fun_list$line_matches) == 0) {
     return(NULL)
@@ -62,7 +62,7 @@ originize <- function(script,
     script[fixed_lines_dat$line] <- fixed_lines_dat$string
 
     return(list(to_write = list(file = file, script = script),
-                logging_data = data.frame()))
+                logging_data = data.frame(line = fixed_lines_dat$line)))
 
   } else {
 
