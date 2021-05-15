@@ -21,7 +21,7 @@ check_functions <- function(script,
                             verbose = TRUE) {
   # remove function with special characters like %, &, [] and :
   special_function_tokens <- c("*", "%", "?", "^", "$", "(", ")", "[",
-                               "]", "{", "}")
+                               "]", "{", "}", ":", "=")
   special_functions <- grepl(functions,
                              pattern = paste0("[",
                                              paste(escape_strings(special_function_tokens),

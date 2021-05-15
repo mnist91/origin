@@ -23,6 +23,10 @@ setkey;setkey
 "irisdt[Species %like% ""setosa""]";"irisdt[Species %like% ""setosa""]"
 irisdt[Sepal.Length %between% c(1, 2)];irisdt[Sepal.Length %between% c(1, 2)]
 "irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]";"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]"
+irisdt[, new := old];irisdt[, new := old]
+irisdt[, new := (2 + 3) * 4];irisdt[, new := (2 + 3) * 4]
+irisdt[, `:=`(new = old)];irisdt[, `:=`(new = old)]
+"irisdt[, "":=""(new = old)]";"irisdt[, "":=""(new = old)]"
 ;
 # variable masks function name;# variable masks function name
 "filter <- 'Species == ""setosa""'";"filter <- 'Species == ""setosa""'"
