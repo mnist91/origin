@@ -19,7 +19,7 @@ prep_line_logging <- function(line,
                               string,
                               use_markers) {
   # Each line can bear multiple insertions /
-  # missings / specials. Since each of these types come in a separate element,
+  # missings / infixes. Since each of these types come in a separate element,
   # all elements connected to the line have to be extracted
   rel <- lines == line
 
@@ -29,7 +29,7 @@ prep_line_logging <- function(line,
   # how many characters to highlight starting from the matches position
   match_length <- unlist(log_length[rel])
 
-  # kind of highlighting. either insert, missed or special
+  # kind of highlighting. either insert, missed or infix
   match_type <- rep(type[rel],
                     lapply(X = log_length[rel],
                            FUN = length))

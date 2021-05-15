@@ -1,12 +1,12 @@
 #' Determine (marker) type for each line
 #'
 #' The Markers Tab in RStudio can handle different types which are indicated
-#' by an icon in front of the line. Which kind of info (insert, missed, special)
+#' by an icon in front of the line. Which kind of info (insert, missed, infix)
 #' belongs to which marker type is specified here. If different kinds are
 #' present in the same line, an order is specified which is the most important
 #' type. The same logic is applied to a console logging output
 #'
-#' @param x vector of highlighting types of the subset insert, special, missed
+#' @param x vector of highlighting types of the subset insert, infix, missed
 #' @template use_markers
 #'
 #' @noRd
@@ -18,14 +18,14 @@ set_marker_type <- function(x,
   # each marker entry has assigned one type only
   if (use_markers) {
     mapping <- list(insert = "info",
-                    special = "box",
+                    infix = "box",
                     missed = "warning")
     type_order <- c("usage", "info", "style", "box", "warning", "error")
   } else {
     mapping <- list(insert = "+",
-                    special = "s",
+                    infix = "i",
                     missed = "-")
-    type_order <- c("+", "s", "-")
+    type_order <- c("+", "i", "-")
   }
 
   # which type is mapped onto which kind of logging

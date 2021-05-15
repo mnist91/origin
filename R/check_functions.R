@@ -19,16 +19,16 @@ check_functions <- function(script,
                             ignore_comments = TRUE,
                             pkg = NULL,
                             verbose = TRUE) {
-  # remove function with special characters like %, &, [] and :
-  special_function_tokens <- c("*", "%", "?", "^", "$", "(", ")", "[",
-                               "]", "{", "}", ":", "=")
-  special_functions <- grepl(functions,
+  # remove function with infix characters like %, &, [] and :
+  infix_function_tokens <- c("*", "%", "?", "^", "$", "(", ")", "[",
+                               "]", "{", "}", ":", "=", "<", ">")
+  infix_functions <- grepl(functions,
                              pattern = paste0("[",
-                                             paste(escape_strings(special_function_tokens),
+                                             paste(escape_strings(infix_function_tokens),
                                                    collapse = "|"),
                                              "]"
                                              ))
-  relevant_functions <- functions[!special_functions]
+  relevant_functions <- functions[!infix_functions]
   # reduce the number of functions to check, by selecting possible (occurring)
   # functions. This isn't a check if it is a function or an object,
   # but a simple regular expression
@@ -44,9 +44,9 @@ check_functions <- function(script,
                     FUN.VALUE = logical(1))
   functions_in_script <- relevant_functions[matches]
 
-  # special functions such as %like" can not be called with ::
+  # infix functions such as %like" can not be called with ::
   # print a warning, that such functions occur
-  special_matches <- vapply(X = functions[special_functions],
+  infix_matches <- vapply(X = functions[infix_functions],
                             FUN = function(fun) {
                               grepl(pattern = fun,
                                     x = full_script,
@@ -55,7 +55,7 @@ check_functions <- function(script,
                             FUN.VALUE = logical(1))
 
   # no matching functions
-  if (!any(matches) && !any(special_matches)) {
+  if (!any(matches) && !any(infix_matches)) {
     return(NULL)
   }
 
@@ -82,8 +82,8 @@ check_functions <- function(script,
 
   return(list(matches = matches,
               line_matches = line_matches,
-              special_matches = special_matches,
-              special_functions = special_functions,
+              infix_matches = infix_matches,
+              infix_functions = infix_functions,
               functions_in_script = functions_in_script))
 
 }

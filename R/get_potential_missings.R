@@ -4,8 +4,8 @@
 #' @param line_matches a boolean vector with the lines that contain changes
 #' @param functions a vector with function names
 #' @param functions_in_script a vector which functions were used
-#' @param special_functions a vector with special functions such as `\%like\%`
-#' @param special_matches a boolean vector that indicates which special
+#' @param infix_functions a vector with infix functions such as `\%like\%`
+#' @param infix_matches a boolean vector that indicates which infix
 #'   functions are used
 #'
 #' @return
@@ -14,8 +14,8 @@ get_potential_missings <- function(script,
                                    line_matches,
                                    functions,
                                    functions_in_script,
-                                   special_functions = NULL,
-                                   special_matches = FALSE) {
+                                   infix_functions = NULL,
+                                   infix_matches = FALSE) {
 
   # lines where a function name occurred, but no changed happened
   # not comprehensive, since there might be line where one function was
@@ -23,7 +23,7 @@ get_potential_missings <- function(script,
   potential_missings <- script[line_matches]
 
   # check for functions
-  # special regex characters in functions like dots must be escaped
+  # infix regex characters in functions like dots must be escaped
   # function names  should not be preceded by a double colon OR character nor
   # succeeded by a double colon OR a percentage sign OR a character
   funs_prep <- paste(escape_strings(functions_in_script), collapse = "|")
@@ -47,37 +47,37 @@ get_potential_missings <- function(script,
                               type = rep("missed", n_potentials)
                          ))
 
-  # did special functions such as "%like" or %>% which are not used with
+  # did infix functions such as "%like" or %>% which are not used with
   # PACAKGE::FUNCTION occur
-  if (any(special_matches)) {
+  if (any(infix_matches)) {
 
-    special_functions_in_script <- functions[special_functions][special_matches]
+    infix_functions_in_script <- functions[infix_functions][infix_matches]
 
-    # lines with special functions
-    special_matches <- which(as.logical(
-      Reduce(f = "+", lapply(X = special_functions_in_script,
+    # lines with infix functions
+    infix_matches <- which(as.logical(
+      Reduce(f = "+", lapply(X = infix_functions_in_script,
                              FUN = function(pattern) grepl(x = script,
                                                            pattern = pattern,
                                                            fixed = TRUE)))
     ))
 
-    funs_prep <- paste(escape_strings(special_functions_in_script), collapse = "|")
+    funs_prep <- paste(escape_strings(infix_functions_in_script), collapse = "|")
 
-    list_specials <- get_matches(line = special_matches,
-                                 text = script[special_matches],
+    list_infixes <- get_matches(line = infix_matches,
+                                 text = script[infix_matches],
                                  regex = funs_prep,
                                  perl = FALSE,
                                  fixed = FALSE,
                                  filter_nomatches = TRUE)
-    n_specials <-  length(list_specials$line)
-    list_specials <- c(list_specials,
-                       list(pkg = rep("", n_specials),
-                            type = rep("special", n_specials)
+    n_infixes <-  length(list_infixes$line)
+    list_infixes <- c(list_infixes,
+                       list(pkg = rep("", n_infixes),
+                            type = rep("infix", n_infixes)
                        ))
   } else {
-    list_specials <- NULL
+    list_infixes <- NULL
   }
 
-  out <- list(specials = list_specials, pot_missings = list_pot_missings)
+  out <- list(infixes = list_infixes, pot_missings = list_pot_missings)
   return(out)
 }

@@ -1,4 +1,4 @@
-﻿COMMENT;TESTSKRIPT;TARGET
+COMMENT;TESTSKRIPT;TARGET
 # Code to test explicit package usage PACKAGE::FUNCTION();;
 # regular usage;irisdt <- as.data.table(iris);irisdt <- data.table::as.data.table(iris)
 # start of a line;setkey(iris, Species);data.table::setkey(iris, Species)
@@ -13,7 +13,7 @@ data.table::setkey     (iris, Species);data.table::setkey     (iris, Species)
 # function called as is;# function called as is
 setkey;setkey
 ;
-# special functions;# special functions
+# infix functions;# infix functions
 "irisdt[Species %like% ""setosa""]";"irisdt[Species %like% ""setosa""]"
 irisdt[Sepal.Length %between% c(1, 2)];irisdt[Sepal.Length %between% c(1, 2)]
 "irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]";"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]"

@@ -57,7 +57,7 @@ This is especially usefull when using the RStudio Addins.
   - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio.
   - `origin.color_added_package`: hex code highlighting insertions.
   - `origin.color_missed_function`: hex code highlighting potential missings.
-  - `origin.color_special_function`: hex code highlighting infix functions (see discussion).
+  - `origin.color_infix_function`: hex code highlighting infix functions (see discussion).
 
 
 ### Considered Packages

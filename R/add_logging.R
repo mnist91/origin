@@ -9,7 +9,7 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
     mis_start_string <-  sprintf('<text style="color: %s;">',
                                  getOption("origin.color_missed_function"))
     spe_start_string <-  sprintf('<text style="color: %s;">',
-                                 getOption("origin.color_special_function"))
+                                 getOption("origin.color_infix_function"))
     end_string <- "</text>"
     start_wrapper <- "<div>"
     end_wrapper <- "</div"

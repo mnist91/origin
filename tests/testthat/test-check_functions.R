@@ -13,24 +13,24 @@ testthat::test_that("check_functions has correct output", {
   res1 <- res2 <- list(
     matches = c(nrow = TRUE, n_row = TRUE),
     line_matches = c(TRUE, FALSE, TRUE, TRUE),
-    special_matches = c(`%like%` = TRUE),
-    special_functions = c(FALSE, TRUE, FALSE),
+    infix_matches = c(`%like%` = TRUE),
+    infix_functions = c(FALSE, TRUE, FALSE),
     functions_in_script = c("nrow", "n_row")
   )
 
   res3 <- list(
     matches = c(nrow = TRUE, n_row = TRUE),
     line_matches = c(TRUE, TRUE, TRUE, TRUE),
-    special_matches = c(`%like%` = TRUE),
-    special_functions = c(FALSE, TRUE, FALSE),
+    infix_matches = c(`%like%` = TRUE),
+    infix_functions = c(FALSE, TRUE, FALSE),
     functions_in_script = c("nrow", "n_row")
   )
 
   res4 <- list(
     matches = c(setDT = FALSE),
     line_matches = c(FALSE, FALSE, FALSE, FALSE),
-    special_matches = c(`%like%` = TRUE),
-    special_functions = c(FALSE, TRUE, FALSE),
+    infix_matches = c(`%like%` = TRUE),
+    infix_functions = c(FALSE, TRUE, FALSE),
     functions_in_script = "setDT"
   )
 

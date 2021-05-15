@@ -7,7 +7,7 @@
     origin.pkgs = NULL,
     origin.color_added_package = "#00F9FF",
     origin.color_missed_function = "#ff0000",
-    origin.color_special_function = "#ffa500",
+    origin.color_infix_function = "#ffa500",
     origin.overwrite = TRUE,
     origin.ignore_comments = TRUE,
     origin.check_conflicts = TRUE,

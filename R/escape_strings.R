@@ -1,4 +1,4 @@
-#' Escape Special regex characters
+#' Escape infix regex characters
 #'
 #' @param x character vector with strings to be used in a regex
 #'

@@ -1,4 +1,4 @@
-﻿TESTSKRIPT;TARGET
+TESTSKRIPT;TARGET
 # Code to test explicit package usage PACKAGE::FUNCTION();# Code to test explicit package usage PACKAGE::FUNCTION()
 ;
 # regular usage;# regular usage
@@ -19,7 +19,7 @@ data.table::setkey     (iris, Species);data.table::setkey     (iris, Species)
 # function called as is;# function called as is
 setkey;setkey
 ;
-# special functions;# special functions
+# infix functions;# infix functions
 "irisdt[Species %like% ""setosa""]";"irisdt[Species %like% ""setosa""]"
 irisdt[Sepal.Length %between% c(1, 2)];irisdt[Sepal.Length %between% c(1, 2)]
 "irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]";"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]"
@@ -77,10 +77,10 @@ lapply(X = iris,;lapply(X = iris,
        FUN =bind_cols , ...);       FUN =dplyr::bind_cols , ...)
 ;
 # purrr-style;# purrr-style
-map(iris, ;purrr::map(iris, 
+map(iris,;purrr::map(iris,
     bind_cols);    bind_cols)
 map(iris, bind_cols);purrr::map(iris, bind_cols)
-map(iris, ;purrr::map(iris, 
+map(iris,;purrr::map(iris,
     .f = bind_cols);    .f = dplyr::bind_cols)
 map(iris, .f =bind_cols);purrr::map(iris, .f =dplyr::bind_cols)
 ;

@@ -66,14 +66,14 @@ originize <- function(script,
 
   } else {
 
-    # get positions of potential missined (special) functions
+    # get positions of potential missined (infix) functions
     potential_missings <-
       get_potential_missings(script = script,
                              line_matches = fun_list$line_matches,
                              functions = unlist(functions),
                              functions_in_script = fun_list$functions_in_script,
-                             special_functions = fun_list$special_functions,
-                             special_matches = fun_list$special_matches)
+                             infix_functions = fun_list$infix_functions,
+                             infix_matches = fun_list$infix_matches)
 
     # combine positions of potential missings
     logging_comb <-  Reduce(
