@@ -107,4 +107,6 @@ originize_dir <-
                    verbose = verbose,
                    use_markers = use_markers)
 
+    return(invisible(NULL))
+
   }

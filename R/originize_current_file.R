@@ -42,4 +42,6 @@ originize_current_file <-
                    excluded_functions = excluded_functions,
                    verbose = verbose,
                    use_markers = use_markers)
+
+    return(invisible(NULL))
   }

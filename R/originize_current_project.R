@@ -51,4 +51,7 @@ originize_current_project <-
                   excluded_functions = excluded_functions,
                   verbose = verbose,
                   use_markers = use_markers)
+
+    return(invisible(NULL))
+
   }
