@@ -1,7 +1,7 @@
 testthat::test_that("reg_extract", {
 
   # additional arguments to gregexpr
-  s1 <- c("This is a string")
+  s1 <- "This is a string"
   result <- reg_extract(x = s1,
                         pattern = "this",
                         perl = TRUE,
@@ -9,7 +9,7 @@ testthat::test_that("reg_extract", {
   testthat::expect_equal(result, expected = list("This"))
 
   # invert
-  s2 <- c("This thing is a thing string")
+  s2 <- "This thing is a thing string"
   result <- reg_extract(x = s2,
                         pattern = "thing",
                         invert = TRUE,
@@ -18,7 +18,7 @@ testthat::test_that("reg_extract", {
 
 
   # invert match at the beginning causes empty string
-  s3 <- c("This is a string")
+  s3 <- "This is a string"
   result <- reg_extract(x = s3,
                         pattern = "This",
                         invert = TRUE,
@@ -65,5 +65,3 @@ x <- y
 })
 
 
-
-checkma

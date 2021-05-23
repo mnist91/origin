@@ -16,8 +16,10 @@ find_functions <- function(x) {
   x <- x[!comment]
 
   # collapse string together to get function definitions over two lines
+  # Begin Exclude Linting
   # myfun <-
   #   function() ...
+  # End Exclude Linting
   s <- paste(x, collapse = "\n")
 
   # find function names
