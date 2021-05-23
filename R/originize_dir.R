@@ -3,10 +3,13 @@
 #'
 #' @param path path to a directory
 #' @template pkgs
-#' @param recursive see \link[base]{list.files}
-#' @param files_pattern see \link[base]{list.files}
-#' @param ignore_case see \link[base]{list.files}
-#' @param exclude_files see \link[base]{list.files}
+#' @param recursive logical. Should the listing recurse into directories?
+#'  See \link[base]{list.files}
+#' @param files_pattern A regular expression. Only file names which match the
+#'  regular expression will be returned. See \link[base]{list.files}
+#' @param ignore_case logical. Should pattern-matching be case-insensitive?
+#'  See \link[base]{list.files}
+#' @param exclude_files list of files to be excluded
 #' @template overwrite
 #' @template ask_before_applying_changes
 #' @template ignore_comments
