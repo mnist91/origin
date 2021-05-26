@@ -11,7 +11,10 @@ rhub::check_for_cran()
 
 covr::codecov(token = "b044750c-7f42-4875-a95c-2e8a3c3a694b")
 covr::package_coverage(path = ".")
-usethis::use_version(which = "patch")
+?usethis::use_version(which = "major")
+usethis::use_version(which = "minor")
+?usethis::use_version(which = "patch")
+?usethis::use_version(which = "dev")
 
 # Roxygen
 devtools::document()
