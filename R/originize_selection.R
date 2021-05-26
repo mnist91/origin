@@ -11,6 +11,7 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
+#' @template check_local_funs
 #'
 #' @return NULL
 originize_selection <-
@@ -25,7 +26,9 @@ originize_selection <-
            add_base_packages = getOption("origin.add_base_packages"),
            excluded_functions = getOption("origin.excluded_functions"),
            verbose = getOption("origin.verbose"),
-           use_markers = getOption("origin.use_markers_for_logging")) {
+           use_markers = getOption("origin.use_markers_for_logging"),
+           check_local_funs = getOption("origin.check_local_funs")
+           ) {
 
     if (is.null(context)) {
       message("Nothing selected")
@@ -64,6 +67,7 @@ originize_selection <-
                    excluded_functions = excluded_functions,
                    verbose = verbose,
                    use_markers = use_markers,
+                   check_local_funs = check_local_funs,
                    selected_lines = selected_lines,
                    context = context)
 

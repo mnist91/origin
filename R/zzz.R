@@ -14,6 +14,7 @@
     origin.check_base_conflicts = TRUE,
     origin.add_base_packages = FALSE,
     origin.excluded_functions = list(),
+    origin.check_local_funs = TRUE,
     origin.verbose = TRUE
   )
 

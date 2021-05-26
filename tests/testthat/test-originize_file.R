@@ -36,6 +36,7 @@ testthat::test_that("origin file", {
                  excluded_functions = list(dplyr = "last"),
                  ignore_comments = TRUE,
                  use_markers = FALSE,
+                 check_local_funs = TRUE,
                  verbose = FALSE)
   # )
 

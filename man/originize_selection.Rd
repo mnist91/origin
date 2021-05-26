@@ -15,7 +15,8 @@ originize_selection(
   add_base_packages = getOption("origin.add_base_packages"),
   excluded_functions = getOption("origin.excluded_functions"),
   verbose = getOption("origin.verbose"),
-  use_markers = getOption("origin.use_markers_for_logging")
+  use_markers = getOption("origin.use_markers_for_logging"),
+  check_local_funs = getOption("origin.check_local_funs")
 )
 }
 \arguments{
@@ -52,6 +53,10 @@ namespace conflicts}
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
 the console.}
+
+\item{check_local_funs}{a boolean. If TRUE, it is checked whether locally
+defined functions inside of the project mask exported functions from checked
+packages. It avoids mistakenly adding pkg:: to a custom local function.}
 }
 \description{
 Wrapper function to be used as an RSTUDIO ADDIN

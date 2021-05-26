@@ -15,12 +15,12 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
+#' @template check_local_funs
 #' @param selected_lines logical, only necessary for originize selection
 #' @param context a document context regarding the selected r script
 #'
 #' @return NULL
 #' @noRd
-#'
 originize_wrap <-
   function(scripts,
            files,
@@ -36,6 +36,7 @@ originize_wrap <-
            excluded_functions = list(),
            verbose = FALSE,
            use_markers = getOption("origin.use_markers_for_logging"),
+           check_local_funs = TRUE,
            selected_lines = NULL,
            context = NULL) {
 
@@ -78,7 +79,52 @@ originize_wrap <-
       stop("You excluded all exported functions from the given packages.")
     }
 
+    # check if locally defined functions share names with exported functions
+    # from checked packages.
+    # Note that all projects R scripts are searched for function definitions
+    if (check_local_funs) {
 
+      # locally defined functions
+      local_funs <- get_local_functions(path = rprojroot::find_rstudio_root_file())
+
+      if (length(local_funs) > 0) {
+        # overlaps of local and exported functions
+        dups <- get_fun_duplicates(c(list(local = local_funs),
+                                     functions))
+        local_dups <- dups[dups %in% dups[names(dups) == "local"]]
+
+        # in case there is an overlap
+        if (length(local_dups) > 0) {
+
+          script_collapsed <- paste(lapply(X = scripts,
+                                           FUN = paste,
+                                           collapse = ""),
+                                    collapse = "")
+
+          # are any masked functions used in the durrently checks script(s)
+          local_dups <- sort(local_dups[names(local_dups) != "local"])
+          local_dups_with_pkg <- setNames(object = unique(local_dups),
+                                          nm = by(data = names(local_dups),
+                                                  INDICES = local_dups,
+                                                  FUN = paste,
+                                                  collapse = ", "))
+
+          local_dup_funs_in_script <- vapply(X = local_dups_with_pkg,
+                                             FUN = function(f) {
+                                               grepl(pattern = f,
+                                                     x = script_collapsed,
+                                                     fixed = TRUE)
+                                             },
+                                             FUN.VALUE = logical(1),
+                                             USE.NAMES = TRUE)
+
+          # inform the user
+          if (any(local_dup_funs_in_script)) {
+            solve_local_duplicates(dups = local_dups_with_pkg[local_dup_funs_in_script])
+          }
+        }
+      }
+    }
     # DUPLICATES ---------------------------------------------------------------
     # find functions, that are called within multiple packages
     # a automatic assignment is not possible in such cases
@@ -86,14 +132,19 @@ originize_wrap <-
 
     if (check_conflicts) {
       # get duplicate functions
-      dups <- get_fun_duplicates(functions)
+      dups <- sort(get_fun_duplicates(functions))
+      dups_with_pkg <- setNames(object = unique(dups),
+                                nm = by(names(dups), dups, paste, collapse = ", "))
 
-      script_collapsed <- paste(lapply(X = scripts,
-                                       FUN = paste,
-                                       collapse = ""),
-                                collapse = "")
+      if (!exists("script_collapsed")) {
+        script_collapsed <- paste(lapply(X = scripts,
+                                         FUN = paste,
+                                         collapse = ""),
+                                  collapse = "")
+      }
+
       # which duplicates are in the script
-      dup_funs_in_script <- vapply(X = dups,
+      dup_funs_in_script <- vapply(X = dups_with_pkg,
                                    FUN = function(f) {
                                      grepl(pattern = f,
                                            x = script_collapsed,
@@ -104,7 +155,7 @@ originize_wrap <-
 
       # Require User interaction if duplicates are detected
       if (any(dup_funs_in_script)) {
-        solve_fun_duplicates(dups = dups[dup_funs_in_script],
+        solve_fun_duplicates(dups = dups_with_pkg[dup_funs_in_script],
                              pkgs = pkgs)
       }
     }
@@ -168,7 +219,7 @@ originize_wrap <-
                            # exclude empty logs by Filter()
                            x = Filter(function(dat) !is.null(dat$line),
                                       lapply(X = results,
-                                      FUN = function(l) l$logging_data))),
+                                             FUN = function(l) l$logging_data))),
                     use_markers = use_markers)
       }
     }

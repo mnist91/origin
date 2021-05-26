@@ -1,27 +1,25 @@
 #' print warning regarding conflicts
 #' User input is required when called in an interactive context, e.g. RStudio
 #' @param dups duplicate functions
-#' @param pkgs vector of checked packages to determine order
 #'
 #' @noRd
 #' @importFrom utils menu
-solve_fun_duplicates <- function(dups, pkgs) {
+solve_local_duplicates <- function(dups) {
   # Require User interaction if duplicates are detected
 
   # bold, red and underlined text
   cat("\033[31m\033[4m\033[1m",
-      "Used functions in mutliple Packages!",
+      "Locally defined and used functions mask exported functions from packages!",
       "\033[22m\033[24m\033[39m",
       "\n\n")
 
   cat(paste(dups, ": ", names(dups),
             collapse = "\n", sep = ""),
       "\n\n")
-  cat("Order in which relevant packges are evaluated;\n")
-  dup_nms <- unique(unlist(strsplit(names(dups), ", ")))
-  cat(paste(pkgs[pkgs %in% dup_nms], collapse = " >> "), "\n")
+  cat("Local functions have \033[4mhigher\033[24m priority. In case you want to use an",
+      "exported version of a function listed above set pkg::fun manually;\n\n")
 
-  cat("Do you want to proceed?")
+  cat("Got it!")
   if (interactive()) {
     answer <- menu(choices = c("YES", "NO")) # nocov
   } else {

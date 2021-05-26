@@ -19,7 +19,8 @@ originize_dir(
   add_base_packages = getOption("origin.add_base_packages", FALSE),
   excluded_functions = getOption("origin.excluded_functions", list()),
   verbose = getOption("origin.verbose", FALSE),
-  use_markers = getOption("origin.use_markers_for_logging", TRUE)
+  use_markers = getOption("origin.use_markers_for_logging", TRUE),
+  check_local_funs = getOption("origin.check_local_funs", TRUE)
 )
 }
 \arguments{
@@ -27,13 +28,16 @@ originize_dir(
 
 \item{pkgs}{a character vector with package names}
 
-\item{recursive}{see \link[base]{list.files}}
+\item{recursive}{logical. Should the listing recurse into directories?
+See \link[base]{list.files}}
 
-\item{files_pattern}{see \link[base]{list.files}}
+\item{files_pattern}{A regular expression. Only file names which match the
+regular expression will be returned. See \link[base]{list.files}}
 
-\item{ignore_case}{see \link[base]{list.files}}
+\item{ignore_case}{logical. Should pattern-matching be case-insensitive?
+See \link[base]{list.files}}
 
-\item{exclude_files}{see \link[base]{list.files}}
+\item{exclude_files}{list of files to be excluded}
 
 \item{overwrite}{a boolean, if TRUE the file will be saved and overwritten.
 If FALSE the file is returned.}
@@ -64,6 +68,10 @@ namespace conflicts}
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
 the console.}
+
+\item{check_local_funs}{a boolean. If TRUE, it is checked whether locally
+defined functions inside of the project mask exported functions from checked
+packages. It avoids mistakenly adding pkg:: to a custom local function.}
 }
 \description{
 Add Explicit Package Names to its Functions
