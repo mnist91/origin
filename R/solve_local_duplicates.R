@@ -16,7 +16,7 @@ solve_local_duplicates <- function(dups) {
   cat(paste(dups, ": ", names(dups),
             collapse = "\n", sep = ""),
       "\n\n")
-  cat("Local functions have \033[4mhigher\033[24m priority. In case you want to use an",
+  cat("Local functions have \033[4mhigher\033[24m priority. In case you want to use an", # Exclude Linting
       "exported version of a function listed above set pkg::fun manually;\n\n")
 
   cat("Got it!")
