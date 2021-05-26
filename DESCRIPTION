@@ -16,7 +16,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    rstudioapi
+    rstudioapi,
+    rprojroot
 Suggests: 
     testthat,
     dplyr,
