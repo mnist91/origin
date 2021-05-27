@@ -42,7 +42,7 @@ originize_dir <-
            verbose = getOption("origin.verbose", FALSE),
            use_markers = getOption("origin.use_markers_for_logging", TRUE),
            check_local_funs = getOption("origin.check_local_funs", TRUE)
-           ) {
+  ) {
 
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
@@ -58,13 +58,38 @@ originize_dir <-
 
 
     # TODO: non absolute paths
-    if (any(!exclude_files %in% files)) {
-      stop("File to exclude not in given path\n",
-           exclude_files[!exclude_files %in% files])
+    if (!is.null(exclude_files)) {
+      if (any(!exclude_files %in% files)) {
+        stop("File to exclude not in given path\n",
+             exclude_files[!exclude_files %in% files])
+      }
+      files <- files[!files %in% exclude_files]
     }
 
+    # Exclude renv / packrat ---------------------------------------------------
+    # Scripts from packages in the project library must be excluded
+    excludable_folders <- c("renv", "packrat")
+    dependency_files <- grepl(x = files,
+                              pattern = paste(escape_strings(paste0(.Platform$file.sep,
+                                                                    excludable_folders,
+                                                                    .Platform$file.sep)),
+                                              collapse = "|"))
+
+    if (any(dependency_files)) {
+      if (verbose) {
+        message(sprintf("%s files from package dependency manager renv or packrat are exlcuded from originizing",
+                        sum(dependency_files)))
+      }
+
+      files <-
+        files[!dependency_files]
+    }
+
+
+
+    # warning if many files are about to be originized
     n_files <- length(files)
-    if (n_files > 20 || any(grepl("renv|packrat", files))) {
+    if (n_files > 20) {
       cat(sprintf("You are about to originize %s files.\nProceed?", n_files))
       if (interactive()) {
         answer <- menu(choices = c("YES", "NO", "Show files")) # nocov
