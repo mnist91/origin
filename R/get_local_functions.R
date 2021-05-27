@@ -1,9 +1,14 @@
 #' Find all user defined functions in the project
 #'
-#' @return character vector of function names
-#' @noRd
+#' @param path Path in which all defined function names should be found and retreived
 #'
-get_local_functions <- function(path = rprojroot::find_rstudio_root_file()) {
+#' @return character vector of function names
+#' @export
+#'
+#' @examples
+#' get_local_functions(path = ".")
+#' get_local_functions(path = rprojroot::find_rstudio_root_file())
+get_local_functions <- function(path = ".") {
 
   # get project root file
   root <- try(path)
@@ -36,7 +41,7 @@ get_local_functions <- function(path = rprojroot::find_rstudio_root_file()) {
   scripts <- suppressWarnings(lapply(X = files, FUN = readLines))
 
   # find funciton names
-  local_funs <- unique(unlist(lapply(X = scripts, FUN = find_functions)))
+  local_funs <- sort(unique(unlist(lapply(X = scripts, FUN = find_functions))))
 
   return(local_funs)
 }
