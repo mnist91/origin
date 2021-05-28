@@ -25,9 +25,9 @@ get_origins <- function(pkg,
   }
 
   l <- check_functions(script = script,
-                      functions = functions,
-                      pkg = pkg,
-                      verbose = verbose)
+                       functions = functions,
+                       pkg = pkg,
+                       verbose = verbose)
 
   # make function-Output available
   matches <- l$matches
@@ -46,7 +46,7 @@ get_origins <- function(pkg,
   #                     "?", "*", "^", "+", "(", "[", "{")
   # paste(escape_strings(pre_fun_tokens), collapse = "")
   # End Exclude Linting
-  pattern_regex <- paste0("(?<=[[:blank:],;=&/-<>~!\\|\\?\\*\\^\\+\\(\\[\\{|^)(",
+  pattern_regex <- paste0("(?<=[[:blank:],;=&/\\-<>~!\\|\\?\\*\\^\\+\\(\\[\\{]|^)(",
                           funs_prep,
                           ") *\\(")
 
