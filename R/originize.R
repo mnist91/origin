@@ -11,6 +11,7 @@ originize <- function(script,
 
 
   # get relevant function information
+  # TODO: still relevant / much time improvement here?
   fun_list <- check_functions(script = script,
                               functions = unlist(functions),
                               verbose = verbose,

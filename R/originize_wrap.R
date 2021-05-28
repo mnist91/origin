@@ -177,7 +177,27 @@ originize_wrap <-
       stop("No non-excluded exported functions in given packages.")
     }
 
+    # reduce checked functions to matched names in any part of any script
 
+    # in case this full script collapsing has not happend earlier.
+    # better performance if an error is triggered prior to this step
+    if (!exists("script_collapsed")) {
+      script_collapsed <- paste(lapply(X = scripts,
+                                       FUN = paste,
+                                       collapse = ""),
+                                collapse = "")
+    }
+    functions <- lapply(functions,
+           FUN = function(funs) {
+             funs[vapply(X = funs,
+                    FUN = function(f) {
+                      grepl(pattern = f,
+                            x = script_collapsed,
+                            fixed = TRUE)
+                    },
+                    FUN.VALUE = logical(1),
+                    USE.NAMES = TRUE)]
+           })
 
     # apply originize function to each file/script
     results <- mapply(
