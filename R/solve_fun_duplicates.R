@@ -17,7 +17,7 @@ solve_fun_duplicates <- function(dups, pkgs) {
   cat(paste(dups, ": ", names(dups),
             collapse = "\n", sep = ""),
       "\n\n")
-  cat("Order in which relevant packges are evaluated;\n")
+  cat("Order in which relevant packges are evaluated:\n")
   dup_nms <- unique(unlist(strsplit(names(dups), ", ")))
   cat(paste(pkgs[pkgs %in% dup_nms], collapse = " >> "), "\n")
 

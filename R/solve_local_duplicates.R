@@ -17,9 +17,9 @@ solve_local_duplicates <- function(dups) {
             collapse = "\n", sep = ""),
       "\n\n")
   cat("Local functions have \033[4mhigher\033[24m priority. In case you want to use an", # Exclude Linting
-      "exported version of a function listed above set pkg::fun manually;\n\n")
+      "exported version of a function listed above set pkg::fun manually\n\n")
 
-  cat("Got it!")
+  cat("Got it?")
   if (interactive()) {
     answer <- menu(choices = c("YES", "NO")) # nocov
   } else {
