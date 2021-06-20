@@ -98,3 +98,6 @@ myfun <- function(x) {copy(x)};myfun <- function(x) {data.table::copy(x)}
 ;
 # comparisons;# comparisons
 3>n(tib)&n(tib)<2&3<n(tib)|5>=n(tib)|n(tib)==n(tib2);3>dplyr::n(tib)&dplyr::n(tib)<2&3<dplyr::n(tib)|5>=dplyr::n(tib)|dplyr::n(tib)==dplyr::n(tib2)
+;
+# HTMLs;# HTMLs
+"mutate(x = ""<div> Hi! <\div>"") %>% filter(length)";"dplyr::mutate(x = ""<div> Hi! <\div>"") %>% dplyr::filter(length)"

@@ -67,14 +67,58 @@ originize <- function(script,
 
   } else {
 
+    # in case there are lines with html-characters which might intervene with
+    # the markers logging output eventually, escape them
+    script_logging <- script
+    if (use_markers &&
+        (has_html <- length(is_html_line <- which(grepl(pattern = "<|>", x = script))) > 0)) {
+      script_logging[is_html_line] <- gsub(">", "&gt;", gsub("<", "&lt;", script[is_html_line]))
+    }
+
     # get positions of potential missined (infix) functions
     potential_missings <-
-      get_potential_missings(script = script,
+      get_potential_missings(script = script_logging,
                              line_matches = fun_list$line_matches,
                              functions = unlist(functions),
                              functions_in_script = fun_list$functions_in_script,
                              infix_functions = fun_list$infix_functions,
                              infix_matches = fun_list$infix_matches)
+
+
+    # the insertion positions must be adjustet to the escaped HTML-characters
+    if (use_markers && has_html) {
+      is_html <- gregexpr("<|>", script)
+      replacement_list <- lapply(replacement_list,
+                                 FUN = function(rl) {
+
+                                   # which lines in the script that have insertions
+                                   # for this package are with HTMLs
+                                   relevant_script <- intersect(rl$line, is_html_line)
+
+                                   # which lines with functions from this package
+                                   # have HTML-characters
+                                   relevant_replacement_line <- rl$line %in% is_html_line
+
+                                   if (length(relevant_script) > 0) {
+
+                                     # if any, iterate over these insertions
+                                     # and add 3 tokens to the matching position
+                                     # < -> &lt;
+                                     # > -> &gt;
+                                     # each plus three tokens
+                                     rl$matches[relevant_replacement_line] <- Map(f = function(htmls, matches) {
+                                       unlist(lapply(X = matches,
+                                                     FUN = function(mtchs) {
+                                                       mtchs + sum(mtchs > htmls) * 3
+                                                     }))
+                                     },
+                                     is_html[relevant_script],
+                                     rl$matches[relevant_replacement_line])
+                                   }
+
+                                   return(rl)
+                                 })
+    }
 
     # combine positions of potential missings
     logging_comb <-  Reduce(
@@ -95,7 +139,7 @@ originize <- function(script,
       pkg = logging_comb$pkg,
       log_length = logging_comb$log_length,
       type = logging_comb$type,
-      string = logging_comb$string,
+      string = script_logging[logging_comb$line],
       use_markers = use_markers)
 
     # combine all lines
