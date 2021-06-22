@@ -13,7 +13,7 @@ reg_extract(x, pattern, invert = FALSE, ...)
 
 \item{invert}{logical: if TRUE, extract or replace the non-matched substrings.}
 
-\item{...}{arguments passed to gregexpr}
+\item{...}{arguments passed to \link[base]{gregexpr}}
 }
 \value{
 a character vector

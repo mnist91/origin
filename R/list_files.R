@@ -4,13 +4,16 @@
 #' @param exclude_folders character vector of folders to exlcude
 #' @param ... arguments passed to \link[base]{list.files}
 #'
+#' @export
 #' @return a character vector of file names
 #'
 #' @examples
+#' \donttest{
 #' list_files(".",
 #'            exclude_folders = c("renv", "packrat", "tests"),
 #'            pattern = "\\.R$",
 #'            ignore.case = TRUE)
+#' }
 list_files <- function(path,
                        exclude_folders = c("renv", "packrat", "tests"),
                        ...) {
