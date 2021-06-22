@@ -49,7 +49,8 @@ originize_dir <-
            "potential conflicts is required!")
     }
 
-    files <- list.files(path = path,
+    files <- list_files(path = path,
+                        exclude_folders = c("renv", "packrat"),
                         full.names = TRUE,
                         include.dirs = FALSE,
                         recursive = recursive,
@@ -65,26 +66,6 @@ originize_dir <-
       }
       files <- files[!files %in% exclude_files]
     }
-
-    # Exclude renv / packrat ---------------------------------------------------
-    # Scripts from packages in the project library must be excluded
-    excludable_folders <- c("renv", "packrat")
-    dependency_files <- grepl(x = files,
-                              pattern = paste(escape_strings(paste0(.Platform$file.sep,
-                                                                    excludable_folders,
-                                                                    .Platform$file.sep)),
-                                              collapse = "|"))
-
-    if (any(dependency_files)) {
-      if (verbose) {
-        message(sprintf("%s files from package dependency manager renv or packrat are exlcuded from originizing",
-                        sum(dependency_files)))
-      }
-
-      files <-
-        files[!dependency_files]
-    }
-
 
 
     # warning if many files are about to be originized
@@ -142,3 +123,4 @@ originize_dir <-
     return(invisible(NULL))
 
   }
+

@@ -18,22 +18,14 @@ get_local_functions <- function(path = ".") {
     return(character(0))
   }
 
-  # find all R scripts in the project
-  files <- list.files(path = root,
+  # all R files that do not live in the foldrs renv/packrat/tests
+  files <- list_files(path = root,
+                      exclude_folders = c("renv", "packrat", "tests"),
                       full.names = TRUE,
                       include.dirs = FALSE,
                       recursive = TRUE,
                       pattern = "\\.R$",
                       ignore.case = TRUE)
-
-  # exclude local project environment package handler folders and tests
-  excludable_folders <- c("renv", "packrat", "tests")
-  files <-
-    files[!grepl(x = files,
-                 pattern = paste(escape_strings(paste0(.Platform$file.sep,
-                                                       excludable_folders,
-                                                       .Platform$file.sep)),
-                                 collapse = "|"))]
 
 
 
