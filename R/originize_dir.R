@@ -92,7 +92,7 @@ originize_dir <-
     }
 
     # read file
-    scripts <- lapply(files, readLines)
+    scripts <- suppressWarnings(lapply(files, readLines))
 
     # check for empty scripts
     empty_scripts <- vapply(X = scripts, FUN = length, FUN.VALUE = integer(1)) == 0

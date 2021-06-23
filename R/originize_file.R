@@ -37,7 +37,7 @@ originize_file <-
 
 
     # read file
-    script <- readLines(file)
+    script <- suppressWarnings(readLines(file))
 
 
     originize_wrap(scripts = list(script),
