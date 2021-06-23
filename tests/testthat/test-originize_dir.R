@@ -26,7 +26,7 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
 
 
   # write an empty file
-  writeLines(dir, con = "check.R")
+  writeLines("", con = test_file_path3)
 
   # In einem Schritt, mit crosschecks
   originize_dir(dir,
