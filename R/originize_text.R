@@ -12,7 +12,7 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
-#' @template check_local_funs
+#' @template check_local_conflicts
 #'
 #' @return NULL
 #' @export
@@ -30,7 +30,7 @@ originize_text <-
            excluded_functions = getOption("origin.excluded_functions", list()),
            verbose = getOption("origin.verbose", FALSE),
            use_markers = getOption("origin.use_markers_for_logging", TRUE),
-           check_local_funs = getOption("origin.check_local_funs", TRUE)
+           check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
            ) {
 
     if (interactive()) {
@@ -62,7 +62,7 @@ originize_text <-
                           excluded_functions = excluded_functions,
                           verbose = verbose,
                           use_markers = use_markers,
-                          check_local_funs = check_local_funs)
+                          check_local_conflicts = check_local_conflicts)
 
 
     return(out)

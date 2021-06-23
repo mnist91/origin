@@ -1,5 +1,13 @@
+# origin 0.4.0
+### Bugfixes
+- HTML-code in R scripts does no longer intervene with Markers output
+- improve performance by excluding project library folders (renv/packrat)
+  prior to list.files rather than afterwards
+- add tests for `originize_dir`
+
+
 # origin 0.3.2
-### Bugfuxes
+### Bugfixes
 - Improve performance by reducing checked functions for each script.
 - @ not reasonable to occur prior to a function call
 

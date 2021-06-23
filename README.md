@@ -1,4 +1,4 @@
-# origin - 0.1.0 <img src="misc/origin.png" width=170 align="right" />
+# origin - 0.4.0 <img src="misc/origin.png" width=170 align="right" />
 
 
 | branch        | main | dev  |
@@ -50,6 +50,9 @@ This is especially usefull when using the RStudio Addins.
   - `origin.add_base_packages = FALSE`: should base packages also be added e.g., `base::sum()`.
   - `origin.check_base_conflicts = TRUE`: Should origin also check for conflicts
   with base R functions.
+  - `origin.check_local_conflicts = TRUE`: Should origin also check for conflicts
+  with locally defined functions anywhere in your project? Note that it does not
+  check the environment but solely parses files and scans them for function definitions
   - `origin.excluded_functions = list()`: a list of functions to exclude from checking. See details.
   - `origin.ignore_comments = TRUE`: should comments be ignored.
   - `origin.verbose = TRUE`: some sort of logging is performed, either in the 

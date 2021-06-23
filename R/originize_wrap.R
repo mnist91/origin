@@ -15,7 +15,7 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
-#' @template check_local_funs
+#' @template check_local_conflicts
 #' @param selected_lines logical, only necessary for originize selection
 #' @param context a document context regarding the selected r script
 #'
@@ -36,7 +36,7 @@ originize_wrap <-
            excluded_functions = list(),
            verbose = FALSE,
            use_markers = getOption("origin.use_markers_for_logging"),
-           check_local_funs = TRUE,
+           check_local_conflicts = TRUE,
            selected_lines = NULL,
            context = NULL) {
 
@@ -82,7 +82,7 @@ originize_wrap <-
     # check if locally defined functions share names with exported functions
     # from checked packages.
     # Note that all projects R scripts are searched for function definitions
-    if (check_local_funs) {
+    if (check_local_conflicts) {
 
       # locally defined functions
       local_funs <- get_local_functions(path = rprojroot::find_rstudio_root_file())

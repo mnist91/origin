@@ -11,7 +11,7 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
-#' @template check_local_funs
+#' @template check_local_conflicts
 #'
 #' @return NULL
 originize_selection <-
@@ -27,7 +27,7 @@ originize_selection <-
            excluded_functions = getOption("origin.excluded_functions"),
            verbose = getOption("origin.verbose"),
            use_markers = getOption("origin.use_markers_for_logging"),
-           check_local_funs = getOption("origin.check_local_funs")
+           check_local_conflicts = getOption("origin.check_local_conflicts")
            ) {
 
     if (is.null(context)) {
@@ -67,7 +67,7 @@ originize_selection <-
                    excluded_functions = excluded_functions,
                    verbose = verbose,
                    use_markers = use_markers,
-                   check_local_funs = check_local_funs,
+                   check_local_conflicts = check_local_conflicts,
                    selected_lines = selected_lines,
                    context = context)
 
