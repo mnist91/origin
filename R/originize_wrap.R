@@ -118,9 +118,11 @@ originize_wrap <-
                                              FUN.VALUE = logical(1),
                                              USE.NAMES = TRUE)
 
-          # inform the user
           if (any(local_dup_funs_in_script)) {
+            # inform the user
             solve_local_duplicates(dups = local_dups_with_pkg[local_dup_funs_in_script])
+
+            # exclude these local functions from originizing
             functions <- exclude_functions(functions, list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
           }
         }
@@ -189,16 +191,16 @@ originize_wrap <-
                                 collapse = "")
     }
     functions <- lapply(functions,
-           FUN = function(funs) {
-             funs[vapply(X = funs,
-                    FUN = function(f) {
-                      grepl(pattern = f,
-                            x = script_collapsed,
-                            fixed = TRUE)
-                    },
-                    FUN.VALUE = logical(1),
-                    USE.NAMES = TRUE)]
-           })
+                        FUN = function(funs) {
+                          funs[vapply(X = funs,
+                                      FUN = function(f) {
+                                        grepl(pattern = f,
+                                              x = script_collapsed,
+                                              fixed = TRUE)
+                                      },
+                                      FUN.VALUE = logical(1),
+                                      USE.NAMES = TRUE)]
+                        })
 
     # apply originize function to each file/script
     results <- mapply(
