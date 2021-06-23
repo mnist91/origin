@@ -1,9 +1,9 @@
 Package: origin
 Type: Package
 Title: An R Package That Adds `package::` to Functions to Be More Explicit
-Version: 0.3.2
+Version: 0.4.0
 Author: Matthias Nistler
-Maintainer: The package maintainer <yourself@somewhere.net>
+Maintainer: Matthias Nistler <m_nistler@web.de>
 URL: https://github.com/mnist91/origin
 BugReports: https://github.com/mnist91/origin/issues
 Description: The pure functionality of this package is to add package:: 

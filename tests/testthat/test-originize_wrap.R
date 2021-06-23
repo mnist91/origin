@@ -113,14 +113,29 @@ testthat::test_that("Do origin wrapper function checks work", {
                          fixed = TRUE)
 
   testthat::expect_message(originize_wrap(scripts = list(script),
-                                        files = test_file_path,
-                                        type = "writeLines",
-                                        pkgs = "testthat",
-                                        add_base_packages = FALSE,
-                                        verbose = FALSE,
-                                        ask_before_applying_changes = FALSE),
-                         regexp = "Nothing detected",
-                         fixed = TRUE)
+                                          files = test_file_path,
+                                          type = "writeLines",
+                                          pkgs = "testthat",
+                                          add_base_packages = FALSE,
+                                          verbose = FALSE,
+                                          ask_before_applying_changes = FALSE),
+                           regexp = "Nothing detected",
+                           fixed = TRUE)
+
+  # Package is provided multiple times
+  testthat::expect_message(
+    testthat::expect_warning(originize_wrap(scripts = list(script),
+                                            files = test_file_path,
+                                            type = "writeLines",
+                                            pkgs = c("testthat", "testthat"),
+                                            add_base_packages = FALSE,
+                                            verbose = FALSE,
+                                            ask_before_applying_changes = FALSE),
+                             regexp = "packages are provided more than once",
+                             fixed = TRUE),
+    regexp = "Nothing detected",
+    fixed = TRUE)
+
 
 
 

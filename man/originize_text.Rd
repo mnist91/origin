@@ -16,7 +16,7 @@ originize_text(
   excluded_functions = getOption("origin.excluded_functions", list()),
   verbose = getOption("origin.verbose", FALSE),
   use_markers = getOption("origin.use_markers_for_logging", TRUE),
-  check_local_funs = getOption("origin.check_local_funs", TRUE)
+  check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
 )
 }
 \arguments{
@@ -54,7 +54,7 @@ namespace conflicts}
 to track changes and show issues. FALSE prints the same information in
 the console.}
 
-\item{check_local_funs}{a boolean. If TRUE, it is checked whether locally
+\item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
 defined functions inside of the project mask exported functions from checked
 packages. It avoids mistakenly adding pkg:: to a custom local function.}
 }

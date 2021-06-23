@@ -51,6 +51,13 @@ originize_wrap <-
                  "ask_before_applying_changes is TRUE."))
     }
 
+    # make sure no package is considered multiple times
+    if (any(dup_pkgs <- duplicated(pkgs))) {
+      warning("The following packages are provided more than once:",
+              paste(unique(pkgs[dup_pkgs]), collapse = ", "))
+      pkgs <- unique(pkgs)
+    }
+
     # exclude base R packages from checks for duplicates
     if (!check_base_conflicts) {
       pkgs <- setdiff(pkgs, c(getOption("defaultPackages"), "base"))
