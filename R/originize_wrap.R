@@ -121,6 +121,7 @@ originize_wrap <-
           # inform the user
           if (any(local_dup_funs_in_script)) {
             solve_local_duplicates(dups = local_dups_with_pkg[local_dup_funs_in_script])
+            functions <- exclude_functions(functions, list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
           }
         }
       }
