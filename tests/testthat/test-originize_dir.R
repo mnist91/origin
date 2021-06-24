@@ -59,13 +59,13 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
 
   # erwartete Fehlermeldungen prüfen
   testthat::expect_error(originize_dir(dir,
-                                       pkgs = c("data.table"),
+                                       pkgs = "data.table",
                                        check_base_conflicts = FALSE,
                                        add_base_packages = TRUE),
                          "checking for potential conflicts is required")
 
   testthat::expect_error(originize_dir(dir,
-                                       pkgs = c("data.table"),
+                                       pkgs = "data.table",
                                        exclude_files = "blubb.R"),
                          "File to exclude not in given path")
 
