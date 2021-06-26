@@ -5,7 +5,7 @@
 #' @export
 #'
 #' @examples
-#' \notrun{
+#' \dontrun{
 #' get_pkgs_from_description()
 #' }
 get_pkgs_from_description <- function() {

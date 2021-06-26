@@ -22,7 +22,8 @@ originize_selection(
 \arguments{
 \item{context}{information of marked editor section in RStudio}
 
-\item{pkgs}{a character vector with package names}
+\item{pkgs}{a character vector with package names. Defaults to the result of
+\link[base]{.packages} but if the option `origin.pkgs` is not specified.}
 
 \item{overwrite}{a boolean, if TRUE the file will be saved and overwritten.
 If FALSE the file is returned.}

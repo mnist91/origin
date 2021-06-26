@@ -2,9 +2,11 @@
 
 export(get_exported_functions)
 export(get_local_functions)
+export(get_pkgs_from_description)
 export(list_files)
 export(originize_dir)
 export(originize_file)
+export(originize_pkg)
 export(originize_text)
 export(un_list)
 importFrom(stats,setNames)

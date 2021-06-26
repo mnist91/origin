@@ -2,10 +2,10 @@
 % Please edit documentation in R/originize_dir.R
 \name{originize_dir}
 \alias{originize_dir}
-\title{Add Explicit Package Names to its Functions}
+\title{Originize a complete directory}
 \usage{
 originize_dir(
-  path = ".",
+  path = getwd(),
   pkgs = getOption("origin.pkgs", .packages()),
   recursive = TRUE,
   files_pattern = "\\\\.R$",
@@ -16,17 +16,18 @@ originize_dir(
   ignore_comments = getOption("origin.ignore_comments", TRUE),
   check_conflicts = getOption("origin.check_conflicts", TRUE),
   check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
+  check_local_conflicts = getOption("origin.check_local_conflicts", TRUE),
   add_base_packages = getOption("origin.add_base_packages", FALSE),
   excluded_functions = getOption("origin.excluded_functions", list()),
   verbose = getOption("origin.verbose", FALSE),
-  use_markers = getOption("origin.use_markers_for_logging", TRUE),
-  check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
+  use_markers = getOption("origin.use_markers_for_logging", TRUE)
 )
 }
 \arguments{
-\item{path}{path to a directory}
+\item{path}{path to a directory. Defaults to the current working directory.}
 
-\item{pkgs}{a character vector with package names}
+\item{pkgs}{a character vector with package names. Defaults to the result of
+\link[base]{.packages} but if the option `origin.pkgs` is not specified.}
 
 \item{recursive}{logical. Should the listing recurse into directories?
 See \link[base]{list.files}}
@@ -53,6 +54,10 @@ checked and, if there are any, user input is required. See also}
 \item{check_base_conflicts}{a boolean. If TRUE; base R functions are also
 included in checking for conflicts}
 
+\item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
+defined functions inside of the project mask exported functions from checked
+packages. It avoids mistakenly adding pkg:: to a custom local function.}
+
 \item{add_base_packages}{a boolean. If TRUE, base R functions are handled
 like all other packages and added via `::`}
 
@@ -68,11 +73,8 @@ namespace conflicts}
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
 the console.}
-
-\item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
-defined functions inside of the project mask exported functions from checked
-packages. It avoids mistakenly adding pkg:: to a custom local function.}
 }
 \description{
-Add Explicit Package Names to its Functions
+To originize complete folders/projects, this function finds
+and originizes all R files within this folder and (by default) its subfolders.
 }

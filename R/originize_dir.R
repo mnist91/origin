@@ -1,7 +1,10 @@
-#' Add Explicit Package Names to its Functions
+#' Originize a complete directory
+#'
+#' @description To originize complete folders/projects, this function finds
+#' and originizes all R files within this folder and (by default) its subfolders.
 #'
 #'
-#' @param path path to a directory
+#' @param path path to a directory. Defaults to the current working directory.
 #' @template pkgs
 #' @param recursive logical. Should the listing recurse into directories?
 #'  See \link[base]{list.files}
@@ -15,17 +18,17 @@
 #' @template ignore_comments
 #' @template check_conflicts
 #' @template check_base_conflicts
+#' @template check_local_conflicts
 #' @template add_base_packages
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
-#' @template check_local_conflicts
 #'
 #' @return NULL
 #' @export
 #'
 originize_dir <-
-  function(path = ".",
+  function(path = getwd(),
            pkgs = getOption("origin.pkgs", .packages()),
            recursive = TRUE,
            files_pattern = "\\.R$",
@@ -37,11 +40,11 @@ originize_dir <-
            ignore_comments = getOption("origin.ignore_comments", TRUE),
            check_conflicts = getOption("origin.check_conflicts", TRUE),
            check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
+           check_local_conflicts = getOption("origin.check_local_conflicts", TRUE),
            add_base_packages = getOption("origin.add_base_packages", FALSE),
            excluded_functions = getOption("origin.excluded_functions", list()),
            verbose = getOption("origin.verbose", FALSE),
-           use_markers = getOption("origin.use_markers_for_logging", TRUE),
-           check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
+           use_markers = getOption("origin.use_markers_for_logging", TRUE)
   ) {
 
     if (!check_base_conflicts && add_base_packages) {
