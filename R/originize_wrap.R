@@ -53,7 +53,7 @@ originize_wrap <-
 
     # make sure no package is considered multiple times
     if (any(dup_pkgs <- duplicated(pkgs))) {
-      warning("The following packages are provided more than once:",
+      warning("The following packages are provided more than once: ",
               paste(unique(pkgs[dup_pkgs]), collapse = ", "))
       pkgs <- unique(pkgs)
     }
