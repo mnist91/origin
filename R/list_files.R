@@ -9,6 +9,7 @@
 #'
 #' @examples
 #' \donttest{
+#' # list all R files except from files in the project library
 #' list_files(".",
 #'            exclude_folders = c("renv", "packrat", "tests"),
 #'            pattern = "\\.R$",
