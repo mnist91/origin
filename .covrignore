@@ -1,4 +1,6 @@
 R/originize_current_file.R
 R/originize_current_project.R
 R/originize_selection.R
+R/originize_pkg.R
 R/solve_local_duplicates.R
+R/get_pkgs_from_description.R
