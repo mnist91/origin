@@ -11,7 +11,7 @@ testthat::test_that("origin file", {
   # works only when package is build
   datapath <- system.file("testdata", package = "origin")
 
-  test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
+  test_text <- utils::read.csv2(file = file.path(datapath, "testscript.csv"),
                          na.strings = "NA",
                          encoding = "UTF-8",
                          stringsAsFactors = FALSE)
@@ -50,7 +50,7 @@ testthat::test_that("origin file", {
   writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path)
 
   # In einem Schritt, mit crosschecks
-  capture.output(
+  utils::capture.output(
     originize_file(test_file_path,
                    pkgs = c("data.table",
                             "dplyr",

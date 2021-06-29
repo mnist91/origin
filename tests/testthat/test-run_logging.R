@@ -8,7 +8,7 @@ testthat::test_that("Invoke Logging", {
                     stringsAsFactors = FALSE)
 
   # suppress print output
-  capture.output(
+  utils::capture.output(
     testthat::expect_null(
       run_logging(dat, use_markers = FALSE)
     )

@@ -8,7 +8,7 @@ testthat::test_that("Do origin wrapper function checks work", {
   # works only when package is build
   datapath <- system.file("testdata", package = "origin")
 
-  test_text <- read.csv2(file = file.path(datapath, "testscript.csv"),
+  test_text <- utils::read.csv2(file = file.path(datapath, "testscript.csv"),
                          na.strings = "NA",
                          encoding = "UTF-8",
                          stringsAsFactors = FALSE)

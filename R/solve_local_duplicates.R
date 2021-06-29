@@ -21,7 +21,7 @@ solve_local_duplicates <- function(dups) {
 
   cat("Got it?")
   if (interactive()) {
-    answer <- menu(choices = c("YES", "NO")) # nocov
+    answer <- utils::menu(choices = c("YES", "NO")) # nocov
   } else {
     answer <- 1
   }

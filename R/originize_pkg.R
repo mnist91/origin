@@ -76,7 +76,7 @@ originize_pkg <-
     if (n_files > 20) {
       cat(sprintf("You are about to originize %s files.\nProceed?", n_files))
       if (interactive()) {
-        answer <- menu(choices = c("YES", "NO", "Show files")) # nocov
+        answer <- utils::menu(choices = c("YES", "NO", "Show files")) # nocov
       } else {
         answer <- 1
       }
@@ -86,7 +86,7 @@ originize_pkg <-
       } else if (answer == 3) {
         print(files)
         cat("\nProceed?")
-        answer2 <- menu(choices = c("YES", "NO")) # nocov
+        answer2 <- utils::menu(choices = c("YES", "NO")) # nocov
 
         if (answer2 == 2) {
           stop("Execution halted") # nocov

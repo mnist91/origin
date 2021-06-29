@@ -30,7 +30,7 @@ un_list <- function(l, nms = names(l)) {
     use.names = TRUE,
     x = mapply(
       FUN = function(x, nm) {
-        setNames(x, rep(nm, length(x)))
+        stats::setNames(x, rep(nm, length(x)))
       },
       l,
       nms,

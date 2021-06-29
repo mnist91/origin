@@ -69,7 +69,7 @@ originize_wrap <-
     }
 
     # get all exported functions from each package
-    functions <- setNames(object = lapply(X   = pkgs,
+    functions <- stats::setNames(object = lapply(X   = pkgs,
                                           FUN = get_exported_functions),
                           nm     = pkgs)
 
@@ -110,7 +110,7 @@ originize_wrap <-
 
           # are any masked functions used in the durrently checks script(s)
           local_dups <- sort(local_dups[names(local_dups) != "local"])
-          local_dups_with_pkg <- setNames(object = unique(local_dups),
+          local_dups_with_pkg <- stats::setNames(object = unique(local_dups),
                                           nm = by(data = names(local_dups),
                                                   INDICES = local_dups,
                                                   FUN = paste,
@@ -143,7 +143,7 @@ originize_wrap <-
     if (check_conflicts) {
       # get duplicate functions
       dups <- sort(get_fun_duplicates(functions))
-      dups_with_pkg <- setNames(object = unique(dups),
+      dups_with_pkg <- stats::setNames(object = unique(dups),
                                 nm = by(names(dups), dups, paste, collapse = ", "))
 
       if (!exists("script_collapsed")) {
