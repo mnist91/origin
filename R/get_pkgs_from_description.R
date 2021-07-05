@@ -51,7 +51,7 @@ get_pkgs_from_description <- function() {
 
   # extract the package name
   pkgs <- regmatches(x = pkg_lines,
-                     m = regexpr(pattern = "[A-z\\.0-9]+",
+                     m = regexpr(pattern = "[A-z\\.0-9]+", # Exclude Linting
                                  text = pkg_lines),
                      invert = FALSE)
   # exlcude R since it can appear in Depends but is not a package
