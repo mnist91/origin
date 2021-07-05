@@ -4,7 +4,7 @@
 #' @param exclude_folders character vector of folders to exlcude
 #' @param ... arguments passed to \link[base]{list.files}
 #'
-#' @export
+#' @noRd
 #' @return a character vector of file names
 #'
 #' @examples

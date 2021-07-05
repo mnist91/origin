@@ -16,7 +16,7 @@
 #'     to all vector elements that stem from this list element
 #'
 #' @return named vector
-#' @export
+#' @noRd
 #' @importFrom stats setNames
 #'
 #' @examples
