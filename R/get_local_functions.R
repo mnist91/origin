@@ -1,6 +1,6 @@
 #' Find all user defined functions in the project
 #'
-#' @param path Path in which all defined function names should be found and retreived
+#' @param path Path in which all defined function names should be found and retrieved
 #'
 #' @return character vector of function names
 #' @export
