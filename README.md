@@ -37,7 +37,7 @@ origin::originize_file("testfile.R", pkgs = c("dplyr", "data.table"))
 Most argument defaults of `origin` functions can be set via `options()`. 
 This is especially usefull when using the RStudio Addins.
 
-  - `origin.pkgs`: which packages to check for functions used in the code (see **Cpnsidered Packages**).
+  - `origin.pkgs`: which packages to check for functions used in the code (see **Considered Packages**).
   - `origin.ask_before_applying_changes`: whether changes should be applied
   immediately or the user must approve them first.
   - `origin.overwrite = TRUE`: actually insert `pkg::` into the code. Otherwise,
@@ -82,28 +82,28 @@ To overwrite the default just use a character vector of package names.
 Especially usefull to solve **namespace conflicts** or ignore infix functions
 like the pipe operator `%>%`. Listed functions are not considered by `origin` 
 neither in adding `pkg::` nor logging. It is a list of function names. When unnamed, the 
-function is generally excluded. To be more specific, a named list exlcudes functions
+function is generally excluded. To be more specific, a named list excludes functions
 from these packages only. 
 
 Examples:
 
 ```
 # unnamed list
-opitions(origin.exlcuded_functions = list("last", "%>%", "%<>%"))
+opitions(origin.excluded_functions = list("last", "%>%", "%<>%"))
 
 # named list
-opitions(origin.exlcuded_functions = list(data.table = c("last", %between%),
+opitions(origin.excluded_functions = list(data.table = c("last", %between%),
                                           magrittr = c("%>%", "%<>%")))
 
 # both named and unnamed
-opitions(origin.exlcuded_functions = list(data.table = c("last", %between%),
+opitions(origin.excluded_functions = list(data.table = c("last", %between%),
                                           "%>%", "%<>%"))
 ```
 ### Logging Interpretation
 The logging highlights three cases:
 - insertion: `pkg::` is inserted prior to a function
 - missing: an object that has the same name as a function 
-           but not undoubtly used as a function. In R it is usually no problem
+           but not undoubtedly used as a function. In R it is usually no problem
            to have variables that name like functions (data or df are popular examples).
            While it is always clear when a function is directly used as one, functions
            can also be arguments of other functions, most famously in functional programming 
@@ -112,7 +112,7 @@ The logging highlights three cases:
 - infix: functions like `%>%` are exported by packages but cannot be called
            with the `pkg::fun()` convention. Such functions are highlighted by default
            to point the user that these stem from a package. When using 
-           dplyr-style code, consider to exlcude the pipe-operator via 
+           dplyr-style code, consider to exclude the pipe-operator via 
            `exclude_functions`.
                                 
 
@@ -122,7 +122,7 @@ The logging highlights three cases:
 
 ### Discussion
 Whether or not to add `pkg::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
-[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org/namespace.html#imports) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favour of it.
+[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org/namespace.html#imports) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favor of it.
 
 Pros
 

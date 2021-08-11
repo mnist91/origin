@@ -33,7 +33,7 @@
   - rename special functions to the
   [proper term](https://adv-r.hadley.nz/functions.html#infix-functions)
   infix functions.
-  - Enahnce arguemnt descriptipns in the addin `originize_current_dir()`
+  - Enhance argument descriptions in the addin `originize_current_dir()`
 
 ### Bugfixes
   - only consider R scripts for originizing via `originize_dir()`
@@ -52,7 +52,7 @@
 
 
 ### Bugfixes
-- considered defualt packages were only considered at the beginning of each 
+- considered default packages were only considered at the beginning of each 
   session and not updated when new packages are added to the search list
 
 # origin 0.2.1
