@@ -27,8 +27,8 @@ find_functions <- function(x) {
     unlist(
       use.names = FALSE,
       reg_extract(
-        s,
-        pattern = "[\\w.]+(?=[[:space:]]*(<-|<<-|=)[[:space:]]*function[[:space:]]*\\()",
+        x = s,
+        pattern = "[\\w.]+(?=[[:space:]]*(<-|<<-|=)[[:space:]]*function[[:space:]]*\\()", # Exclude Linting
         perl = TRUE))
 
   return(fun_names)

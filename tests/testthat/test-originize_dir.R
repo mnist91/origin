@@ -12,17 +12,29 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
   datapath <- system.file("testdata", package = "origin")
 
   test_text <- utils::read.csv2(file = file.path(datapath, "testscript.csv"),
-                         na.strings = "NA",
-                         encoding = "UTF-8",
-                         stringsAsFactors = FALSE)
+                                na.strings = "NA",
+                                encoding = "UTF-8",
+                                stringsAsFactors = FALSE)
 
   # windows adds X.U.FEFF to the first variable name in read.csv2.
-  # Therefore, the following bulletproof way to access the correct variable / vector
+  # Therefore, the following bulletproof way to access the
+  # correct variable / vector
   nms <- names(test_text)
-  writeLines(test_text[1:20, grepl("TARGET", nms, fixed = TRUE)], con = target_file_path1)
-  writeLines(test_text[21:nrow(test_text), grepl("TARGET", nms, fixed = TRUE)], con = target_file_path2)
-  writeLines(test_text[1:20, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path1)
-  writeLines(test_text[21:nrow(test_text), grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path2)
+  writeLines(test_text[1:20,
+                       grepl("TARGET", nms, fixed = TRUE)],
+             con = target_file_path1)
+
+  writeLines(test_text[21:nrow(test_text),
+                       grepl("TARGET", nms, fixed = TRUE)],
+             con = target_file_path2)
+
+  writeLines(test_text[1:20,
+                       grepl("TESTSKRIPT", nms, fixed = TRUE)],
+             con = test_file_path1)
+
+  writeLines(test_text[21:nrow(test_text),
+                       grepl("TESTSKRIPT", nms, fixed = TRUE)],
+             con = test_file_path2)
 
 
   # write an empty file
@@ -49,12 +61,18 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
   testthat::expect_equal(testfile_after1,
                          test_text[1:20, grepl("TARGET", nms, fixed = TRUE)])
   testthat::expect_equal(testfile_after2,
-                         test_text[21:nrow(test_text), grepl("TARGET", nms, fixed = TRUE)])
+                         test_text[21:nrow(test_text),
+                                   grepl("TARGET", nms, fixed = TRUE)])
 
 
   # reset
-  writeLines(test_text[1:20, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path1)
-  writeLines(test_text[21:nrow(test_text), grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path2)
+  writeLines(test_text[1:20,
+                       grepl("TESTSKRIPT", nms, fixed = TRUE)],
+             con = test_file_path1)
+
+  writeLines(test_text[21:nrow(test_text),
+                       grepl("TESTSKRIPT", nms, fixed = TRUE)],
+             con = test_file_path2)
 
 
   # erwartete Fehlermeldungen prüfen
@@ -94,7 +112,8 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
   testthat::expect_equal(testfile_after1,
                          test_text[1:20, grepl("TARGET", nms, fixed = TRUE)])
   testthat::expect_equal(testfile_after2,
-                         test_text[21:nrow(test_text), grepl("TESTSKRIPT", nms, fixed = TRUE)])
+                         test_text[21:nrow(test_text),
+                                   grepl("TESTSKRIPT", nms, fixed = TRUE)])
 
 
 })

@@ -21,13 +21,14 @@ check_functions <- function(script,
                             verbose = TRUE) {
   # remove function with infix characters like %, &, [] and :
   infix_function_tokens <- c("*", "%", "?", "^", "$", "(", ")", "[",
-                               "]", "{", "}", ":", "=", "<", ">")
-  infix_functions <- grepl(functions,
-                             pattern = paste0("[",
-                                             paste(escape_strings(infix_function_tokens),
-                                                   collapse = "|"),
-                                             "]"
-                                             ))
+                             "]", "{", "}", ":", "=", "<", ">")
+  infix_functions <-
+    grepl(functions,
+          pattern = paste0("[",
+                           paste(escape_strings(infix_function_tokens),
+                                 collapse = "|"),
+                           "]"
+          ))
   relevant_functions <- functions[!infix_functions]
   # reduce the number of functions to check, by selecting possible (occurring)
   # functions. This isn't a check if it is a function or an object,
@@ -47,12 +48,12 @@ check_functions <- function(script,
   # infix functions such as %like" can not be called with ::
   # print a warning, that such functions occur
   infix_matches <- vapply(X = functions[infix_functions],
-                            FUN = function(fun) {
-                              grepl(pattern = fun,
-                                    x = full_script,
-                                    fixed = TRUE)
-                            },
-                            FUN.VALUE = logical(1))
+                          FUN = function(fun) {
+                            grepl(pattern = fun,
+                                  x = full_script,
+                                  fixed = TRUE)
+                          },
+                          FUN.VALUE = logical(1))
 
   # no matching functions
   if (!any(matches) && !any(infix_matches)) {

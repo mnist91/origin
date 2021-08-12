@@ -71,8 +71,15 @@ originize <- function(script,
     # the markers logging output eventually, escape them
     script_logging <- script
     if (use_markers &&
-        (has_html <- length(is_html_line <- which(grepl(pattern = "<|>", x = script))) > 0)) {
-      script_logging[is_html_line] <- gsub(">", "&gt;", gsub("<", "&lt;", script[is_html_line]))
+        (has_html <-
+         length(is_html_line <- which(grepl(pattern = "<|>", x = script))) > 0)
+    ) {
+      script_logging[is_html_line] <-
+        gsub(pattern     = ">",
+             replacement = "&gt;",
+             x           = gsub(pattern     = "<",
+                                replacement = "&lt;",
+                                x           = script[is_html_line]))
     }
 
     # get positions of potential missined (infix) functions
@@ -87,37 +94,41 @@ originize <- function(script,
 
     # the insertion positions must be adjustet to the escaped HTML-characters
     if (use_markers && has_html) {
-      is_html <- gregexpr("<|>", script)
-      replacement_list <- lapply(replacement_list,
-                                 FUN = function(rl) {
+      is_html <- gregexpr(pattern = "<|>",
+                          text = script)
+      replacement_list <-
+        lapply(X = replacement_list,
+               FUN = function(rl) {
 
-                                   # which lines in the script that have insertions
-                                   # for this package are with HTMLs
-                                   relevant_script <- intersect(rl$line, is_html_line)
+                 # which lines in the script that have insertions
+                 # for this package are with HTMLs
+                 relevant_script <- intersect(x = rl$line,
+                                              y = is_html_line)
 
-                                   # which lines with functions from this package
-                                   # have HTML-characters
-                                   relevant_replacement_line <- rl$line %in% is_html_line
+                 # which lines with functions from this package
+                 # have HTML-characters
+                 relevant_replacement_line <- rl$line %in% is_html_line
 
-                                   if (length(relevant_script) > 0) {
+                 if (length(relevant_script) > 0) {
 
-                                     # if any, iterate over these insertions
-                                     # and add 3 tokens to the matching position
-                                     # < -> &lt;
-                                     # > -> &gt;
-                                     # each plus three tokens
-                                     rl$matches[relevant_replacement_line] <- Map(f = function(htmls, matches) {
-                                       unlist(lapply(X = matches,
-                                                     FUN = function(mtchs) {
-                                                       mtchs + sum(mtchs > htmls) * 3
-                                                     }))
-                                     },
-                                     is_html[relevant_script],
-                                     rl$matches[relevant_replacement_line])
-                                   }
+                   # if any, iterate over these insertions
+                   # and add 3 tokens to the matching position
+                   # < -> &lt;
+                   # > -> &gt;
+                   # each plus three tokens
+                   rl$matches[relevant_replacement_line] <-
+                     Map(f = function(htmls, matches) {
+                       unlist(lapply(X = matches,
+                                     FUN = function(mtchs) {
+                                       mtchs + sum(mtchs > htmls) * 3
+                                     }))
+                     },
+                     is_html[relevant_script],
+                     rl$matches[relevant_replacement_line])
+                 }
 
-                                   return(rl)
-                                 })
+                 return(rl)
+               })
     }
 
     # combine positions of potential missings

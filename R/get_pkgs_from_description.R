@@ -27,20 +27,21 @@ get_pkgs_from_description <- function() {
 
   nrow_desc <- length(desc)
   # lines with indention right after the keywords
-  is_pkg_line <- unlist(lapply(triggers[(triggers + 1) %in% arguments],
-                               function(x) {
+  is_pkg_line <-
+    unlist(lapply(triggers[(triggers + 1) %in% arguments],
+                  function(x) {
 
-                                 # sequence of numbers starting after the trigger
-                                 x_seq <- (x + 1):nrow_desc
+                    # sequence of numbers starting after the trigger
+                    x_seq <- (x + 1):nrow_desc
 
-                                 # which parts of this sequence are arguments
-                                 match_seq <- x_seq %in% arguments
+                    # which parts of this sequence are arguments
+                    match_seq <- x_seq %in% arguments
 
-                                 # cut sequence as soon as the first non-argument
-                                 # appears in the sequence
-                                 out <- x_seq[cumsum(match_seq) == seq_along(match_seq)]
-                                 return(out)
-                               }))
+                    # cut sequence as soon as the first non-argument
+                    # appears in the sequence
+                    out <- x_seq[cumsum(match_seq) == seq_along(match_seq)]
+                    return(out)
+                  }))
 
   if (length(is_pkg_line) == 0) {
     warning("No Packages found in the DESCRIPTION")

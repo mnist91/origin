@@ -46,9 +46,10 @@ get_origins <- function(pkg,
   #                     "?", "*", "^", "+", "(", "[", "{")
   # paste(escape_strings(pre_fun_tokens), collapse = "")
   # End Exclude Linting
-  pattern_regex <- paste0("(?<=[[:blank:],;=&/\\-<>~!\\|\\?\\*\\^\\+\\(\\[\\{]|^)(",
-                          funs_prep,
-                          ") *\\(")
+  pattern_regex <-
+    paste0("(?<=[[:blank:],;=&/\\-<>~!\\|\\?\\*\\^\\+\\(\\[\\{]|^)(",
+           funs_prep,
+           ") *\\(")
 
   regular_calls <- get_matches(script[line_matches],
                                line = which(line_matches),

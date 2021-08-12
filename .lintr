@@ -1,6 +1,7 @@
 linters: with_defaults(
   default = NULL,
   T_and_F_symbol_linter = lintr::T_and_F_symbol_linter,
+  line_length_lintr = lintr::line_length_linter(80L),
   assignment_linter = lintr::assignment_linter,
   closed_curly_linter = lintr::closed_curly_linter(allow_single_line = FALSE),
   commas_linter = lintr::commas_linter,

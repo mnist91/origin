@@ -3,7 +3,7 @@ testthat::test_that("Preparation of new file by line", {
   # created by testscript file
   # Exclude Linting: lapply(FUN = function(x) x[combined$line %in% c(80, 30)], combined) %>% dput
   input_list <- list(line = c(30L, 80L, 80L),
-                     string = c("iris %>% filter(Species == \"setosa\") %>% filter(Spepal.Length > 3) %>% filter(TRUE)",
+                     string = c("iris %>% filter(Species == \"setosa\") %>% filter(Spepal.Length > 3) %>% filter(TRUE)", # Exclude Linting
                                 "map(iris, .f =bind_cols)",
                                 "map(iris, .f =bind_cols)"),
                      matches = list(c(10, 42, 72), 15, 1),
@@ -14,7 +14,7 @@ testthat::test_that("Preparation of new file by line", {
   # expected result
   result <- data.frame(
     line = c(30L, 80L),
-    string = c('iris %>% dplyr::filter(Species == "setosa") %>% dplyr::filter(Spepal.Length > 3) %>% dplyr::filter(TRUE)',
+    string = c('iris %>% dplyr::filter(Species == "setosa") %>% dplyr::filter(Spepal.Length > 3) %>% dplyr::filter(TRUE)', # Exclude Linting
                "purrr::map(iris, .f =dplyr::bind_cols)"),
     stringsAsFactors = FALSE)
 

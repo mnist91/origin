@@ -3,9 +3,10 @@
 #' @description It shares the functionality of originize_dir but is designed to
 #'  be used within R-package projects.
 #'
-#' @param path path to the package project root by \link[rprojroot]{find_package_root_file}
-#' @param pkgs a character vector of package names, defaults to packages mentioned
-#'  in the DESCRIPTION file if the option `origin.pkgs` is not set.
+#' @param path path to the package project root by
+#' \link[rprojroot]{find_package_root_file}
+#' @param pkgs a character vector of package names, defaults to packages
+#' mentioned in the DESCRIPTION file if the option `origin.pkgs` is not set.
 #' @param recursive logical. Should the listing recurse into directories?
 #'  See \link[base]{list.files}
 #' @param files_pattern A regular expression. Only file names which match the
@@ -28,23 +29,24 @@
 #' @export
 #'
 originize_pkg <-
-  function(path = rprojroot::find_package_root_file(),
-           pkgs = getOption("origin.pkgs", get_pkgs_from_description()),
-           recursive = TRUE,
-           files_pattern = "\\.R$",
-           ignore_case = TRUE,
-           exclude_files = NULL,
-           overwrite = getOption("origin.overwrite", TRUE),
-           ask_before_applying_changes =
-             getOption("origin.ask_before_applying_changes", TRUE),
-           ignore_comments = getOption("origin.ignore_comments", TRUE),
-           check_conflicts = getOption("origin.check_conflicts", TRUE),
-           check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
-           add_base_packages = getOption("origin.add_base_packages", FALSE),
-           excluded_functions = getOption("origin.excluded_functions", list()),
-           verbose = getOption("origin.verbose", FALSE),
-           use_markers = getOption("origin.use_markers_for_logging", TRUE),
-           check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
+  function(
+    path = rprojroot::find_package_root_file(),
+    pkgs = getOption("origin.pkgs", get_pkgs_from_description()),
+    recursive = TRUE,
+    files_pattern = "\\.R$",
+    ignore_case = TRUE,
+    exclude_files = NULL,
+    overwrite = getOption("origin.overwrite", TRUE),
+    ask_before_applying_changes =
+      getOption("origin.ask_before_applying_changes", TRUE),
+    ignore_comments = getOption("origin.ignore_comments", TRUE),
+    check_conflicts = getOption("origin.check_conflicts", TRUE),
+    check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
+    add_base_packages = getOption("origin.add_base_packages", FALSE),
+    excluded_functions = getOption("origin.excluded_functions", list()),
+    verbose = getOption("origin.verbose", FALSE),
+    use_markers = getOption("origin.use_markers_for_logging", TRUE),
+    check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
   ) {
 
     if (!check_base_conflicts && add_base_packages) {
@@ -98,7 +100,9 @@ originize_pkg <-
     scripts <- suppressWarnings(lapply(files, readLines))
 
     # check for empty scripts
-    empty_scripts <- vapply(X = scripts, FUN = length, FUN.VALUE = integer(1)) == 0
+    empty_scripts <- vapply(X = scripts,
+                            FUN = length,
+                            FUN.VALUE = integer(1)) == 0
 
     if (all(empty_scripts)) {
       message("All provided scripts are empty")

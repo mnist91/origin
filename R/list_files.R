@@ -58,11 +58,12 @@ list_files <- function(path,
 
   # in case excludable folders are not direct subfolders of the root,
   # exclude them by checking the complete file names
-  files <- files[!grepl(x = files,
-                        pattern = paste(escape_strings(paste0(.Platform$file.sep,
-                                                              exclude_folders,
-                                                              .Platform$file.sep)),
-                                        collapse = "|"))]
+  files <-
+    files[!grepl(x = files,
+                 pattern = paste(escape_strings(paste0(.Platform$file.sep,
+                                                       exclude_folders,
+                                                       .Platform$file.sep)),
+                                 collapse = "|"))]
 
   return(files)
 }

@@ -8,10 +8,11 @@ solve_local_duplicates <- function(dups) {
   # Require User interaction if duplicates are detected
 
   # bold, red and underlined text
-  cat("\033[31m\033[4m\033[1m",
-      "Locally defined and used functions mask exported functions from packages!",
-      "\033[22m\033[24m\033[39m",
-      "\n\n")
+  cat(
+    "\033[31m\033[4m\033[1m",
+    "Locally defined and used functions mask exported functions from packages!",
+    "\033[22m\033[24m\033[39m",
+    "\n\n")
 
   cat(paste(dups, ": ", names(dups),
             collapse = "\n", sep = ""),

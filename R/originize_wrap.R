@@ -65,13 +65,14 @@ originize_wrap <-
 
     if (length(pkgs) == 0) {
       stop(paste("No packages specified. Please use either",
-                 "`options(origin.pkgs = c('pkg', ...))` or the `pkgs` argument."))
+                 "`options(origin.pkgs = c('pkg', ...))`",
+                 "or the `pkgs` argument."))
     }
 
     # get all exported functions from each package
     functions <- stats::setNames(object = lapply(X   = pkgs,
-                                          FUN = get_exported_functions),
-                          nm     = pkgs)
+                                                 FUN = get_exported_functions),
+                                 nm     = pkgs)
 
     if (length(unlist(functions)) == 0) {
       stop("Given packages do no export functions.")
@@ -92,7 +93,8 @@ originize_wrap <-
     if (check_local_conflicts) {
 
       # locally defined functions
-      local_funs <- get_local_functions(path = rprojroot::find_rstudio_root_file())
+      local_funs <-
+        get_local_functions(path = rprojroot::find_rstudio_root_file())
 
       if (length(local_funs) > 0) {
         # overlaps of local and exported functions
@@ -110,11 +112,13 @@ originize_wrap <-
 
           # are any masked functions used in the durrently checks script(s)
           local_dups <- sort(local_dups[names(local_dups) != "local"])
-          local_dups_with_pkg <- stats::setNames(object = unique(local_dups),
-                                          nm = by(data = names(local_dups),
-                                                  INDICES = local_dups,
-                                                  FUN = paste,
-                                                  collapse = ", "))
+
+          local_dups_with_pkg <-
+            stats::setNames(object = unique(local_dups),
+                            nm = by(data = names(local_dups),
+                                    INDICES = local_dups,
+                                    FUN = paste,
+                                    collapse = ", "))
 
           local_dup_funs_in_script <- vapply(X = local_dups_with_pkg,
                                              FUN = function(f) {
@@ -127,10 +131,14 @@ originize_wrap <-
 
           if (any(local_dup_funs_in_script)) {
             # inform the user
-            solve_local_duplicates(dups = local_dups_with_pkg[local_dup_funs_in_script])
+            solve_local_duplicates(
+              local_dups_with_pkg[local_dup_funs_in_script])
 
             # exclude these local functions from originizing
-            functions <- exclude_functions(functions, list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
+            functions <-
+              exclude_functions(
+                functions,
+                list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
           }
         }
       }
@@ -143,8 +151,9 @@ originize_wrap <-
     if (check_conflicts) {
       # get duplicate functions
       dups <- sort(get_fun_duplicates(functions))
-      dups_with_pkg <- stats::setNames(object = unique(dups),
-                                nm = by(names(dups), dups, paste, collapse = ", "))
+      dups_with_pkg <-
+        stats::setNames(object = unique(dups),
+                        nm = by(names(dups), dups, paste, collapse = ", "))
 
       if (!exists("script_collapsed")) {
         script_collapsed <- paste(lapply(X = scripts,
@@ -173,13 +182,18 @@ originize_wrap <-
     # do not consider base packages in originizing
     if (!add_base_packages) {
       pkgs <- setdiff(pkgs, c(getOption("defaultPackages"), "base"))
-      functions <- functions[!names(functions) %in% c(getOption("defaultPackages"), "base")]
+      functions <- functions[!names(functions) %in%
+                               c(getOption("defaultPackages"), "base")]
     }
 
     if (length(pkgs) == 0) {
-      stop(paste("No packages specified. Please use either `options(origin.pkgs = c('pkg', ...))`",
-                 "or the `pkgs` argument. If you desire to use base",
-                 "packages, inspect the `add_base_packages` argument/option.")) # Exclude Linting
+      stop(
+        paste(
+          "No packages specified. Please use either",
+          "`options(origin.pkgs = c('pkg', ...))`",
+          "or the `pkgs` argument. If you desire to use base",
+          # lintr considers this as a file path
+          "packages, inspect the `add_base_packages` argument/option.")) # Exclude Linting
     }
 
 
@@ -238,29 +252,32 @@ originize_wrap <-
     # invoke logging
     if (verbose) {
       if (type == "insertText") {
-        # in case the last line of a script is empty, strsplit does not create an empty
-        # character. Hence, the script object is one element shorter than
-        # lines selected and the assignment would fial
-        results[[1]]$logging_data$line <- selected_lines[results[[1]]$logging_data$line]
+        # in case the last line of a script is empty, strsplit does not create
+        # an empty character. Hence, the script object is one element shorter
+        # than lines selected and the assignment would fial
+        results[[1]]$logging_data$line <-
+          selected_lines[results[[1]]$logging_data$line]
 
         run_logging(results[[1]]$logging_data, use_markers = use_markers)
       } else {
-        run_logging(Reduce(f = rbind,
-                           # exclude empty logs by Filter()
-                           x = Filter(function(dat) !is.null(dat$line),
-                                      lapply(X = results,
-                                             FUN = function(l) l$logging_data))),
-                    use_markers = use_markers)
+        run_logging(
+          Reduce(f = rbind,
+                 # exclude empty logs by Filter()
+                 x = Filter(function(dat) !is.null(dat$line),
+                            lapply(X = results,
+                                   FUN = function(l) l$logging_data))),
+          use_markers = use_markers)
       }
     }
 
     if (overwrite) {
       # overwrite script files
-      out <- apply_changes(ask_before_applying_changes = ask_before_applying_changes,
-                           result = results,
-                           init_script = scripts,
-                           type = type,
-                           context = context)
+      out <- apply_changes(
+        ask_before_applying_changes = ask_before_applying_changes,
+        result = results,
+        init_script = scripts,
+        type = type,
+        context = context)
 
     } else {
       out <- NULL

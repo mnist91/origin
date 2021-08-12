@@ -3,7 +3,7 @@
 
 # Unit tests
 testthat::test_that("origin file", {
-  # Push dummy R script to a temp directory --------------------------------------
+  # Push dummy R script to a temp directory ------------------------------------
   dir <- tempdir()
   test_file_path <- file.path(dir, "testfile.R")
   target_file_path <- file.path(dir, "targetfile.R")
@@ -17,10 +17,13 @@ testthat::test_that("origin file", {
                          stringsAsFactors = FALSE)
 
   # windows adds X.U.FEFF to the first variable name in read.csv2.
-  # Therefore, the following bulletproof way to access the correct variable / vector
+  # Therefore, the following bulletproof way to access
+  # the correct variable / vector
   nms <- names(test_text)
-  writeLines(test_text[, grepl("TARGET", nms, fixed = TRUE)], con = target_file_path)
-  writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path)
+  writeLines(test_text[, grepl("TARGET", nms, fixed = TRUE)],
+             con = target_file_path)
+  writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)],
+             con = test_file_path)
 
   # In einem Schritt, mit crosschecks
   # capture.output(
@@ -47,7 +50,8 @@ testthat::test_that("origin file", {
 
   # with verbose
   # reset data
-  writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)], con = test_file_path)
+  writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)],
+             con = test_file_path)
 
   # In einem Schritt, mit crosschecks
   utils::capture.output(

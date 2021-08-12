@@ -9,7 +9,8 @@ testthat::test_that("Highlighting of plain text", {
                          stringsAsFactors = FALSE)
 
   # windows adds X.U.FEFF to the first variable name in read.csv2.
-  # Therefore, the following bulletproof way to access the correct variable / vector
+  # Therefore, the following bulletproof way to access the
+  # correct variable / vector
   nms <- names(test_text)
   script_in <- test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)]
   script_out <- test_text[, grepl("TARGET", nms, fixed = TRUE)]

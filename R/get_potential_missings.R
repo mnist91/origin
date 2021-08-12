@@ -61,7 +61,8 @@ get_potential_missings <- function(script,
                                                            fixed = TRUE)))
     ))
 
-    funs_prep <- paste(escape_strings(infix_functions_in_script), collapse = "|")
+    funs_prep <- paste(escape_strings(infix_functions_in_script),
+                       collapse = "|")
 
     list_infixes <- get_matches(line = infix_matches,
                                  text = script[infix_matches],

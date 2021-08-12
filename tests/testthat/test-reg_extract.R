@@ -14,7 +14,8 @@ testthat::test_that("reg_extract", {
                         pattern = "thing",
                         invert = TRUE,
                         perl = TRUE)
-  testthat::expect_equal(result, expected = list(c("This ", " is a ", " string")))
+  testthat::expect_equal(result,
+                         expected = list(c("This ", " is a ", " string")))
 
 
   # invert match at the beginning causes empty string
@@ -56,11 +57,13 @@ x <- y
 ")
 
   result <- reg_extract(x = funs,
-                        pattern = "[\\w.]+(?=[[:space:]]*(<-|<<-|=)[[:space:]]*function[[:space:]]*\\()",
+                        pattern = "[\\w.]+(?=[[:space:]]*(<-|<<-|=)[[:space:]]*function[[:space:]]*\\()", # Exclude Linting
                         perl = TRUE)
   testthat::expect_equal(result,
-                         list(c("myfun", "another.fun", "this9.my.my_fun999.99", "this9.my.my_fun999.992", "huge_fun"),
-                              c("thisfun", "aaskjrfun1", "aaskjrfun2", "aaskjrfun3")))
+                         list(c("myfun", "another.fun", "this9.my.my_fun999.99",
+                                "this9.my.my_fun999.992", "huge_fun"),
+                              c("thisfun", "aaskjrfun1",
+                                "aaskjrfun2", "aaskjrfun3")))
 
 })
 

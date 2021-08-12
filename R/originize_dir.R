@@ -1,7 +1,8 @@
 #' Originize a complete directory
 #'
 #' @description To originize complete folders/projects, this function finds
-#' and originizes all R files within this folder and (by default) its subfolders.
+#' and originizes all R files within this folder and
+#' (by default) its subfolders.
 #'
 #'
 #' @param path path to a directory. Defaults to the current working directory.
@@ -34,17 +35,26 @@ originize_dir <-
            files_pattern = "\\.R$",
            ignore_case = TRUE,
            exclude_files = NULL,
-           overwrite = getOption("origin.overwrite", TRUE),
+           overwrite =
+             getOption("origin.overwrite", TRUE),
            ask_before_applying_changes =
              getOption("origin.ask_before_applying_changes", TRUE),
-           ignore_comments = getOption("origin.ignore_comments", TRUE),
-           check_conflicts = getOption("origin.check_conflicts", TRUE),
-           check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
-           check_local_conflicts = getOption("origin.check_local_conflicts", TRUE),
-           add_base_packages = getOption("origin.add_base_packages", FALSE),
-           excluded_functions = getOption("origin.excluded_functions", list()),
-           verbose = getOption("origin.verbose", FALSE),
-           use_markers = getOption("origin.use_markers_for_logging", TRUE)
+           ignore_comments =
+             getOption("origin.ignore_comments", TRUE),
+           check_conflicts =
+             getOption("origin.check_conflicts", TRUE),
+           check_base_conflicts =
+             getOption("origin.check_base_conflicts", TRUE),
+           check_local_conflicts =
+             getOption("origin.check_local_conflicts", TRUE),
+           add_base_packages =
+             getOption("origin.add_base_packages", FALSE),
+           excluded_functions =
+             getOption("origin.excluded_functions", list()),
+           verbose =
+             getOption("origin.verbose", FALSE),
+           use_markers =
+             getOption("origin.use_markers_for_logging", TRUE)
   ) {
 
     if (!check_base_conflicts && add_base_packages) {
@@ -98,7 +108,9 @@ originize_dir <-
     scripts <- suppressWarnings(lapply(files, readLines))
 
     # check for empty scripts
-    empty_scripts <- vapply(X = scripts, FUN = length, FUN.VALUE = integer(1)) == 0
+    empty_scripts <- vapply(X = scripts,
+                            FUN = length,
+                            FUN.VALUE = integer(1)) == 0
 
     if (all(empty_scripts)) {
       message("All provided scripts are empty")
