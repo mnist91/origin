@@ -7,7 +7,8 @@
 get_local_functions(path = ".")
 }
 \arguments{
-\item{path}{Path in which all defined function names should be found and retrieved}
+\item{path}{Path in which all defined function names should be
+found and retrieved.}
 }
 \value{
 character vector of function names

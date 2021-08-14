@@ -42,3 +42,6 @@ vignettes/*.pdf
 
 # videos
 *.mov
+
+.DS_Store
+

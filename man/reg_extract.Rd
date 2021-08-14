@@ -11,7 +11,8 @@ reg_extract(x, pattern, invert = FALSE, ...)
 
 \item{pattern}{a regular expression}
 
-\item{invert}{logical: if TRUE, extract or replace the non-matched substrings.}
+\item{invert}{logical: if TRUE, extract or replace the
+non-matched substrings.}
 
 \item{...}{arguments passed to \link[base]{gregexpr}}
 }

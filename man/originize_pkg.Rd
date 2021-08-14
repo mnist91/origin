@@ -24,10 +24,11 @@ originize_pkg(
 )
 }
 \arguments{
-\item{path}{path to the package project root by \link[rprojroot]{find_package_root_file}}
+\item{path}{path to the package project root by
+\link[rprojroot]{find_package_root_file}}
 
-\item{pkgs}{a character vector of package names, defaults to packages mentioned
-in the DESCRIPTION file if the option `origin.pkgs` is not set.}
+\item{pkgs}{a character vector of package names, defaults to packages
+mentioned in the DESCRIPTION file if the option `origin.pkgs` is not set.}
 
 \item{recursive}{logical. Should the listing recurse into directories?
 See \link[base]{list.files}}

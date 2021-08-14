@@ -76,5 +76,6 @@ the console.}
 }
 \description{
 To originize complete folders/projects, this function finds
-and originizes all R files within this folder and (by default) its subfolders.
+and originizes all R files within this folder and
+(by default) its subfolders.
 }
