@@ -1,6 +1,6 @@
 Type: Package
 Package: origin
-Title: An R Package That Adds `pkg::` to Functions to Be More Explicit
+Title: An R Package that Adds `pkg::` to Functions to be More Explicit
 Version: 0.5.0
 Author: Matthias Nistler
 Maintainer: Matthias Nistler <m_nistler@web.de>
