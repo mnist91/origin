@@ -1,6 +1,9 @@
 
 #' Get Packages from the DESCRIPTION file
 #'
+#' @description It looks for a DESCRIPTION file in the current project and
+#' returns all packages listed in Suggests, Imports, and Depends.
+#'
 #' @return character vector of package names
 #' @export
 #'
