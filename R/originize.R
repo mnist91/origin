@@ -1,4 +1,16 @@
-# Helper function
+#' Searches R Scripts for (Potential) Missings
+#'
+#' @param script script to originize
+#' @param file file name of the script
+#' @param functions list of function names to check
+#' @param pkgs packages to consider
+#' @param overwrite whether to overwrite files on disk
+#' @param ignore_comments whether to ignore comments from originizing
+#' @template verbose
+#' @template use_markers
+#'
+#' @return
+#' @noRd
 originize <- function(script,
                       file,
                       functions,
@@ -23,13 +35,13 @@ originize <- function(script,
   # iterate over all functions and find position where package:: is necessary
   replacement_list <-
     Map(f = function(pkg, funs) {
-      get_origins(pkg            = pkg,
-                  script         = script,
-                  functions      = funs,
-                  file           = file,
-                  overwrite      = overwrite,
+      get_origins(pkg             = pkg,
+                  script          = script,
+                  functions       = funs,
+                  file            = file,
+                  overwrite       = overwrite,
                   ignore_comments = ignore_comments,
-                  verbose        = verbose)
+                  verbose         = verbose)
     },
     pkgs,
     functions
