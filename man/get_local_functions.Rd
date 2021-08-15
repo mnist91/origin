@@ -2,19 +2,19 @@
 % Please edit documentation in R/get_local_functions.R
 \name{get_local_functions}
 \alias{get_local_functions}
-\title{Find all user defined functions in the project}
+\title{Find All User Defined functions in the Project}
 \usage{
 get_local_functions(path = ".")
 }
 \arguments{
 \item{path}{Path in which all defined function names should be
-found and retrieved.}
+found and retrieved. Defaults to the current working directory.}
 }
 \value{
 character vector of function names
 }
 \description{
-Find all user defined functions in the project
+Find All User Defined functions in the Project
 }
 \examples{
 get_local_functions(path = ".")

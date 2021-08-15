@@ -44,7 +44,7 @@ list_files <- function(path,
                          ...))
 
   # in the path directory, search for R files as well
-  # the recurse option must then be set to FALSE. Must have higher priority
+  # the recursive option must then be set to FALSE. Must have higher priority
   # than if set in the ... dots
   arguments <- c(list(path = path,
                       recursive = FALSE),
@@ -56,7 +56,7 @@ list_files <- function(path,
   # combine both file vectors
   files <- c(files, root_files)
 
-  # in case excludable folders are not direct subfolders of the root,
+  # in case excludable folders are not direct subdirectories of the root,
   # exclude them by checking the complete file names
   files <-
     files[!grepl(x = files,

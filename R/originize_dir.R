@@ -2,12 +2,13 @@
 #'
 #' @description To originize complete folders/projects, this function finds
 #' and originizes all R files within this folder and
-#' (by default) its subfolders.
+#' (by default) its subdirectories.
 #'
 #'
 #' @param path path to a directory. Defaults to the current working directory.
 #' @template pkgs
-#' @param recursive logical. Should the listing recurse into directories?
+#' @param recursive logical. Should scripts listed recursively, which means
+#'  to include all subdirectories?
 #'  See \link[base]{list.files}
 #' @param files_pattern A regular expression. Only file names which match the
 #'  regular expression will be returned. See \link[base]{list.files}

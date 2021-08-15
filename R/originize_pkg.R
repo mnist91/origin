@@ -7,7 +7,8 @@
 #' \link[rprojroot]{find_package_root_file}
 #' @param pkgs a character vector of package names, defaults to packages
 #' mentioned in the DESCRIPTION file if the option `origin.pkgs` is not set.
-#' @param recursive logical. Should the listing recurse into directories?
+#' @param recursive logical. Should scripts listed recursively, which means
+#'  to include all subdirectories?
 #'  See \link[base]{list.files}
 #' @param files_pattern A regular expression. Only file names which match the
 #'  regular expression will be returned. See \link[base]{list.files}

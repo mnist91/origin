@@ -29,7 +29,8 @@ originize_dir(
 \item{pkgs}{a character vector with package names. Defaults to the result of
 \link[base]{.packages} but if the option `origin.pkgs` is not specified.}
 
-\item{recursive}{logical. Should the listing recurse into directories?
+\item{recursive}{logical. Should scripts listed recursively, which means
+to include all subdirectories?
 See \link[base]{list.files}}
 
 \item{files_pattern}{A regular expression. Only file names which match the
@@ -77,5 +78,21 @@ the console.}
 \description{
 To originize complete folders/projects, this function finds
 and originizes all R files within this folder and
-(by default) its subfolders.
+(by default) its subdirectories.
+}
+\examples{
+\dontrun{
+originize_dir(path = "folder_to_originize",
+              pkgs = c("dplyr", "data.table"),
+              overwrite = TRUE,
+              ask_before_applying_changes = TRUE,
+              ignore_comments = TRUE,
+              excluded_functions = list(dplyr = c("\%>\%", "tibble"),
+                                        data.table = c(":=", "\%like\%"),
+                                        # generally exclude
+                                        c("last", "first")),
+              exclude_files = c("dont_originize_this.R",
+                                "dont_originize_that.R"),
+              verbose = TRUE)
+}
 }

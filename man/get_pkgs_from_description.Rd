@@ -10,9 +10,11 @@ get_pkgs_from_description()
 character vector of package names
 }
 \description{
-Get Packages from the DESCRIPTION file
+It looks for a DESCRIPTION file in the current project and
+returns all packages listed in Suggests, Imports, and Depends.
 }
 \examples{
+# Only works inside of a package developing project
 \dontrun{
 get_pkgs_from_description()
 }

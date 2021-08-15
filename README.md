@@ -35,7 +35,7 @@ origin::originize_file("testfile.R", pkgs = c("dplyr", "data.table"))
 
 ### Settings
 Most argument defaults of `origin` functions can be set via `options()`. 
-This is especially usefull when using the RStudio Addins.
+This is especially useful when using the RStudio Addins.
 
   - `origin.pkgs`: which packages to check for functions used in the code (see **Considered Packages**).
   - `origin.ask_before_applying_changes`: whether changes should be applied

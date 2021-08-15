@@ -30,7 +30,8 @@ originize_pkg(
 \item{pkgs}{a character vector of package names, defaults to packages
 mentioned in the DESCRIPTION file if the option `origin.pkgs` is not set.}
 
-\item{recursive}{logical. Should the listing recurse into directories?
+\item{recursive}{logical. Should scripts listed recursively, which means
+to include all subdirectories?
 See \link[base]{list.files}}
 
 \item{files_pattern}{A regular expression. Only file names which match the
@@ -78,4 +79,20 @@ packages. It avoids mistakenly adding pkg:: to a custom local function.}
 \description{
 It shares the functionality of originize_dir but is designed to
  be used within R-package projects.
+}
+\examples{
+\dontrun{
+originize_dir(path = rprojroot::find_package_root_file(),
+              pkgs = c("dplyr", "data.table"),
+              overwrite = TRUE,
+              ask_before_applying_changes = TRUE,
+              ignore_comments = TRUE,
+              excluded_functions = list(dplyr = c("\%>\%", "tibble"),
+                                        data.table = c(":=", "\%like\%"),
+                                        # generally exclude
+                                        c("last", "first")),
+              exclude_files = c("dont_originize_this.R",
+                                "dont_originize_that.R"),
+              verbose = TRUE)
+}
 }
