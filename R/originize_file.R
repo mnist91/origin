@@ -15,6 +15,20 @@
 #'
 #' @return NULL
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' originize_file(file = "originize_me.R",
+#'                pkgs = c("dplyr", "data.table"),
+#'                overwrite = TRUE,
+#'                ask_before_applying_changes = TRUE,
+#'                ignore_comments = TRUE,
+#'                excluded_functions = list(dplyr = c("%>%", "tibble"),
+#'                                          data.table = c(":=", "%like%"),
+#'                                          # generally exclude
+#'                                          c("last", "first")),
+#'                verbose = TRUE)
+#' }
 originize_file <-
   function(
     file,

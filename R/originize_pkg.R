@@ -28,6 +28,21 @@
 #' @return NULL
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' originize_dir(path = rprojroot::find_package_root_file(),
+#'               pkgs = c("dplyr", "data.table"),
+#'               overwrite = TRUE,
+#'               ask_before_applying_changes = TRUE,
+#'               ignore_comments = TRUE,
+#'               excluded_functions = list(dplyr = c("%>%", "tibble"),
+#'                                         data.table = c(":=", "%like%"),
+#'                                         # generally exclude
+#'                                         c("last", "first")),
+#'               exclude_files = c("dont_originize_this.R",
+#'                                 "dont_originize_that.R"),
+#'               verbose = TRUE)
+#' }
 originize_pkg <-
   function(
     path = rprojroot::find_package_root_file(),

@@ -28,6 +28,21 @@
 #' @return NULL
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' originize_dir(path = "folder_to_originize",
+#'               pkgs = c("dplyr", "data.table"),
+#'               overwrite = TRUE,
+#'               ask_before_applying_changes = TRUE,
+#'               ignore_comments = TRUE,
+#'               excluded_functions = list(dplyr = c("%>%", "tibble"),
+#'                                         data.table = c(":=", "%like%"),
+#'                                         # generally exclude
+#'                                         c("last", "first")),
+#'               exclude_files = c("dont_originize_this.R",
+#'                                 "dont_originize_that.R"),
+#'               verbose = TRUE)
+#' }
 originize_dir <-
   function(path = getwd(),
            pkgs = getOption("origin.pkgs", .packages()),

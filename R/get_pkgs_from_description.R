@@ -8,6 +8,7 @@
 #' @export
 #'
 #' @examples
+#' # Only works inside of a package developing project
 #' \dontrun{
 #' get_pkgs_from_description()
 #' }
