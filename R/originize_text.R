@@ -15,8 +15,7 @@
 #' @template check_local_conflicts
 #'
 #' @return NULL
-#' @export
-#'
+#' @noRd
 originize_text <-
   function(
     text,
