@@ -1,4 +1,14 @@
 # origin 0.5.0
+- Prepares `origin` for CRAN.
+- The new function `originize_pkg` is designed to originize a package project. 
+  The main difference to `originize_dir` is that it automatically considers
+  all packages listed in the `DESCRIPTION` file as Imports, Suggest, or Depends.
+- Include a timeout limit (180 seconds) to `get_local_functions`. Before, it was
+  possible that `origin` got stuck here due to (accidentally) referring a 
+  very huge directory without any warning or error. Now, a comprehensive error 
+  message is thrown after 3 minutes.
+- Cease to export `originize_text` since it should be rarely used in practice
+  directly but rather inernally only.
 
 # origin 0.4.0
 ### Bugfixes
