@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "3.6.2",
+    "Version": "4.1.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -302,6 +302,18 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "6154ec2223172bce8162d4153cda21f7"
+    },
+    "inteRgrate": {
+      "Package": "inteRgrate",
+      "Version": "1.0.18",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "inteRgrate",
+      "RemoteUsername": "jumpingrivers",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "0ccff5d61803c3d9bd9470201aa78938ab58c097",
+      "Hash": "d49473fed7203841ef87a53095ef1060"
     },
     "jsonlite": {
       "Package": "jsonlite",

@@ -1,0 +1,250 @@
+---
+title: "origin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{origin}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In contrast to other programming languages, R has no widely established and 
+undisputed style guide (e.g. PEP 8 for Python). As a data scientist at 
+[STATWORX](https://www.statworx.com/en/), I helped to establishe a company wide
+R style guide. While it mainly relies on the 
+[tidyverse style guide](https://style.tidyverse.org/), we generally descided
+to be more explicit in our coding practice. This includes that we always refer
+to functions from non-native R packages with the double colon operator `::`. While it
+is relatively easy to establish such a convention in new projects, it is 
+challenging to adapt ongoing projects and legacy code. `origin` allows for much
+faster conversions of both legacy code as well as currently written code.
+
+
+## Purpose of `origin`
+
+The sole purpose is to add `pkg::` to an R function call, i.e. it changes
+code like this:
+
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/vignette_quickview.gif" width="650px" />
+
+
+## Usage of `origin`
+
+In general, you can either originize some selected text (more on that later 
+in Addins), a whole script, or a all scripts in a specific folder, e.g. your
+project folder. There is a specifically designed function for each purpose yet
+they all share the same options. Therefore, only `originize_file()` is 
+extensively presented as an example with its default options.
+
+### Code Usage
+```{r, eval=FALSE}
+originize_file(file = "testscript",
+               pkgs = .packages(), 
+               overwrite = TRUE,
+               ask_before_applying_changes = TRUE,
+               ignore_comments = TRUE,
+               check_conflicts = TRUE,
+               add_base_packages = FALSE,
+               check_base_conflicts = TRUE, 
+               check_local_conflicts = TRUE,
+               excluded_functions = list(dplyr = c("%>%", "across"),
+                                         data.table = c(":=", "%like%"),
+                                         # exclude from all packages:
+                                         c("first", "last")), 
+               verbose = TRUE, 
+               use_markers = TRUE)
+```
+
+
+### Common Arguments
+* `pkgs`: which packages to check for functions used in the code (see **Considered Packages**).
+The default are all packages attached via `library` or `require`
+* `overwrite`: actually insert `pkg::` into the code. Otherwise,
+logging shows only what *would* happen. Note that `ask_before_applying_changes`
+still allows to keep control over your code before `origin` changes anything.
+* `ask_before_applying_changes`: whether changes should be applied
+immediately or the user must approve them first.
+* `ignore_comments`: should comments be ignored.
+* `check_conflicts`: should `origin` check for potential 
+namespace conflicts, i.e. a used function is defined in more than one considered
+package. User input is required to solve the issue. 
+Strongly encouraged to be set to `TRUE`.
+* `add_base_packages`: should base packages also be added, e.g. `base::sum()`.
+* `check_base_conflicts`: Should origin also check for conflicts
+with base R functions.
+* `check_local_conflicts`: Should origin also check for conflicts
+with locally defined functions anywhere in your project? Note that it does not
+check the environment but solely parses files and scans them for function definitions.
+* `excluded_functions`: a (named) list of functions to exclude from checking.
+* `verbose`: some sort of logging is performed, either in the 
+console or via the markers tab in RStudio.
+* `use_markers`: whether to use the Markers tab in RStudio.
+
+
+
+### Addins
+
+Besides using regular R functions to originize files, there are also useful
+addins delivered with `origin`. These addins are designed to be used on-the-fly
+while coding. You can either originize selected text, the currently opened file,
+or all scripts in the currently opened project. However, to have as much control
+as when using functions, each function argument corresponds to an option that 
+can be set and used inside the addins, e.g.
+
+```{r, eval=FALSE}
+options(origin.pkgs = c("dplyr", "data.table"),
+        origin.overwrite = TRUE)
+```
+
+Actually, most function arguments of `origin` first check whether an option has
+been declared and uses the assigned value as its default. This allows for equal
+outcomes regardless whether you use the addin or a function sequentially.
+
+
+### Safety Measures
+Since `origin` changes files on disk, it is very important that the user has 
+full control over what happens and user input is required before critical steps.
+
+#### Logging
+Most importantly, the user must be aware of what the originized file(s) 
+would look like. For this, all changes **and** potential missed changes
+are presented, either in the Markers tab (recommended) or in the console.
+
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/markers_logging.png" width="650px" />
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/console_logging.png" width="650px" />
+
+* <span style="color: #00c7cc">insertion</span>: `pkg::` is inserted prior to a function
+* <span style="color: #ff0000">missing</span>: an object that has the same name as a function 
+but not undoubtedly used as a function. In R it is usually no problem
+to have variables that name like functions (data or df are popular examples).
+While it is always clear when a function is directly used as one, functions
+can also be arguments of other functions, most famously in functional programming 
+like the *apply family or purrr. `origin` highlights such cases in 
+the logging output.
+* <span style="color: #ffa500">infix</span>: functions like `%>%` are exported by packages but cannot be called
+with the `pkg::fun()` convention. Such functions are highlighted by default
+to point the user that these stem from a package. When using 
+dplyr-style code, consider to exclude the pipe-operator via 
+`exclude_functions`.
+
+
+#### Same Function Name in Multiple Packages
+Due to the variety of R packages, function names must not be unique across all
+packages out there. By default, R maskes priorly imported functions by those 
+imported afterwards. `origin` mimics this rule by applying a higher priority
+to those packages that are listed first. In case there is a conflict regarding
+a **used** function, These functions are listed along with the packages from 
+which they stem.
+
+```{text, eval=FALSE}
+Used functions in mutliple Packages!  
+  
+  filter: dplyr, stats
+first: data.table, dplyr 
+
+Order in which relevant packges are evaluated:
+  data.table >> dplyr >> stats 
+
+Do you want to proceed?
+1: YES
+2: NO
+```
+
+
+#### Custom Functions Mask Exported Functions
+As packages mask each others functions, the same applies to locally
+defined custom functions. In case you defined your own `last` function
+in your project, `origin` should **not** add `dplyr::` to it. Therefore,
+all files are searched for function definitions and local functions 
+have higher priority than those exported by packages. Note that, 
+depending on the project size, this process can take quite some time
+and might even timeout before finishing. In this case, set the proper
+argument/option `check_local_conflicts` to `FALSE` and check
+the logging even more carefully.
+
+```{text, eval=FALSE}
+Locally defined and used functions mask exported functions from packages
+
+last: dplyr
+
+Local functions have higher priority. In case you want to use an
+exported version of a function listed above set pkg::fun manually
+
+Got it?
+1: YES
+2: NO
+3: Show files
+```
+
+
+
+
+#### Many Files Selected
+When `originizing` a complete folder or project, many R scripts might be checked.
+In case the user is unaware that there are many files in the selected folder,
+resulting in a long run time of `origin`,
+a warning is triggered and user input is required.
+
+```{text, eval=FALSE}
+You are about to originize 99 files.
+
+Proceed?
+1: YES
+2: NO
+3: Show files
+```
+
+
+
+#### Final Check
+Before the proposed changes are applied eventually, a final user input 
+is required.
+
+```{text, eval=FALSE}
+Happy with the result? 😀
+
+1: YES
+2: NO
+```
+
+
+## Discussion
+Whether or not to add `pkg::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
+[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org/namespace.html#imports) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favor of it.
+
+Pros
+
++ very explicit
++ completely avoid namespace conflicts
++ no need to attach the complete namespace of a package
++ keep track of which function belongs to which package
+
+Cons 
+
+- (minimal) performance issue
+- more writing required
+- longer code
+- infix functions like `%>%` cannot be called via `magrittr::%>%`
+and workarounds are still required here. Either use 
+  ```
+  library(magrittr, include.only = "%>%")
+  `%>%` <- magrittr::`%>%`
+  ```
+- calling `library()` on top of a script clearly indicates which packages are
+  needed. A not yet installed package throws an error right away, not until
+  a function cannot be found later in the script. However, one can use 
+  the `include_only` argument and set it to `NULL`. No functions are attached
+  into the search list then.
+  ```
+  library(magrittr, include_only = NULL)
+  ``` 
+
+
+
+

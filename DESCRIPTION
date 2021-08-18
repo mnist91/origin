@@ -18,12 +18,14 @@ BugReports: https://github.com/mnist91/origin/issues
 Depends: 
     R (>= 2.10)
 Imports: 
-    rprojroot,
     rstudioapi
 Suggests: 
+    knitr,
     data.table,
     dplyr,
-    testthat
+    testthat,
+    rmarkdown
 Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
