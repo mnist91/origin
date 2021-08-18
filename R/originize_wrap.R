@@ -92,53 +92,101 @@ originize_wrap <-
     # Note that all projects R scripts are searched for function definitions
     if (check_local_conflicts) {
 
-      # locally defined functions
-      local_funs <-
-        get_local_functions(path = rprojroot::find_rstudio_root_file())
+      # get root path of the current project
+      project_path <- try(rstudioapi::getActiveProject())
 
-      if (length(local_funs) > 0) {
-        # overlaps of local and exported functions
-        dups <- get_fun_duplicates(c(list(local = local_funs),
-                                     functions))
-        local_dups <- dups[dups %in% dups[names(dups) == "local"]]
+      # In case R is not run from wihtin RStudio or origin is called from
+      # within a project, inform the user and determine the root path
+      # by the shared root path of all files.
+      project_path_found <- TRUE
+      if (inherits(project_path, "try-error")) {
+        message(paste("RStudio not running. Hence, no project path to",
+                      "search forlocal functions can be determined."))
+        project_path_found <- FALSE
+      } else if (is.null(project_path)) {
+        message("origin not run from within a project.")
+        project_path_found <- FALSE
+      }
 
-        # in case there is an overlap
-        if (length(local_dups) > 0) {
+      if (!project_path_found) {
+        rm_everything_after_last_separator <- paste0("[^",
+                                                     .Platform$file.sep,
+                                                     "]+$")
+        file_roots <- gsub(pattern = rm_everything_after_last_separator,
+                           replacement =  "",
+                           x = files)
 
-          script_collapsed <- paste(lapply(X = scripts,
-                                           FUN = paste,
-                                           collapse = ""),
-                                    collapse = "")
+        project_path <- get_string_overlap(file_roots)
 
-          # are any masked functions used in the durrently checks script(s)
-          local_dups <- sort(local_dups[names(local_dups) != "local"])
+        # if the shared path does not end with a file separator, that
+        # means that the next subfolder does share some bit sof its name
+        # then, keep path unly until the last file separator token.
+        if (!endsWith(project_path, .Platform$file.sep)) {
+          project_path <- gsub(pattern = rm_everything_after_last_separator,
+                               replacement =  "",
+                               x = project_path)
+        }
 
-          local_dups_with_pkg <-
-            stats::setNames(object = unique(local_dups),
-                            nm = by(data = names(local_dups),
-                                    INDICES = local_dups,
-                                    FUN = paste,
-                                    collapse = ", "))
 
-          local_dup_funs_in_script <- vapply(X = local_dups_with_pkg,
-                                             FUN = function(f) {
-                                               grepl(pattern = f,
-                                                     x = script_collapsed,
-                                                     fixed = TRUE)
-                                             },
-                                             FUN.VALUE = logical(1),
-                                             USE.NAMES = TRUE)
+        if (!is.na(project_path) && nzchar(project_path)) {
+          warning("Search for local functions in root folder ", project_path)
+        }
+      }
 
-          if (any(local_dup_funs_in_script)) {
-            # inform the user
-            solve_local_duplicates(
-              local_dups_with_pkg[local_dup_funs_in_script])
 
-            # exclude these local functions from originizing
-            functions <-
-              exclude_functions(
-                functions,
-                list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
+
+      if (!is.null(project_path) &&
+          !is.na(project_path) &&
+          nzchar(project_path)) {
+
+        # locally defined functions
+        local_funs <-
+          get_local_functions(path = project_path)
+
+        if (length(local_funs) > 0) {
+          # overlaps of local and exported functions
+          dups <- get_fun_duplicates(c(list(local = local_funs),
+                                       functions))
+          local_dups <- dups[dups %in% dups[names(dups) == "local"]]
+
+          # in case there is an overlap
+          if (length(local_dups) > 0) {
+
+            script_collapsed <- paste(lapply(X = scripts,
+                                             FUN = paste,
+                                             collapse = ""),
+                                      collapse = "")
+
+            # are any masked functions used in the durrently checks script(s)
+            local_dups <- sort(local_dups[names(local_dups) != "local"])
+
+            local_dups_with_pkg <-
+              stats::setNames(object = unique(local_dups),
+                              nm = by(data = names(local_dups),
+                                      INDICES = local_dups,
+                                      FUN = paste,
+                                      collapse = ", "))
+
+            local_dup_funs_in_script <- vapply(X = local_dups_with_pkg,
+                                               FUN = function(f) {
+                                                 grepl(pattern = f,
+                                                       x = script_collapsed,
+                                                       fixed = TRUE)
+                                               },
+                                               FUN.VALUE = logical(1),
+                                               USE.NAMES = TRUE)
+
+            if (any(local_dup_funs_in_script)) {
+              # inform the user
+              solve_local_duplicates(
+                local_dups_with_pkg[local_dup_funs_in_script])
+
+              # exclude these local functions from originizing
+              functions <-
+                exclude_functions(
+                  functions,
+                  list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
+            }
           }
         }
       }
