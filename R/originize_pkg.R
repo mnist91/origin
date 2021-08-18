@@ -4,7 +4,7 @@
 #'  be used within R-package projects.
 #'
 #' @param path path to the package project root by
-#' \link[rprojroot]{find_package_root_file}
+#' \link[rstudioapi]{getActiveProject}
 #' @param pkgs a character vector of package names, defaults to packages
 #' mentioned in the DESCRIPTION file if the option `origin.pkgs` is not set.
 #' @param recursive logical. Should scripts listed recursively, which means
@@ -31,22 +31,17 @@
 #'
 #' @examples
 #' \dontrun{
-#' originize_dir(path = rprojroot::find_package_root_file(),
-#'               pkgs = c("dplyr", "data.table"),
+#' originize_pkg(path = rstudioapi::getActiveProject(),
 #'               overwrite = TRUE,
 #'               ask_before_applying_changes = TRUE,
 #'               ignore_comments = TRUE,
-#'               excluded_functions = list(dplyr = c("%>%", "tibble"),
-#'                                         data.table = c(":=", "%like%"),
-#'                                         # generally exclude
-#'                                         c("last", "first")),
 #'               exclude_files = c("dont_originize_this.R",
 #'                                 "dont_originize_that.R"),
 #'               verbose = TRUE)
 #' }
 originize_pkg <-
   function(
-    path = rprojroot::find_package_root_file(),
+    path = rstudioapi::getActiveProject(),
     pkgs = getOption("origin.pkgs", get_pkgs_from_description()),
     recursive = TRUE,
     files_pattern = "\\.R$",

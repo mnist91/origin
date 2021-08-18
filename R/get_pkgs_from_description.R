@@ -14,8 +14,8 @@
 #' }
 get_pkgs_from_description <- function() {
 
-  # throws an error if no DESCription file is present
-  desc_path <- file.path(rprojroot::find_package_root_file(), "DESCRIPTION")
+  # throws an error if no DESCRIPTION file is present
+  desc_path <- file.path(rstudioapi::getActiveProject(), "DESCRIPTION")
 
   desc <- readLines(desc_path)
 

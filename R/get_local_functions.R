@@ -2,14 +2,15 @@
 #'
 #' @param path Path in which all defined function names should be
 #'  found and retrieved. Defaults to the current working directory.
+#' @param time_limit seconds to wait for the function to finish
 #'
 #' @return character vector of function names
 #' @export
 #'
 #' @examples
 #' get_local_functions(path = ".")
-#' get_local_functions(path = rprojroot::find_rstudio_root_file())
-get_local_functions <- function(path = ".") {
+#' get_local_functions(path = rstudioapi::getActiveProject())
+get_local_functions <- function(path = ".", time_limit = 180L) {
 
   # get project root file
   root <- try(path)
@@ -23,7 +24,6 @@ get_local_functions <- function(path = ".") {
 
   # In case that the project folder is very deep, for example because a huge
   # share file sevrver is linked in the project folder, a timeout is triggered
-  time_limit <- 180
   setTimeLimit(cpu = time_limit, elapsed = time_limit, transient = TRUE)
   on.exit({
     setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE)
@@ -41,10 +41,9 @@ get_local_functions <- function(path = ".") {
 
   }, error = function(e) {
     if (grepl("time limit", e$message)) {
-      stop(paste(e$message,
-                 "when searching all files for function definitions.",
-                 "Consider setting",
-                 "options(origin.check_local_conflicts = FALSE)."))
+      stop(paste(
+        e$message, "when searching all files for function definitions.",
+        "Consider setting options(origin.check_local_conflicts = FALSE)."))
     } else {
       # error not related to timeout
       stop(e)

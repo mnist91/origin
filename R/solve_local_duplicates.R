@@ -3,7 +3,6 @@
 #' @param dups duplicate functions
 #'
 #' @noRd
-#' @importFrom utils menu
 solve_local_duplicates <- function(dups) {
   # Require User interaction if duplicates are detected
 

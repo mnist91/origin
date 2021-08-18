@@ -17,7 +17,6 @@
 #'
 #' @return named vector
 #' @noRd
-#' @importFrom stats setNames
 #'
 #' @examples
 #' l <- list(red = 1:3, blue = 1:2)

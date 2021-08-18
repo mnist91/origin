@@ -4,11 +4,13 @@
 \alias{get_local_functions}
 \title{Find All User Defined functions in the Project}
 \usage{
-get_local_functions(path = ".")
+get_local_functions(path = ".", time_limit = 180L)
 }
 \arguments{
 \item{path}{Path in which all defined function names should be
 found and retrieved. Defaults to the current working directory.}
+
+\item{time_limit}{seconds to wait for the function to finish}
 }
 \value{
 character vector of function names
@@ -18,5 +20,5 @@ Find All User Defined functions in the Project
 }
 \examples{
 get_local_functions(path = ".")
-get_local_functions(path = rprojroot::find_rstudio_root_file())
+get_local_functions(path = rstudioapi::getActiveProject())
 }
