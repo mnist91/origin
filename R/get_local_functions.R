@@ -10,7 +10,7 @@
 #' @examples
 #' get_local_functions(path = ".")
 #' get_local_functions(path = rstudioapi::getActiveProject())
-get_local_functions <- function(path = ".", time_limit = 180L) {
+get_local_functions <- function(path = ".", time_limit = 30L) {
 
   # get project root file
   root <- try(path)
@@ -54,7 +54,7 @@ get_local_functions <- function(path = ".", time_limit = 180L) {
   # read files
   scripts <- suppressWarnings(lapply(X = files, FUN = readLines))
 
-  # find funciton names
+  # find function names
   local_funs <- sort(unique(unlist(lapply(X = scripts, FUN = find_functions))))
 
   return(local_funs)
