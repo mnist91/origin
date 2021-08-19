@@ -40,22 +40,22 @@ This is especially useful when using the RStudio Addins.
   - `origin.pkgs`: which packages to check for functions used in the code (see **Considered Packages**).
   - `origin.ask_before_applying_changes`: whether changes should be applied
   immediately or the user must approve them first.
-  - `origin.overwrite = TRUE`: actually insert `pkg::` into the code. Otherwise,
+  - `origin.overwrite`: actually insert `pkg::` into the code. Otherwise,
   logging shows only what *would* happen. Note that `ask_before_applying_changes`
   still allows to keep control over your code before `origin` changes anything.
-  - `origin.check_conflicts = TRUE`: should `origin` check for potential 
+  - `origin.check_conflicts`: should `origin` check for potential 
   namespace conflicts, i.e. a used function is defined in more than one considered
   package. User input is required to solve the issue. 
   Strongly encouraged to be set to `TRUE`.
-  - `origin.add_base_packages = FALSE`: should base packages also be added e.g., `base::sum()`.
-  - `origin.check_base_conflicts = TRUE`: Should origin also check for conflicts
+  - `origin.add_base_packages`: should base packages also be added, e.g. `base::sum()`.
+  - `origin.check_base_conflicts`: Should origin also check for conflicts
   with base R functions.
-  - `origin.check_local_conflicts = TRUE`: Should origin also check for conflicts
+  - `origin.check_local_conflicts`: Should origin also check for conflicts
   with locally defined functions anywhere in your project? Note that it does not
   check the environment but solely parses files and scans them for function definitions
-  - `origin.excluded_functions = list()`: a list of functions to exclude from checking. See details.
-  - `origin.ignore_comments = TRUE`: should comments be ignored.
-  - `origin.verbose = TRUE`: some sort of logging is performed, either in the 
+  - `origin.excluded_functions`: a (named) list of functions to exclude from checking. See details.
+  - `origin.ignore_comments`: should comments be ignored.
+  - `origin.verbose`: some sort of logging is performed, either in the 
   console or via the markers tab in RStudio.
   - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio.
   - `origin.color_added_package`: hex code highlighting insertions.
