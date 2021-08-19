@@ -10,4 +10,4 @@
 .lintr
 man-roxygen
 .covrignore
-doc
+^docs
