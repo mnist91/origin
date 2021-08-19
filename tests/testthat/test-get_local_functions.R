@@ -20,11 +20,12 @@ testthat::test_that("approach time limit in getting local functions", {
                "myfun3 <- ",
                "function",
                "(x) 3"), con = file.path(dir, "findfuns.R"))
-browser()
-  cat(try(get_local_functions(dir,
-                      time_limit = 0.0000000001)))
 
-  testthat::expect_error(get_local_functions(dir,
-                                             time_limit = 0.0000000001),
-                         regexp = "time limit")
+
+  if (interactive()) {
+    testthat::expect_error(
+      get_local_functions(dir,
+                          time_limit = 1e-30),
+      regexp = "time limit")
+  }
 })

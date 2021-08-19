@@ -2,7 +2,7 @@
 
 
 # Unit tests
-testthat::test_that("origin file", {
+testthat::test_that("originize file", {
   # Push dummy R script to a temp directory ------------------------------------
   dir <- tempdir()
   test_file_path <- file.path(dir, "testfile.R")
@@ -26,7 +26,6 @@ testthat::test_that("origin file", {
              con = test_file_path)
 
   # In einem Schritt, mit crosschecks
-  # capture.output(
   originize_file(test_file_path,
                  pkgs = c("data.table",
                           "dplyr",
@@ -41,7 +40,6 @@ testthat::test_that("origin file", {
                  use_markers = FALSE,
                  check_local_conflicts = TRUE,
                  verbose = FALSE)
-  # )
 
   testfile_after <- readLines(test_file_path)
 
@@ -76,32 +74,46 @@ testthat::test_that("origin file", {
                          test_text[, grepl("TARGET", nms, fixed = TRUE)])
 
 
-  # with Markers
+  # with Markers works only when called from within RStudio
   # reset data
   writeLines(test_text[, grepl("TESTSKRIPT", nms, fixed = TRUE)],
              con = test_file_path)
 
-  # if (rstudioapi::isAvailable()) {
-  # In einem Schritt, mit crosschecks
-  utils::capture.output(
-    originize_file(test_file_path,
-                   pkgs = c("data.table",
-                            "dplyr",
-                            # "testthat",
-                            "purrr"
-                   ),
-                   overwrite = TRUE,
-                   add_base_packages = FALSE,
-                   ask_before_applying_changes = FALSE,
-                   excluded_functions = list(dplyr = "last"),
-                   ignore_comments = TRUE,
-                   use_markers = TRUE,
-                   verbose = TRUE)
-  )
+  if (rstudioapi::isAvailable()) {
+    # In einem Schritt, mit crosschecks
+      originize_file(test_file_path,
+                     pkgs = c("data.table",
+                              "dplyr",
+                              # "testthat",
+                              "purrr"
+                     ),
+                     overwrite = TRUE,
+                     add_base_packages = FALSE,
+                     ask_before_applying_changes = FALSE,
+                     excluded_functions = list(dplyr = "last"),
+                     ignore_comments = TRUE,
+                     use_markers = TRUE,
+                     verbose = TRUE)
 
-  testfile_after <- readLines(test_file_path)
+    testfile_after <- readLines(test_file_path)
 
-  testthat::expect_equal(testfile_after,
-                         test_text[, grepl("TARGET", nms, fixed = TRUE)])
-  # }
+    testthat::expect_equal(testfile_after,
+                           test_text[, grepl("TARGET", nms, fixed = TRUE)])
+  } else {
+    testthat::expect_error(
+      originize_file(test_file_path,
+                     pkgs = c("data.table",
+                              "dplyr",
+                              # "testthat",
+                              "purrr"
+                     ),
+                     overwrite = TRUE,
+                     add_base_packages = FALSE,
+                     ask_before_applying_changes = FALSE,
+                     excluded_functions = list(dplyr = "last"),
+                     ignore_comments = TRUE,
+                     use_markers = TRUE,
+                     verbose = TRUE),
+      regexp = "RStudio not running")
+  }
 })

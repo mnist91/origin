@@ -112,7 +112,11 @@ originize_dir <-
       } else if (answer == 3) {
         print(files)
         cat("\nProceed?")
-        answer2 <- utils::menu(choices = c("YES", "NO")) # nocov
+        if (interactive()) {
+          answer2 <- utils::menu(choices = c("YES", "NO")) # nocov
+        } else {
+          answer2 <- 1
+        }
 
         if (answer2 == 2) {
           stop("Execution halted") # nocov
