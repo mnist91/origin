@@ -4,7 +4,7 @@
 \alias{get_local_functions}
 \title{Find All User Defined functions in the Project}
 \usage{
-get_local_functions(path = ".", time_limit = 180L)
+get_local_functions(path = ".", time_limit = 30L)
 }
 \arguments{
 \item{path}{Path in which all defined function names should be
