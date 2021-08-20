@@ -11,21 +11,3 @@ testthat::test_that("get local functions", {
   testthat::expect_true(all(c("myfun", "myfun2", "myfun3") %in% result))
 })
 
-
-testthat::test_that("approach time limit in getting local functions", {
-
-  dir <- tempdir(check = TRUE)
-  writeLines(c("myfun <- function(x) 3",
-               "myfun2 =function () 1234",
-               "myfun3 <- ",
-               "function",
-               "(x) 3"), con = file.path(dir, "findfuns.R"))
-
-
-  if (interactive()) {
-    testthat::expect_error(
-      get_local_functions(dir,
-                          time_limit = 1e-30),
-      regexp = "time limit")
-  }
-})
