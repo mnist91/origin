@@ -21,6 +21,9 @@
 #'
 #' @return NULL
 #' @noRd
+
+# Huge complexity due to many checks
+# Begin Exclude Linting
 originize_wrap <-
   function(scripts,
            files,
@@ -109,10 +112,10 @@ originize_wrap <-
       }
 
       if (!project_path_found) {
-        rm_everything_after_last_separator <- paste0("[^",
+        rm_everything_after_last_sep <- paste0("[^",
                                                      .Platform$file.sep,
                                                      "]+$")
-        file_roots <- gsub(pattern = rm_everything_after_last_separator,
+        file_roots <- gsub(pattern = rm_everything_after_last_sep,
                            replacement =  "",
                            x = files)
 
@@ -122,7 +125,7 @@ originize_wrap <-
         # means that the next subfolder does share some bit sof its name
         # then, keep path unly until the last file separator token.
         if (!endsWith(project_path, .Platform$file.sep)) {
-          project_path <- gsub(pattern = rm_everything_after_last_separator,
+          project_path <- gsub(pattern = rm_everything_after_last_sep,
                                replacement =  "",
                                x = project_path)
         }
@@ -333,3 +336,4 @@ originize_wrap <-
 
     return(invisible(out))
   }
+# End Exclude Linting

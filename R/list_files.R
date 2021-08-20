@@ -33,13 +33,14 @@ list_files <- function(path,
                                            ".Rproj"),
                        exclude_symlinks = TRUE,
                        pattern = NULL,
+                       # Begin Exclude Linting
                        all.files = FALSE,
                        full.names = FALSE,
                        recursive = FALSE,
                        ignore.case = FALSE,
                        include.dirs = FALSE,
                        no.. = FALSE) {
-
+  # End Exclude Linting
   # in case no excludable cirectories are provided and symlinks must not be
   # excluded, just use list.files()
   if ((no_excludes <- length(exclude_folders) == 0) && !exclude_symlinks) {
@@ -98,7 +99,7 @@ list_files <- function(path,
     final_dirs <- c(final_dirs, dirs)
     dirs <- unlist(sub_dirs, use.names = FALSE)
 
-    if (exclude_symlinks){
+    if (exclude_symlinks) {
       # remove symlinks since such linked folders should never be considered
       # in looking for local functions since these are eactually outside of
       # the current project

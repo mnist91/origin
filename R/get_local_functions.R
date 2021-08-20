@@ -23,7 +23,8 @@ get_local_functions <- function(path = ".", time_limit = 30L) {
 
   # all R files that do not live in the foldrs renv/packrat/tests
   files <- list_files(path = root,
-                      exclude_folders = c("renv", "packrat", "tests", ".git", ".Rproj"),
+                      exclude_folders = c("renv", "packrat", "tests",
+                                          ".git", ".Rproj"),
                       exclude_symlinks = TRUE,
                       full.names = TRUE,
                       include.dirs = FALSE,

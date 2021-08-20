@@ -79,7 +79,8 @@ originize_dir <-
     }
 
     files <- list_files(path = path,
-                        exclude_folders = c("renv", "packrat", ".git", ".Rproj"),
+                        exclude_folders = c("renv", "packrat",
+                                            ".git", ".Rproj"),
                         full.names = TRUE,
                         include.dirs = FALSE,
                         recursive = recursive,
