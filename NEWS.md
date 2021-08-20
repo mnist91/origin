@@ -3,12 +3,12 @@
 - The new function `originize_pkg` is designed to originize a package project. 
   The main difference to `originize_dir` is that it automatically considers
   all packages listed in the `DESCRIPTION` file as Imports, Suggest, or Depends.
-- Include a timeout limit (180 seconds) to `get_local_functions`. Before, it was
-  possible that `origin` got stuck here due to (accidentally) referring a 
-  very huge directory without any warning or error. Now, a comprehensive error 
-  message is thrown after 3 minutes.
+- replace `rprojroot` functionalities by `rstudioapi` and a logic to determine
+  the shared root path of all originized files to find local functions.
+- Include a custom recursive function to `get_local_functions`. Before, it was
+  possible that `origin` got stuck here due to referring to symlinks.
 - Cease to export `originize_text` since it should be rarely used in practice
-  directly but rather inernally only.
+  directly but rather internally only.
 
 # origin 0.4.0
 ### Bugfixes

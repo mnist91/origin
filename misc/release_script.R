@@ -7,7 +7,7 @@
 
 .rs.restartR()
 source("misc/update_DESCRIPTION_NEWS.R")
-rm(list = ls())
+rm(list = ls(all.names = TRUE))
 
 # Update your R, Rstudio and all dependent R packages
 # (R and Rstudio has to be updated manually
