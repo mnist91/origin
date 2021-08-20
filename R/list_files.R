@@ -16,67 +16,102 @@
 #'            ignore.case = TRUE)
 #' }
 list_files <- function(path,
-                       exclude_folders = c("renv", "packrat", "tests"),
-                       ...) {
-
-  # in case not exlcudable cirectories are provided, just use list.files()
-  if (length(exclude_folders) == 0) {
-    return(list.files(path = path,
-                      ...))
+                       exclude_folders = c("renv", "packrat", "tests", ".git", ".Rproj"),
+                       exclude_symlinks = TRUE,
+                       pattern = NULL,
+                       all.files = FALSE, 
+                       full.names = FALSE, 
+                       recursive = FALSE,
+                       ignore.case = FALSE, 
+                       include.dirs = FALSE, 
+                       no.. = FALSE) {
+  
+  # in case no excludable cirectories are provided and symlinks must not be 
+  # excluded, just use list.files()
+  if ((no_excludes <- length(exclude_folders) == 0) && !exclude_symlinks) {
+    files <- list.files(path = path,
+                        pattern = pattern,
+                        all.files = all.files, 
+                        full.names = full.names, 
+                        recursive = recursive,
+                        ignore.case = ignore.case, 
+                        include.dirs = include.dirs, 
+                        no.. = no..)
+    return(files)
   }
-  # list alle directories
-  # it is faster to first exclude unwanted folders like renv right away in case
-  # they are a direct subfolder of the root directory.
-  dirs <- list.dirs(path = path,
-                    full.names = TRUE,
-                    recursive = FALSE)
-
-  # exclude local project environment, usually  package handler and test folders
-  dirs <-
-    dirs[!grepl(x = dirs,
-                pattern = paste(escape_strings(paste0(.Platform$file.sep,
-                                                      exclude_folders)),
-                                collapse = "|"))]
-
+  
+  # if no folders should be exldued and no recursive listing is desired
+  # yet exclude symlinks
+  if (!recursive && !no_excludes) {
+    files <- list.files(path = path,
+                        pattern = pattern,
+                        all.files = all.files, 
+                        full.names = full.names, 
+                        recursive = recursive,
+                        ignore.case = ignore.case, 
+                        include.dirs = include.dirs, 
+                        no.. = no..)
+    if (exclude_symlinks){
+      # remove symlinks since such linked folders should never be considered
+      # in looking for local functions since these are eactually outside of 
+      # the current project
+      files <- Filter(function(x) !nzchar(Sys.readlink(x)), files)
+    }
+    
+    return(files)
+  }
+  
+  
+  
+  dirs <- path
+  final_dirs <- character()
+  
+  if (!no_excludes) {
+    exclude_regex <- paste(escape_strings(paste0(.Platform$file.sep,
+                                                 exclude_folders)),
+                           collapse = "|")
+  }
+  
+  while (length(dirs) > 0) {
+    # list all directories
+    # it is faster to first exclude unwanted folders like renv right away in case
+    # they are a direct subfolder of the root directory.
+    sub_dirs <- lapply(dirs,
+                       list.dirs,
+                       full.names = TRUE,
+                       recursive = FALSE)
+    
+    final_dirs <- c(final_dirs, dirs)
+    dirs <- unlist(sub_dirs, use.names = FALSE)
+    
+    if (exclude_symlinks){
+      # remove symlinks since such linked folders should never be considered
+      # in looking for local functions since these are eactually outside of 
+      # the current project
+      dirs <- Filter(function(x) !nzchar(Sys.readlink(x)), dirs)
+    }
+    
+    # exclude local project environment, usually  package handler and test folders
+    if (!no_excludes) {
+      dirs <-
+        dirs[!grepl(x = dirs,
+                    pattern = exclude_regex)]
+    }
+    
+  }
   # find all R scripts in the project
-  files <- unlist(lapply(X   = dirs,
+  files <- unlist(lapply(X   = final_dirs,
                          FUN = list.files,
-                         ...))
-
-  # in the path directory, search for R files as well
-  # the recursive option must then be set to FALSE. Must have higher priority
-  # than if set in the ... dots
-  arguments <- c(list(path = path,
-                      recursive = FALSE),
-                 list(...))
-  arguments <- arguments[!duplicated(names(arguments))]
-  root_files <- do.call(what = "list.files",
-                        args = arguments)
-
-  # combine both file vectors
-  files <- c(files, root_files)
-
-  # in case excludable folders are not direct subdirectories of the root,
-  # exclude them by checking the complete file names
-  files <-
-    files[!grepl(x = files,
-                 pattern = paste(escape_strings(paste0(.Platform$file.sep,
-                                                       exclude_folders,
-                                                       .Platform$file.sep)),
-                                 collapse = "|"))]
-
+                         full.names   = full.names,
+                         all.files    = all.files, 
+                         include.dirs = FALSE,
+                         recursive    = FALSE,
+                         patter       = pattern,
+                         ignore.case  = ignore.case))
+  
+  if (include.dirs) {
+    files <- sort(c(files, final_dirs))
+  }
+  
   return(files)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
