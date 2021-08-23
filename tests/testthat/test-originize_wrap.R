@@ -168,7 +168,7 @@ testthat::test_that("Do origin wrapper function checks work", {
 
   # Local Conflicts are checked
   testthat::expect_message(
-    if (rstudioapi::isAvailable()){
+    if (rstudioapi::isAvailable()) {
       testthat::expect_warning(
         originize_wrap(scripts = list(script),
                        files = test_file_path,
@@ -179,19 +179,20 @@ testthat::test_that("Do origin wrapper function checks work", {
                        verbose = FALSE,
                        ask_before_applying_changes = FALSE),
         regexp = "Cannot check for local functions",
-        fixed = TRUE)} else {
-          testthat::expect_warning(
-            originize_wrap(scripts = list(script),
-                           files = test_file_path,
-                           type = "writeLines",
-                           pkgs = "testthat",
-                           add_base_packages = FALSE,
-                           check_local_conflicts = TRUE,
-                           verbose = FALSE,
-                           ask_before_applying_changes = FALSE),
-            regexp = "RStudio not running",
-            fixed = TRUE)
-        },
+        fixed = TRUE)
+    } else {
+      testthat::expect_warning(
+        originize_wrap(scripts = list(script),
+                       files = test_file_path,
+                       type = "writeLines",
+                       pkgs = "testthat",
+                       add_base_packages = FALSE,
+                       check_local_conflicts = TRUE,
+                       verbose = FALSE,
+                       ask_before_applying_changes = FALSE),
+        regexp = "RStudio not running",
+        fixed = TRUE)
+    },
     regexp = "Nothing detected",
     fixed = TRUE)
 
