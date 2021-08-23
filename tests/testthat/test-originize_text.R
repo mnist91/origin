@@ -23,6 +23,7 @@ testthat::test_that("Highlighting of plain text", {
                            overwrite = TRUE,
                            check_conflicts = FALSE,
                            add_base_packages = FALSE,
+                           check_local_conflicts = FALSE,
                            ask_before_applying_changes = FALSE,
                            excluded_functions = list(dplyr = "last"),
                            ignore_comments = TRUE,

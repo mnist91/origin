@@ -52,7 +52,7 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
                 excluded_functions = list(dplyr = "last"),
                 ignore_comments = TRUE,
                 use_markers = FALSE,
-                check_local_conflicts = TRUE,
+                check_local_conflicts = FALSE,
                 verbose = FALSE)
 
   testfile_after1 <- readLines(test_file_path1)
@@ -103,7 +103,7 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
                 excluded_functions = list(dplyr = "last"),
                 ignore_comments = TRUE,
                 use_markers = FALSE,
-                check_local_conflicts = TRUE,
+                check_local_conflicts = FALSE,
                 verbose = FALSE)
 
   testfile_after1 <- readLines(test_file_path1)

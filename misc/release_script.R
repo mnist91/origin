@@ -37,7 +37,7 @@ devtools::spell_check()
 # Run goodpractice check
 goodpractice::gp()
 
-a# Check package dependencies
+# Check package dependencies
 inteRgrate::check_pkg()
 
 # Check if code adheres to standards

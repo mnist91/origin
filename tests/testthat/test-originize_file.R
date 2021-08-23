@@ -38,7 +38,7 @@ testthat::test_that("originize file", {
                  excluded_functions = list(dplyr = "last"),
                  ignore_comments = TRUE,
                  use_markers = FALSE,
-                 check_local_conflicts = TRUE,
+                 check_local_conflicts = FALSE,
                  verbose = FALSE)
 
   testfile_after <- readLines(test_file_path)
@@ -62,6 +62,7 @@ testthat::test_that("originize file", {
                    overwrite = TRUE,
                    add_base_packages = FALSE,
                    ask_before_applying_changes = FALSE,
+                   check_local_conflicts = FALSE,
                    excluded_functions = list(dplyr = "last"),
                    ignore_comments = TRUE,
                    use_markers = FALSE,
@@ -89,6 +90,7 @@ testthat::test_that("originize file", {
                      ),
                      overwrite = TRUE,
                      add_base_packages = FALSE,
+                     check_local_conflicts = FALSE,
                      ask_before_applying_changes = FALSE,
                      excluded_functions = list(dplyr = "last"),
                      ignore_comments = TRUE,
@@ -109,6 +111,7 @@ testthat::test_that("originize file", {
                      ),
                      overwrite = TRUE,
                      add_base_packages = FALSE,
+                     check_local_conflicts = FALSE,
                      ask_before_applying_changes = FALSE,
                      excluded_functions = list(dplyr = "last"),
                      ignore_comments = TRUE,

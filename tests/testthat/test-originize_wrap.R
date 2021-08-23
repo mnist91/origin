@@ -30,6 +30,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         files = test_file_path,
                                         type = "writeLines",
                                         add_base_packages = TRUE,
+                                        check_local_conflicts = FALSE,
                                         check_base_conflicts = FALSE),
                          regexp = paste("When adding base packages checking",
                                         "for potential conflicts is required."),
@@ -41,6 +42,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                    files = test_file_path,
                    type = "writeLines",
                    ask_before_applying_changes = TRUE,
+                   check_local_conflicts = FALSE,
                    verbose = FALSE),
     regexp = paste("Without verbose == TRUE no changes are visible before",
                    "applying. `verbose` must be TRUE if",
@@ -55,6 +57,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                    pkgs = NULL,
                    check_base_conflicts = TRUE,
                    verbose = FALSE,
+                   check_local_conflicts = FALSE,
                    ask_before_applying_changes = FALSE),
     regexp = paste("No packages specified. Please use either",
                    "`options(origin.pkgs = c('pkg', ...))`",
@@ -69,6 +72,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                    pkgs = "utils",
                    check_base_conflicts = FALSE,
                    verbose = FALSE,
+                   check_local_conflicts = FALSE,
                    ask_before_applying_changes = FALSE),
     regexp = paste("No packages specified. Please use either",
                    "`options(origin.pkgs = c('pkg', ...))`",
@@ -82,6 +86,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                    type = "writeLines",
                    pkgs = "base",
                    check_base_conflicts = TRUE,
+                   check_local_conflicts = FALSE,
                    add_base_packages = FALSE,
                    verbose = FALSE,
                    ask_before_applying_changes = FALSE),
@@ -97,6 +102,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         type = "writeLines",
                                         pkgs = "datasets",
                                         add_base_packages = TRUE,
+                                        check_local_conflicts = FALSE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
                          regexp = "Given packages do no export functions.",
@@ -113,6 +119,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                      list(data.table = get_exported_functions("data.table")),
                    add_base_packages = FALSE,
                    verbose = FALSE,
+                   check_local_conflicts = FALSE,
                    ask_before_applying_changes = FALSE),
     regexp = "You excluded all exported functions from the given packages.",
     fixed = TRUE)
@@ -126,6 +133,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                    excluded_functions =
                      list(data.table = get_exported_functions("data.table")),
                    add_base_packages = FALSE,
+                   check_local_conflicts = FALSE,
                    verbose = FALSE,
                    ask_before_applying_changes = FALSE),
     regexp = "No non-excluded exported functions in given packages.",
@@ -136,6 +144,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                           type = "writeLines",
                                           pkgs = "testthat",
                                           add_base_packages = FALSE,
+                                          check_local_conflicts = FALSE,
                                           verbose = FALSE,
                                           ask_before_applying_changes = FALSE),
                            regexp = "Nothing detected",
@@ -149,10 +158,40 @@ testthat::test_that("Do origin wrapper function checks work", {
                      type = "writeLines",
                      pkgs = c("testthat", "testthat"),
                      add_base_packages = FALSE,
+                     check_local_conflicts = FALSE,
                      verbose = FALSE,
                      ask_before_applying_changes = FALSE),
       regexp = "packages are provided more than once",
       fixed = TRUE),
+    regexp = "Nothing detected",
+    fixed = TRUE)
+
+  # Local Conflicts are checked
+  testthat::expect_message(
+    if (rstudioapi::isAvailable()){
+      testthat::expect_warning(
+        originize_wrap(scripts = list(script),
+                       files = test_file_path,
+                       type = "writeLines",
+                       pkgs = "testthat",
+                       add_base_packages = FALSE,
+                       check_local_conflicts = TRUE,
+                       verbose = FALSE,
+                       ask_before_applying_changes = FALSE),
+        regexp = "Cannot check for local functions",
+        fixed = TRUE)} else {
+          testthat::expect_warning(
+            originize_wrap(scripts = list(script),
+                           files = test_file_path,
+                           type = "writeLines",
+                           pkgs = "testthat",
+                           add_base_packages = FALSE,
+                           check_local_conflicts = TRUE,
+                           verbose = FALSE,
+                           ask_before_applying_changes = FALSE),
+            regexp = "RStudio not running",
+            fixed = TRUE)
+        },
     regexp = "Nothing detected",
     fixed = TRUE)
 

@@ -9,5 +9,14 @@ testthat::test_that("get local functions", {
   result <- get_local_functions(dir)
 
   testthat::expect_true(all(c("myfun", "myfun2", "myfun3") %in% result))
+
+})
+
+
+testthat::test_that("get local functions error handler", {
+
+  testthat::expect_equal(get_local_functions(stop()),
+                         character())
+
 })
 
