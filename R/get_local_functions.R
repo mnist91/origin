@@ -13,7 +13,7 @@
 get_local_functions <- function(path = ".", time_limit = 30L) {
 
   # get project root file
-  root <- try(path)
+  root <- try(path, silent = TRUE)
 
   # in case ther eis no root file, return nothing
   if (inherits(root, what = "try-error")) {

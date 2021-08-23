@@ -55,9 +55,9 @@ list_files <- function(path,
     return(files)
   }
 
-  # if no folders should be exldued and no recursive listing is desired
+  # if no folders should be excluded nor recursive listing is desired
   # yet exclude symlinks
-  if (!recursive && !no_excludes) {
+  if (!recursive && no_excludes) {
     files <- list.files(path = path,
                         pattern = pattern,
                         all.files = all.files,
@@ -70,7 +70,7 @@ list_files <- function(path,
       # remove symlinks since such linked folders should never be considered
       # in looking for local functions since these are eactually outside of
       # the current project
-      files <- Filter(function(x) !nzchar(Sys.readlink(x)), files)
+      files <- files[Sys.readlink(files) == ""]
     }
 
     return(files)
@@ -91,10 +91,10 @@ list_files <- function(path,
     # list all directories
     # it is faster to first exclude unwanted folders like renv right away
     # in case they are a direct subfolder of the root directory.
-    sub_dirs <- lapply(dirs,
-                       list.dirs,
+    sub_dirs <- lapply(X   = dirs,
+                       FUN = list.dirs,
                        full.names = TRUE,
-                       recursive = FALSE)
+                       recursive  = FALSE)
 
     final_dirs <- c(final_dirs, dirs)
     dirs <- unlist(sub_dirs, use.names = FALSE)
@@ -103,7 +103,7 @@ list_files <- function(path,
       # remove symlinks since such linked folders should never be considered
       # in looking for local functions since these are eactually outside of
       # the current project
-      dirs <- Filter(function(x) !nzchar(Sys.readlink(x)), dirs)
+      dirs <- dirs[Sys.readlink(dirs) == ""]
     }
 
     # exclude folders, usually package handler and test folders

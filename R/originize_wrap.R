@@ -103,42 +103,36 @@ originize_wrap <-
       # by the shared root path of all files.
       project_path_found <- TRUE
       if (inherits(project_path, "try-error")) {
-        message(paste("RStudio not running. Hence, no project path to",
-                      "search forlocal functions can be determined."))
         project_path_found <- FALSE
+        warning(paste("RStudio not running. Hence, no project path to",
+                      "search for local functions can be determined."))
       } else if (is.null(project_path)) {
-        message("origin not run from within a project.")
         project_path_found <- FALSE
+        warning(paste("origin not run from within a project.",
+                      "Cannot check for local functions"))
       }
 
-      if (!project_path_found) {
-        rm_everything_after_last_sep <- paste0("[^",
-                                                     .Platform$file.sep,
-                                                     "]+$")
-        file_roots <- gsub(pattern = rm_everything_after_last_sep,
-                           replacement =  "",
-                           x = files)
-
-        project_path <- get_string_overlap(file_roots)
-
-        # if the shared path does not end with a file separator, that
-        # means that the next subfolder does share some bit sof its name
-        # then, keep path unly until the last file separator token.
-        if (!endsWith(project_path, .Platform$file.sep)) {
-          project_path <- gsub(pattern = rm_everything_after_last_sep,
-                               replacement =  "",
-                               x = project_path)
-        }
-
-
-        if (!is.na(project_path) && nzchar(project_path)) {
-          warning("Search for local functions in root folder ", project_path)
-        }
+      # Are all checked files in the current project?
+      # It is possible to originize one project from within another project
+      # Then, it is unclear which local functions are to consider and
+      # the check is skipped
+      if (project_path_found && !all(not_in_project <- grepl(pattern = project_path,
+                                                             x = files,
+                                                             fixed = TRUE))) {
+        project_path_found <- FALSE
+        warning(sprintf(paste("%s files are not in the current",
+                              "project path %s.\n",
+                              "Cannot check for local functions due to",
+                              "unclear root directory."),
+                        length(not_in_project),
+                        project_path))
       }
 
 
 
-      if (!is.null(project_path) &&
+
+      if (project_path_found &&
+          !is.null(project_path) &&
           !is.na(project_path) &&
           nzchar(project_path)) {
 
