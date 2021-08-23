@@ -18,7 +18,7 @@ In contrast to other programming languages, R has no widely established and
 undisputed style guide (e.g. PEP 8 for Python). As a data scientist at 
 [STATWORX](https://www.statworx.com/en/), I helped to establishe a company wide
 R style guide. While it mainly relies on the 
-[tidyverse style guide](https://style.tidyverse.org/), we generally descided
+[tidyverse style guide](https://style.tidyverse.org/), we generally decided
 to be more explicit in our coding practice. This includes that we always refer
 to functions from non-native R packages with the double colon operator `::`. While it
 is relatively easy to establish such a convention in new projects, it is 
@@ -136,7 +136,7 @@ dplyr-style code, consider to exclude the pipe-operator via
 
 #### Same Function Name in Multiple Packages
 Due to the variety of R packages, function names must not be unique across all
-packages out there. By default, R maskes priorly imported functions by those 
+packages out there. By default, R masks priorly imported functions by those 
 imported afterwards. `origin` mimics this rule by applying a higher priority
 to those packages that are listed first. In case there is a conflict regarding
 a **used** function, These functions are listed along with the packages from 

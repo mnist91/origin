@@ -79,7 +79,7 @@ To overwrite the default just use a character vector of package names.
 
 ### Exclude Functions
 
-Especially usefull to solve **namespace conflicts** or ignore infix functions
+Especially useful to solve **namespace conflicts** or ignore infix functions
 like the pipe operator `%>%`. Listed functions are not considered by `origin` 
 neither in adding `pkg::` nor logging. It is a list of function names. When unnamed, the 
 function is generally excluded. To be more specific, a named list excludes functions

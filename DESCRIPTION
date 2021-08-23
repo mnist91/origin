@@ -20,12 +20,13 @@ Depends:
 Imports: 
     rstudioapi
 Suggests: 
-    knitr,
     data.table,
     dplyr,
-    testthat,
-    rmarkdown
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr
