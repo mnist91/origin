@@ -53,6 +53,8 @@ This is especially useful when using the RStudio Addins.
   - `origin.check_local_conflicts`: Should origin also check for conflicts
   with locally defined functions anywhere in your project? Note that it does not
   check the environment but solely parses files and scans them for function definitions
+  - `origin.path_to_local_functions`: the path to the root directory of all local functions.
+  defaults to the project root of the currently opened project in RStudio.
   - `origin.excluded_functions`: a (named) list of functions to exclude from checking. See details.
   - `origin.ignore_comments`: should comments be ignored.
   - `origin.verbose`: some sort of logging is performed, either in the 

@@ -11,11 +11,12 @@
 #' @template ignore_comments
 #' @template check_conflicts
 #' @template check_base_conflicts
+#' @template check_local_conflicts
+#' @template path_to_local_functions
 #' @template add_base_packages
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
-#' @template check_local_conflicts
 #' @param selected_lines logical, only necessary for originize selection
 #' @param context a document context regarding the selected r script
 #'
@@ -28,18 +29,18 @@ originize_wrap <-
   function(scripts,
            files,
            type,
-           pkgs = getOption("origin.pkgs", .packages()),
+           pkgs,
            overwrite = TRUE,
-           ask_before_applying_changes =
-             getOption("origin.ask_before_applying_changes"),
+           ask_before_applying_changes =TRUE,
            ignore_comments = TRUE,
            check_conflicts = TRUE,
            check_base_conflicts = TRUE,
            add_base_packages = FALSE,
            excluded_functions = list(),
            verbose = FALSE,
-           use_markers = getOption("origin.use_markers_for_logging"),
+           use_markers = TRUE,
            check_local_conflicts = TRUE,
+           path_to_local_functions = NULL,
            selected_lines = NULL,
            context = NULL) {
 
@@ -96,39 +97,53 @@ originize_wrap <-
     if (check_local_conflicts) {
 
       # get root path of the current project
-      project_path <- try(rstudioapi::getActiveProject())
+      if (is.null(path_to_local_functions)) {
+        project_path <- try(rstudioapi::getActiveProject())
 
-      # In case R is not run from wihtin RStudio or origin is called from
-      # within a project, inform the user and determine the root path
-      # by the shared root path of all files.
-      project_path_found <- TRUE
-      if (inherits(project_path, "try-error")) {
-        project_path_found <- FALSE
-        warning(paste("RStudio not running. Hence, no project path to",
-                      "search for local functions can be determined."))
-      } else if (is.null(project_path)) {
-        project_path_found <- FALSE
-        warning(paste("origin not run from within a project.",
-                      "Cannot check for local functions"))
+        # In case R is not run from wihtin RStudio or origin is called from
+        # within a project, inform the user and determine the root path
+        # by the shared root path of all files.
+        project_path_found <- TRUE
+        if (inherits(project_path, "try-error")) {
+          project_path_found <- FALSE
+          warning(paste("RStudio not running. Hence, no project path to",
+                        "search for local functions can be determined."))
+        } else if (is.null(project_path)) {
+          project_path_found <- FALSE
+          warning(paste("origin not run from within a project.",
+                        "Cannot check for local functions"))
+        }
+
+        # Are all checked files in the current project?
+        # It is possible to originize one project from within another project
+        # Then, it is unclear which local functions are to consider and
+        # the check is skipped
+        if (project_path_found && !all(not_in_project <- grepl(pattern = project_path,
+                                                               x = files,
+                                                               fixed = TRUE))) {
+          project_path_found <- FALSE
+          warning(sprintf(paste("%s files are not in the current",
+                                "project path %s.\n",
+                                "Cannot check for local functions due to",
+                                "unclear root directory."),
+                          length(not_in_project),
+                          project_path))
+        }
+
+      } else {
+
+        # does the provided directory exist
+        if (dir.exists(path_to_local_functions)) {
+          project_path_found <- TRUE
+          project_path <- path_to_local_functions
+        } else {
+          project_path_found <- FALSE
+          warning(paste("Given path_to_local_functions",
+                        path_to_local_functions,
+                        "does not exist.",
+                        "Cannot check for local functions."))
+        }
       }
-
-      # Are all checked files in the current project?
-      # It is possible to originize one project from within another project
-      # Then, it is unclear which local functions are to consider and
-      # the check is skipped
-      if (project_path_found && !all(not_in_project <- grepl(pattern = project_path,
-                                                             x = files,
-                                                             fixed = TRUE))) {
-        project_path_found <- FALSE
-        warning(sprintf(paste("%s files are not in the current",
-                              "project path %s.\n",
-                              "Cannot check for local functions due to",
-                              "unclear root directory."),
-                        length(not_in_project),
-                        project_path))
-      }
-
-
 
 
       if (project_path_found &&

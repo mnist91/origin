@@ -16,6 +16,7 @@ originize_dir(
   ignore_comments = getOption("origin.ignore_comments", TRUE),
   check_conflicts = getOption("origin.check_conflicts", TRUE),
   check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
+  path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
   check_local_conflicts = getOption("origin.check_local_conflicts", TRUE),
   add_base_packages = getOption("origin.add_base_packages", FALSE),
   excluded_functions = getOption("origin.excluded_functions", list()),
@@ -54,6 +55,10 @@ checked and, if there are any, user input is required. See also}
 
 \item{check_base_conflicts}{a boolean. If TRUE; base R functions are also
 included in checking for conflicts}
+
+\item{path_to_local_functions}{Path to search for local functions that mask
+all exported functions from originizing. If NULL, defaults to the current
+RStudio Project root.}
 
 \item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
 defined functions inside of the project mask exported functions from checked

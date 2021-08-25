@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 In contrast to other programming languages, R has no widely established and 
 undisputed style guide (e.g. PEP 8 for Python). As a data scientist at 
-[STATWORX](https://www.statworx.com/en/), I helped to establishe a company wide
+[STATWORX](https://www.statworx.com/en/), I helped to establish a company wide
 R style guide. While it mainly relies on the 
 [tidyverse style guide](https://style.tidyverse.org/), we generally decided
 to be more explicit in our coding practice. This includes that we always refer
@@ -161,12 +161,11 @@ Do you want to proceed?
 As packages mask each others functions, the same applies to locally
 defined custom functions. In case you defined your own `last` function
 in your project, `origin` should **not** add `dplyr::` to it. Therefore,
-all files are searched for function definitions and local functions 
+your project is searched for function definitions and local functions 
 have higher priority than those exported by packages. Note that, 
-depending on the project size, this process can take quite some time
-and might even timeout before finishing. In this case, set the proper
-argument/option `check_local_conflicts` to `FALSE` and check
-the logging even more carefully.
+depending on the project size, this process can take quite some time.
+In this case, set the argument/option `path_to_local_functions` to a 
+subdirectory or `check_local_conflicts` to `FALSE` to skip this feature.
 
 ```{text, eval=FALSE}
 Locally defined and used functions mask exported functions from packages

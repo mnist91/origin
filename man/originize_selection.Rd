@@ -2,7 +2,7 @@
 % Please edit documentation in R/originize_selection.R
 \name{originize_selection}
 \alias{originize_selection}
-\title{Wrapper function to be used as an RSTUDIO ADDIN}
+\title{Wrapper function to be used as an RStudio addin}
 \usage{
 originize_selection(
   context = rstudioapi::getSourceEditorContext(),
@@ -16,6 +16,7 @@ originize_selection(
   excluded_functions = getOption("origin.excluded_functions"),
   verbose = getOption("origin.verbose"),
   use_markers = getOption("origin.use_markers_for_logging"),
+  path_to_local_functions = getOption("origin.path_to_local_functions"),
   check_local_conflicts = getOption("origin.check_local_conflicts")
 )
 }
@@ -55,10 +56,14 @@ namespace conflicts}
 to track changes and show issues. FALSE prints the same information in
 the console.}
 
+\item{path_to_local_functions}{Path to search for local functions that mask
+all exported functions from originizing. If NULL, defaults to the current
+RStudio Project root.}
+
 \item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
 defined functions inside of the project mask exported functions from checked
 packages. It avoids mistakenly adding pkg:: to a custom local function.}
 }
 \description{
-Wrapper function to be used as an RSTUDIO ADDIN
+Wrapper function to be used as an RStudio addin
 }

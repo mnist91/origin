@@ -20,6 +20,7 @@ originize_pkg(
   excluded_functions = getOption("origin.excluded_functions", list()),
   verbose = getOption("origin.verbose", FALSE),
   use_markers = getOption("origin.use_markers_for_logging", TRUE),
+  path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
   check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
 )
 }
@@ -71,6 +72,10 @@ namespace conflicts}
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
 the console.}
+
+\item{path_to_local_functions}{Path to search for local functions that mask
+all exported functions from originizing. If NULL, defaults to the current
+RStudio Project root.}
 
 \item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
 defined functions inside of the project mask exported functions from checked

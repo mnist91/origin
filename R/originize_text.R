@@ -8,11 +8,12 @@
 #' @template ignore_comments
 #' @template check_conflicts
 #' @template check_base_conflicts
+#' @template check_local_conflicts
+#' @template path_to_local_functions
 #' @template add_base_packages
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
-#' @template check_local_conflicts
 #'
 #' @return NULL
 #' @noRd
@@ -30,6 +31,7 @@ originize_text <-
     excluded_functions = getOption("origin.excluded_functions", list()),
     verbose = getOption("origin.verbose", FALSE),
     use_markers = getOption("origin.use_markers_for_logging", TRUE),
+    path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
     check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
   ) {
 
@@ -63,6 +65,7 @@ originize_text <-
                      excluded_functions = excluded_functions,
                      verbose = verbose,
                      use_markers = use_markers,
+                     path_to_local_functions = path_to_local_functions,
                      check_local_conflicts = check_local_conflicts)
 
 

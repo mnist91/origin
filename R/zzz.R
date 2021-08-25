@@ -15,6 +15,7 @@
     origin.add_base_packages = FALSE,
     origin.excluded_functions = list(),
     origin.check_local_conflicts = TRUE,
+    origin.path_to_local_functions = NULL,
     origin.verbose = TRUE
   )
 

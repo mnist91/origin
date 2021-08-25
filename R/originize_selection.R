@@ -1,4 +1,4 @@
-#' Wrapper function to be used as an RSTUDIO ADDIN
+#' Wrapper function to be used as an RStudio addin
 #'
 #' @param context information of marked editor section in RStudio
 #' @template pkgs
@@ -12,23 +12,26 @@
 #' @template verbose
 #' @template use_markers
 #' @template check_local_conflicts
+#' @template path_to_local_functions
 #'
 #' @return NULL
 originize_selection <-
-  function(context = rstudioapi::getSourceEditorContext(),
-           pkgs = getOption("origin.pkgs", .packages()),
-           overwrite = getOption("origin.overwrite"),
-           ask_before_applying_changes =
-             getOption("origin.ask_before_applying_changes"),
-           ignore_comments = getOption("origin.ignore_comments"),
-           check_conflicts = getOption("origin.check_conflicts"),
-           check_base_conflicts = getOption("origin.check_base_conflicts"),
-           add_base_packages = getOption("origin.add_base_packages"),
-           excluded_functions = getOption("origin.excluded_functions"),
-           verbose = getOption("origin.verbose"),
-           use_markers = getOption("origin.use_markers_for_logging"),
-           check_local_conflicts = getOption("origin.check_local_conflicts")
-           ) {
+  function(
+    context = rstudioapi::getSourceEditorContext(),
+    pkgs = getOption("origin.pkgs", .packages()),
+    overwrite = getOption("origin.overwrite"),
+    ask_before_applying_changes =
+      getOption("origin.ask_before_applying_changes"),
+    ignore_comments = getOption("origin.ignore_comments"),
+    check_conflicts = getOption("origin.check_conflicts"),
+    check_base_conflicts = getOption("origin.check_base_conflicts"),
+    add_base_packages = getOption("origin.add_base_packages"),
+    excluded_functions = getOption("origin.excluded_functions"),
+    verbose = getOption("origin.verbose"),
+    use_markers = getOption("origin.use_markers_for_logging"),
+    path_to_local_functions = getOption("origin.path_to_local_functions"),
+    check_local_conflicts = getOption("origin.check_local_conflicts")
+  ) {
 
     if (is.null(context)) {
       message("Nothing selected")
@@ -67,6 +70,7 @@ originize_selection <-
                    excluded_functions = excluded_functions,
                    verbose = verbose,
                    use_markers = use_markers,
+                   path_to_local_functions = path_to_local_functions,
                    check_local_conflicts = check_local_conflicts,
                    selected_lines = selected_lines,
                    context = context)
