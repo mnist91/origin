@@ -3,6 +3,9 @@
 - The new function `originize_pkg` is designed to originize a package project. 
   The main difference to `originize_dir` is that it automatically considers
   all packages listed in the `DESCRIPTION` file as Imports, Suggest, or Depends.
+- Define an option/argument path_to_local_functions that allows the user
+  to explicitly define a folder in which functions are defined that should
+  be checked for masking exported functions (e.g. a custom `mutate` function).
 - replace `rprojroot` functionalities by `rstudioapi` and a logic to determine
   the shared root path of all originized files to find local functions.
 - Include a custom recursive function to `get_local_functions`. Before, it was
