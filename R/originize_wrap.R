@@ -44,6 +44,14 @@ originize_wrap <-
            selected_lines = NULL,
            context = NULL) {
 
+    if (!is.null(path_to_local_functions) &&
+        !dir.exists(path_to_local_functions)) {
+      stop(paste("Given path_to_local_functions",
+                 path_to_local_functions,
+                 "does not exist.",
+                 "Cannot check for local functions."))
+    }
+
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
            "potential conflicts is required.")
@@ -131,18 +139,8 @@ originize_wrap <-
         }
 
       } else {
-
-        # does the provided directory exist
-        if (dir.exists(path_to_local_functions)) {
-          project_path_found <- TRUE
-          project_path <- path_to_local_functions
-        } else {
-          project_path_found <- FALSE
-          warning(paste("Given path_to_local_functions",
-                        path_to_local_functions,
-                        "does not exist.",
-                        "Cannot check for local functions."))
-        }
+        # a directory is provided
+        project_path <- path_to_local_functions
       }
 
 
