@@ -2,7 +2,6 @@
 #'
 #' @param path Path in which all defined function names should be
 #'  found and retrieved. Defaults to the current working directory.
-#' @param time_limit seconds to wait for the function to finish
 #'
 #' @return character vector of function names
 #' @export
@@ -10,7 +9,7 @@
 #' @examples
 #' get_local_functions(path = ".")
 #' get_local_functions(path = rstudioapi::getActiveProject())
-get_local_functions <- function(path = ".", time_limit = 30L) {
+get_local_functions <- function(path = ".") {
 
   # get project root file
   root <- try(path, silent = TRUE)
