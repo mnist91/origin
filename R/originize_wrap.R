@@ -126,9 +126,10 @@ originize_wrap <-
         # It is possible to originize one project from within another project
         # Then, it is unclear which local functions are to consider and
         # the check is skipped
-        if (project_path_found && !all(not_in_project <- grepl(pattern = project_path,
-                                                               x = files,
-                                                               fixed = TRUE))) {
+        if (project_path_found &&
+            !all(not_in_project <- startsWith(x = normalizePath(files),
+                                              prefix = project_path))
+        ) {
           project_path_found <- FALSE
           warning(sprintf(paste("%s files are not in the current",
                                 "project path %s.\n",
