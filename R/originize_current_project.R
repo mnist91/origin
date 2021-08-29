@@ -3,8 +3,6 @@
 #' @param path defualts to the project root path
 #' @template pkgs
 #' @param recursive see \link[base]{list.files}
-#' @param files_pattern see \link[base]{list.files}
-#' @param ignore_case see \link[base]{list.files}
 #' @param exclude_files see \link[base]{list.files}
 #' @template overwrite
 #' @template ask_before_applying_changes
@@ -22,8 +20,6 @@ originize_current_project <-
   function(path = ".",
            pkgs = getOption("origin.pkgs", .packages()),
            recursive = TRUE,
-           files_pattern = "\\.R$",
-           ignore_case = TRUE,
            exclude_files = NULL,
            overwrite = getOption("origin.overwrite"),
            ask_before_applying_changes =
@@ -39,8 +35,6 @@ originize_current_project <-
     originize_dir(path = path,
                   pkgs = pkgs,
                   recursive = recursive,
-                  files_pattern = files_pattern,
-                  ignore_case = ignore_case,
                   exclude_files = exclude_files,
                   overwrite = overwrite,
                   ask_before_applying_changes = ask_before_applying_changes,

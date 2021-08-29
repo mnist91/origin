@@ -7,7 +7,7 @@
 get_exported_functions(pkg)
 }
 \arguments{
-\item{pkg}{string of a package name}
+\item{pkg}{a character string of a package name}
 }
 \value{
 character vector of functions names

@@ -5,16 +5,29 @@
 #' (by default) its subdirectories.
 #'
 #'
+#' @details check_conflicts checks whether multiple packages listed in pkgs
+#' export
+#' functions with the same name, e.g. lag() is both part of the dplyr and
+#' data.table namespace. If there are any conflicts actually present
+#' in any considered script, these conflicts are shown including how origin
+#' would solve them. User input is required to proceed. The order in pkgs
+#' determines the precedence, while those listed first have higher precedence
+#' than those listed later in the vector. This is consistent with function
+#' masking in R.
+#'
+#' check_base_conflicts checks whether functions listed in pkgs mask R functions
+#'  of R core packages (base, utils, stats, methods, graphics, grDevices,
+#'  datasets). Even tough the user might not include those functions in the
+#'  pkg::fct logic, potential conflicts require careful evaluation.
+#'
 #' @param path path to a directory. Defaults to the current working directory.
 #' @template pkgs
-#' @param recursive logical. Should scripts listed recursively, which means
-#'  to include all subdirectories?
+#' @param recursive logical. Should scripts be originized recursively, this
+#'  means that all files in the subfolders will be searched as well.
 #'  See \link[base]{list.files}
-#' @param files_pattern A regular expression. Only file names which match the
-#'  regular expression will be returned. See \link[base]{list.files}
-#' @param ignore_case logical. Should pattern-matching be case-insensitive?
-#'  See \link[base]{list.files}
-#' @param exclude_files list of files to be excluded
+#' @param exclude_files a character vector of file paths that should be excluded
+#' excluded from being originized. Helpful if all but a few files should be
+#' considered by origin.
 #' @template overwrite
 #' @template ask_before_applying_changes
 #' @template ignore_comments
@@ -50,8 +63,6 @@ originize_dir <-
     path = getwd(),
     pkgs = getOption("origin.pkgs", .packages()),
     recursive = TRUE,
-    files_pattern = "\\.R$",
-    ignore_case = TRUE,
     exclude_files = NULL,
     overwrite =
       getOption("origin.overwrite", TRUE),
@@ -88,8 +99,8 @@ originize_dir <-
                         full.names = TRUE,
                         include.dirs = FALSE,
                         recursive = recursive,
-                        pattern = files_pattern,
-                        ignore.case = ignore_case)
+                        pattern = "\\.R$",
+                        ignore.case = TRUE)
 
 
     # TODO: non absolute paths

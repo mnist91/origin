@@ -24,33 +24,36 @@ originize_file(
 \item{file}{a path to a script}
 
 \item{pkgs}{a character vector with package names. Defaults to the result of
-\link[base]{.packages} but if the option `origin.pkgs` is not specified.}
+\link[base]{.packages} but only if the option `origin.pkgs` is not specified.}
 
-\item{overwrite}{a boolean, if TRUE the file will be saved and overwritten.
-If FALSE the file is returned.}
+\item{overwrite}{if TRUE the file will be saved and overwritten. Otherwise,
+only the logging is triggered. Note that, depending on
+`ask_before_applying_changes`, the user is ask whether the result is
+ as desired.}
 
-\item{ask_before_applying_changes}{a boolean. If TRUE, the user has to approve
-changes made by origin prior to applying them}
+\item{ask_before_applying_changes}{if TRUE, the user has to approve
+changes made by origin prior to applying them.}
 
-\item{ignore_comments}{a boolean, if TRUE lines starting with # are ignored}
+\item{ignore_comments}{if TRUE, commented lines are ignored.}
 
-\item{check_conflicts}{a boolean. If TRUE, possible namespace conflicts are
-checked and, if there are any, user input is required. See also}
+\item{check_conflicts}{if TRUE, possible namespace conflicts between
+functions exported by packages listed in pkgs are checked. See details.}
 
-\item{check_base_conflicts}{a boolean. If TRUE; base R functions are also
-included in checking for conflicts}
+\item{check_base_conflicts}{if TRUE; native R functions are also
+included in checking for conflicts. See details.}
 
 \item{add_base_packages}{a boolean. If TRUE, base R functions are handled
 like all other packages and added via `::`}
 
 \item{excluded_functions}{a list. Either an unnamed list of function names
-as strings. Then these functions are excluded from all packages and never 
-considered in origin. Or a named list with character vectors, Then 
-the name of the list element refers to a package and the given functions 
+as strings. These functions are excluded from all packages and never
+considered in origin. Or a named list with character vectors, Then
+the name of the list element refers to a package and the given functions
 are only excluded from this package. A very explicit way to handle
-namespace conflicts}
+namespace conflicts or highlighting popular infix functions like
+`\%>\%` or `:=`.}
 
-\item{verbose}{a boolean. If TRUE, origin provides feedback about its steps.}
+\item{verbose}{if TRUE, origin provides a logging output about its results.}
 
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
@@ -60,12 +63,29 @@ the console.}
 all exported functions from originizing. If NULL, defaults to the current
 RStudio Project root.}
 
-\item{check_local_conflicts}{a boolean. If TRUE, it is checked whether locally
-defined functions inside of the project mask exported functions from checked
-packages. It avoids mistakenly adding pkg:: to a custom local function.}
+\item{check_local_conflicts}{if TRUE, it is checked whether locally
+defined functions inside of the project mask exported functions
+packages listed in pkgs. It avoids mistakenly adding pkg:: to a
+custom local function.}
 }
 \description{
 Originize a specific file
+}
+\details{
+check_conflicts checks whether multiple packages listed in pkgs
+export
+functions with the same name, e.g. lag() is both part of the dplyr and
+data.table namespace. If there are any conflicts actually present
+in any considered script, these conflicts are shown including how origin
+would solve them. User input is required to proceed. The order in pkgs
+determines the precedence, while those listed first have higher precedence
+than those listed later in the vector. This is consistent with function
+masking in R.
+
+check_base_conflicts checks whether functions listed in pkgs mask R functions
+ of R core packages (base, utils, stats, methods, graphics, grDevices,
+ datasets). Even tough the user might not include those functions in the
+ pkg::fct logic, potential conflicts require careful evaluation.
 }
 \examples{
 \dontrun{

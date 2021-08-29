@@ -1,4 +1,3 @@
-
 #' Get Packages from the DESCRIPTION file
 #'
 #' @description It looks for a DESCRIPTION file in the current project and
@@ -16,6 +15,10 @@ get_pkgs_from_description <- function() {
 
   # throws an error if no DESCRIPTION file is present
   desc_path <- file.path(rstudioapi::getActiveProject(), "DESCRIPTION")
+
+  if (!file.exists(desc_path)) {
+    stop("No DESCRIPTION in the current Project root.")
+  }
 
   desc <- readLines(desc_path)
 
@@ -48,7 +51,7 @@ get_pkgs_from_description <- function() {
                   }))
 
   if (length(is_pkg_line) == 0) {
-    warning("No Packages found in the DESCRIPTION")
+    warning("No Packages found in DESCRIPTION")
     return(NULL)
   }
 
@@ -63,7 +66,7 @@ get_pkgs_from_description <- function() {
   pkgs <- pkgs[pkgs != "R"]
 
   if (length(pkgs) == 0) {
-    warning("No Packages found in the DESCRIPTION")
+    warning("No Packages found in DESCRIPTION")
     return(NULL)
   }
 

@@ -1,1 +1,1 @@
-#' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
+#' @param ignore_comments if TRUE, commented lines are ignored.

@@ -1,1 +1,1 @@
-#' @param verbose a boolean. If TRUE, origin provides feedback about its steps.
+#' @param verbose if TRUE, origin provides a logging output about its results.

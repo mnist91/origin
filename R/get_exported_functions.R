@@ -1,6 +1,6 @@
 #' Get All Exported Functions From a Package
 #'
-#' @param pkg string of a package name
+#' @param pkg a character string of a package name
 #'
 #' @return character vector of functions names
 #' @export

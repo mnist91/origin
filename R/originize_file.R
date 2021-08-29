@@ -14,6 +14,22 @@
 #' @template verbose
 #' @template use_markers
 #'
+#' @details check_conflicts checks whether multiple packages listed in pkgs
+#' export
+#' functions with the same name, e.g. lag() is both part of the dplyr and
+#' data.table namespace. If there are any conflicts actually present
+#' in any considered script, these conflicts are shown including how origin
+#' would solve them. User input is required to proceed. The order in pkgs
+#' determines the precedence, while those listed first have higher precedence
+#' than those listed later in the vector. This is consistent with function
+#' masking in R.
+#'
+#' check_base_conflicts checks whether functions listed in pkgs mask R functions
+#'  of R core packages (base, utils, stats, methods, graphics, grDevices,
+#'  datasets). Even tough the user might not include those functions in the
+#'  pkg::fct logic, potential conflicts require careful evaluation.
+#'
+#'
 #' @return NULL
 #' @export
 #'

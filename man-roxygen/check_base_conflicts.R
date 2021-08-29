@@ -1,2 +1,2 @@
-#' @param check_base_conflicts a boolean. If TRUE; base R functions are also
-#'   included in checking for conflicts
+#' @param check_base_conflicts if TRUE; native R functions are also
+#'   included in checking for conflicts. See details.
