@@ -2,7 +2,7 @@
 
 This is a new package that autamatically adds `pkg::` to function names in scripts.
 
-The Note is for a new submission. The mentioned misspelled word are native to R users.
+The Note is for a new submission. The mentioned misspelled word are known to R users.
 
 
 
