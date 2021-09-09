@@ -13,23 +13,24 @@ The Note is for a new submission. The mentioned misspelled word are known to R u
   - Ubuntu 18.04
   - macOS
   - Windows
-* rhub::check_for_cran()
-  - R-hub Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-  - R-hub Ubuntu Linux 20.04.1 LTS, R-release, GCC
-  - R-hub Fedora Linux, R-devel, clang, gfortran
-
+  
+## Test environments
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
 
 ## R CMD check results
-
-> * checking CRAN incoming feasibility ... NOTE
+> On windows-x86_64-devel (r-devel), ubuntu-gcc-release (r-release), fedora-clang-devel (r-devel)
+  checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Matthias Nistler <m_nistler@web.de>'
+  
   New submission
   
-Maintainer: 'Matthias Nistler <m_nistler@web.de>'
-  
-Possibly misspelled words in DESCRIPTION:
+  Possibly misspelled words in DESCRIPTION:
+    RStudio (13:22)
+    dplyr (9:6)
+    lintr (13:67)
+    mtcars (8:28, 9:20)
+    styler (14:9)
 
-  * RStudio (13:22)
-  * dplyr (9:6)
-  * mtcars (8:28, 9:20)
-  * lintr (13:67)
-  * styler (14:9)
+0 errors ✓ | 0 warnings ✓ | 1 note x

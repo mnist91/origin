@@ -22,7 +22,7 @@ convert legacy code into the `pkg::fun()` convention as well as it allows you to
 write short code first and adapt it later. 
 
 
-<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/vignette_quickview.gif" width="650px" />
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/demo_originize_file.gif" width="650px" />
 
 
 ### Usage

@@ -12,6 +12,7 @@
   possible that `origin` got stuck here due to referring to symlinks.
 - Cease to export `originize_text` since it should be rarely used in practice
   directly but rather internally only.
+- Write a vignette to make users familiar with `origin`.
 
 # origin 0.4.0
 ### Bugfixes

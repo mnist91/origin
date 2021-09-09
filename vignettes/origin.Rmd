@@ -29,27 +29,9 @@ faster conversions of both legacy code as well as currently written code.
 ## Purpose of `origin`
 
 The sole purpose is to add `pkg::` to an R function call, i.e. it changes
-code like this
+code like this:
 
-```{r, eval=FALSE}
-mtcars %>% 
-  filter(cyl >= 6) %>% 
-  mutate(`l/100km` = mpg / 235.2 * 100)
-
-rbindlist(list(mtcars, mtcars)) %>% 
-  mutate(across(everything(), round))
-```
-to this
-
-```{r, eval=FALSE}
-mtcars %>% 
-  dplyr::filter(cyl >= 6) %>% 
-  dplyr::mutate(`l/100km` = mpg / 235.2 * 100)
-
-data.table::rbindlist(list(mtcars, mtcars)) %>% 
-  dplyr::mutate(dplyr::across(dplyr::everything(), round))
-
-```
+<img src="vignette_quickview.gif" width="650px" />
 
 ## Usage of `origin`
 
@@ -133,8 +115,8 @@ Most importantly, the user must be aware of what the originized file(s)
 would look like. For this, all changes **and** potential missed changes
 are presented, either in the Markers tab (recommended) or in the console.
 
-<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/markers_logging.png" width="650px" />
-<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/console_logging.png" width="650px" />
+<img src="markers_logging.png" width="650px" />
+<img src="console_logging.png" width="650px" />
 
 * <span style="color: #00c7cc">insertion</span>: `pkg::` is inserted prior to a function
 * <span style="color: #ff0000">missing</span>: an object that has the same name as a function 
