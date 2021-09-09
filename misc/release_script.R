@@ -67,3 +67,4 @@ results <- rhub::check_for_cran()
 # takes a while to get
 results$cran_summary()
 
+devtools::release()

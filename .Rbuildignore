@@ -11,3 +11,4 @@
 man-roxygen
 .covrignore
 ^docs
+cran-comments.md
