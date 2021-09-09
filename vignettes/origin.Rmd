@@ -31,7 +31,7 @@ faster conversions of both legacy code as well as currently written code.
 The sole purpose is to add `pkg::` to an R function call, i.e. it changes
 code like this:
 
-<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/vignette_quickview.gif" width="650px" />
+<img src="vignette_quickview.gif" width="650px" />
 
 
 ## Usage of `origin`
@@ -142,7 +142,7 @@ to those packages that are listed first. In case there is a conflict regarding
 a **used** function, These functions are listed along with the packages from 
 which they stem.
 
-```{text, eval=FALSE}
+```{asis, eval=FALSE}
 Used functions in mutliple Packages!  
   
   filter: dplyr, stats
@@ -167,7 +167,7 @@ depending on the project size, this process can take quite some time.
 In this case, set the argument/option `path_to_local_functions` to a 
 subdirectory or `check_local_conflicts` to `FALSE` to skip this feature.
 
-```{text, eval=FALSE}
+```{asis, eval=FALSE}
 Locally defined and used functions mask exported functions from packages
 
 last: dplyr
@@ -190,7 +190,7 @@ In case the user is unaware that there are many files in the selected folder,
 resulting in a long run time of `origin`,
 a warning is triggered and user input is required.
 
-```{text, eval=FALSE}
+```{asis, eval=FALSE}
 You are about to originize 99 files.
 
 Proceed?
@@ -205,7 +205,7 @@ Proceed?
 Before the proposed changes are applied eventually, a final user input 
 is required.
 
-```{text, eval=FALSE}
+```{asis, eval=FALSE}
 Happy with the result? 😀
 
 1: YES
