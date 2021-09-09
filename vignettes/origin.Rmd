@@ -29,10 +29,27 @@ faster conversions of both legacy code as well as currently written code.
 ## Purpose of `origin`
 
 The sole purpose is to add `pkg::` to an R function call, i.e. it changes
-code like this:
+code like this
 
-<img src="vignette_quickview.gif" width="650px" />
+```{r, eval=FALSE}
+mtcars %>% 
+  filter(cyl >= 6) %>% 
+  mutate(`l/100km` = mpg / 235.2 * 100)
 
+rbindlist(list(mtcars, mtcars)) %>% 
+  mutate(across(everything(), round))
+```
+to this
+
+```{r, eval=FALSE}
+mtcars %>% 
+  dplyr::filter(cyl >= 6) %>% 
+  dplyr::mutate(`l/100km` = mpg / 235.2 * 100)
+
+data.table::rbindlist(list(mtcars, mtcars)) %>% 
+  dplyr::mutate(dplyr::across(dplyr::everything(), round))
+
+```
 
 ## Usage of `origin`
 
@@ -44,7 +61,7 @@ extensively presented as an example with its default options.
 
 ### Code Usage
 ```{r, eval=FALSE}
-originize_file(file = "testscript",
+originize_file(file = "testscript.R",
                pkgs = .packages(), 
                overwrite = TRUE,
                ask_before_applying_changes = TRUE,
