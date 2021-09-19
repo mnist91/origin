@@ -1,4 +1,8 @@
 # origin 0.5.1
+- Fix LICENSE file to contain the CRAN MIT license template only.
+- Fix the description field in the DESCRIPTION file to not include quotes /
+  backticks. Both fixes are to meet requirements to submit on CRAN.
+- remove outdated pkgdown files.
 
 # origin 0.5.0
 - Prepares `origin` for CRAN.
