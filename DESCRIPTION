@@ -5,13 +5,12 @@ Version: 0.5.0
 Author: Matthias Nistler
 Maintainer: Matthias Nistler <m_nistler@web.de>
 Description: The pure functionality of this package is to add pkg:: to a
-    function, i.e. `mutate(mtcars, new_var = 1)` becomes
-    `dplyr::mutate(mtcars, new_var = 1)`.  It is up to the user to
-    determine which packages should be used explicitly, whether to include
-    base R packages or use the functionality on selected text, a file, or
-    a complete directory. User friendly logging is provided in the
-    "Markers" tab of RStudio.  The package lives in the spirit of lintr
-    and styler.
+    function, i.e. mutate(mtcars, new_var = 1) becomes
+    dplyr::mutate(mtcars, new_var = 1). It is up to the user to determine
+    which packages should be used explicitly, whether to include base R
+    packages or use the functionality on selected text, a file, or a
+    complete directory. User friendly logging is provided in the RStudio
+    Markers pane. The package lives in the spirit of lintr and styler.
 License: MIT + file LICENSE
 URL: https://github.com/mnist91/origin
 BugReports: https://github.com/mnist91/origin/issues
