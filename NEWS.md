@@ -1,3 +1,5 @@
+# origin 0.5.1
+
 # origin 0.5.0
 - Prepares `origin` for CRAN.
 - The new function `originize_pkg` is designed to originize a package project. 
