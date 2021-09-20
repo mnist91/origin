@@ -1,3 +1,10 @@
+# origin 0.5.2
+- Update package title.
+- Fix the description field in the DESCRIPTION file to not quotes only where 
+  needed. fixes are to meet requirements to submit on CRAN.
+- Add a package documentation file.
+
+
 # origin 0.5.1
 - Fix LICENSE file to contain the CRAN MIT license template only.
 - Fix the description field in the DESCRIPTION file to not include quotes /

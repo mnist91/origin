@@ -1,16 +1,16 @@
 Type: Package
 Package: origin
-Title: An R Package that Adds `pkg::` to Functions to be More Explicit
-Version: 0.5.1
+Title: Explicitly Qualifying Namespaces by Automatically Adding 'pkg::' to
+    Functions
+Version: 0.5.2
 Author: Matthias Nistler
 Maintainer: Matthias Nistler <m_nistler@web.de>
-Description: The pure functionality of this package is to add pkg:: to a
-    function, i.e. mutate(mtcars, new_var = 1) becomes
-    dplyr::mutate(mtcars, new_var = 1). It is up to the user to determine
-    which packages should be used explicitly, whether to include base R
-    packages or use the functionality on selected text, a file, or a
-    complete directory. User friendly logging is provided in the RStudio
-    Markers pane. The package lives in the spirit of lintr and styler.
+Description: Automatically adding 'pkg::' to a function, i.e. mutate()
+    becomes dplyr::mutate(). It is up to the user to determine which
+    packages should be used explicitly, whether to include base R packages
+    or use the functionality on selected text, a file, or a complete
+    directory. User friendly logging is provided in the RStudio Markers
+    pane. Lives in the spirit of 'lintr' and 'styler'.
 License: MIT + file LICENSE
 URL: https://github.com/mnist91/origin
 BugReports: https://github.com/mnist91/origin/issues
@@ -28,4 +28,4 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

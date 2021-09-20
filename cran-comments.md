@@ -1,5 +1,27 @@
-## First Resubmission Notes
+## 2nd Resubmission Notes
+- Fixed quoting in the description field in the DESCRIPTION file  
+- Updated the package title
 
+- Regarding the general uefulness of using the double colon operator '::': 
+The Google R Style guide encourages users to explicitly qualify namespaces for
+all external functions
+(https://google.github.io/styleguide/Rguide.html#qualifying-namespaces).
+
+Also "R Packages" by Hadley Wickham says:
+"It’s common for packages to be listed in Imports in DESCRIPTION, but not in 
+NAMESPACE. In fact, this is what I recommend: list the package in DESCRIPTION 
+so that it’s installed, then always refer to it explicitly with pkg::fun().
+Unless there is a strong reason not to, it’s better to be explicit. It’s a 
+little more work to write, but a lot easier to read when you come back to the 
+code in the future. The converse is not true."
+https://r-pkgs.org/namespace.html#imports
+
+Finally, not all R projects are in fact packages, hence do not have a NAMESPACE.
+It is sometimes much easier to understand unknown code if it is clear from which 
+package a function stems from.
+
+
+## 1st Resubmission Notes
 Fixed description field in the DESCRIPTION file and used the MIT license template.
 
 
@@ -32,10 +54,4 @@ The Note is for a new submission. The mentioned misspelled word are known to R u
   New submission
   
   Possibly misspelled words in DESCRIPTION:
-    RStudio (12:66)
-    dplyr (9:5)
-    lintr (13:54)
-    mtcars (8:27, 9:19)
-    styler (13:64)
-
-0 errors ✓ | 0 warnings ✓ | 1 note x
+    RStudio (12:57)
