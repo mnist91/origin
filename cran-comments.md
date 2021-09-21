@@ -1,3 +1,12 @@
+## 3rd Resubmission Notes
+- Fixed quoting of RStudio
+- Added missing Value Rd-tags
+- Regarding the missing arguments-tag inside of get_pkgs_from_description.Rd:
+  This function does not have any arguments. Base R functions like R.Version()
+  does not have any arguments either and the Arguments-tag is missing there, as
+  well. Is it okay to not use this tag in such a case or what is the proposed
+  solution for such functions without inputs?
+
 ## 2nd Resubmission Notes
 - Fixed quoting in the description field in the DESCRIPTION file  
 - Updated the package title
@@ -52,6 +61,5 @@ The Note is for a new submission. The mentioned misspelled word are known to R u
   Maintainer: 'Matthias Nistler <m_nistler@web.de>'
   
   New submission
-  
-  Possibly misspelled words in DESCRIPTION:
-    RStudio (12:57)
+
+0 errors ✓ | 0 warnings ✓ | 1 note x

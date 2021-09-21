@@ -1,7 +1,12 @@
+# origin 0.5.3
+- Fixed function documention files to add missing Rd-tags
+- Fixed the description field in the DESCRIPTION file to single quote 'RStudio'.
+  Both fixes are to meet requirements to submit on CRAN.
+
 # origin 0.5.2
 - Update package title.
 - Fix the description field in the DESCRIPTION file to not quotes only where 
-  needed. fixes are to meet requirements to submit on CRAN.
+  needed. Fixes are to meet requirements to submit on CRAN.
 - Add a package documentation file.
 
 
