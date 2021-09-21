@@ -1,4 +1,10 @@
-# invoke logging either via markers tab or console output
+#' Invoke Logging Either Via Markers Pane or Console Output
+#'
+#' @param dat list of relevant information
+#' @param use_markers logical, whether to use the markers pane or console output
+#'
+#' @return No return value, called for side effects
+#' @noRd
 run_logging <- function(dat, use_markers) {
 
   if (length(dat$line) == 0) {

@@ -41,7 +41,8 @@
 #'  datasets). Even tough the user might not include those functions in the
 #'  pkg::fct logic, potential conflicts require careful evaluation.
 #'
-#' @return NULL
+#' @return No return value, called for side effects
+#'
 #' @export
 #'
 #' @examples

@@ -9,7 +9,7 @@ Description: Automatically adding 'pkg::' to a function, i.e. mutate()
     becomes dplyr::mutate(). It is up to the user to determine which
     packages should be used explicitly, whether to include base R packages
     or use the functionality on selected text, a file, or a complete
-    directory. User friendly logging is provided in the RStudio Markers
+    directory. User friendly logging is provided in the 'RStudio' Markers
     pane. Lives in the spirit of 'lintr' and 'styler'.
 License: MIT + file LICENSE
 URL: https://github.com/mnist91/origin

@@ -79,6 +79,9 @@ defined functions inside of the project mask exported functions
 packages listed in pkgs. It avoids mistakenly adding pkg:: to a
 custom local function.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 It shares the functionality of originize_dir but is designed to
  be used within R-package projects.

@@ -68,6 +68,9 @@ defined functions inside of the project mask exported functions
 packages listed in pkgs. It avoids mistakenly adding pkg:: to a
 custom local function.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Wrapper function to be used as an RStudio addin
 }

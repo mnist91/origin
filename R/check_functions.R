@@ -11,7 +11,7 @@
 #' @param pkg package name from which the functions stem from
 #' @template verbose
 #'
-#' @return
+#' @return list of match information of exported functions in the script
 #' @noRd
 #'
 check_functions <- function(script,

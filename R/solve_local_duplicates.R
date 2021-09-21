@@ -2,6 +2,8 @@
 #' User input is required when called in an interactive context, e.g. RStudio
 #' @param dups duplicate functions
 #'
+#' @return No return value, called for side effects
+#'
 #' @noRd
 solve_local_duplicates <- function(dups) {
   # Require User interaction if duplicates are detected

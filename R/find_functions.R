@@ -1,8 +1,9 @@
-#' Find function names
+#' Find Function Names
 #'
 #' @param x a character vector
 #'
 #' @return a character vector
+#' @noRd
 find_functions <- function(x) {
 
   # remove whitespace on the left

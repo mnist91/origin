@@ -15,7 +15,8 @@
 #' @template verbose
 #' @template use_markers
 #'
-#' @return NULL
+#' @return No return value, called for side effects
+#'
 #' @noRd
 originize_text <-
   function(

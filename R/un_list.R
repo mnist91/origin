@@ -15,7 +15,7 @@
 #'     create unique names but assigns the bare name of the list element
 #'     to all vector elements that stem from this list element
 #'
-#' @return named vector
+#' @return named vector of all elements in x
 #' @noRd
 #'
 #' @examples

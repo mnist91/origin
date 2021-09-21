@@ -78,6 +78,9 @@ namespace conflicts or highlighting popular infix functions like
 to track changes and show issues. FALSE prints the same information in
 the console.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 To originize complete folders/projects, this function finds
 and originizes all R files within this folder and

@@ -9,7 +9,7 @@
 #' @template verbose
 #' @template use_markers
 #'
-#' @return
+#' @return list of information where which package is (potentially) missing
 #' @noRd
 originize <- function(script,
                       file,

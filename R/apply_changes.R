@@ -1,4 +1,15 @@
-# assign new script and ask for user permission if required
+#' assign new script and ask for user permission if required
+#'
+#' @template ask_before_applying_changes
+#' @param result list comming from `originize`
+#' @param init_script character vector of initial script lines
+#' @param type whether to `writeLines` in a file, `insertText` at selection, or
+#'   `paste` the string as is
+#' @param context RStudio context of selected text
+#'
+#' @return either `NULL` if writing to a file or the originized file if
+#'  overwrite selected/highlighted text.
+#' @noRd
 apply_changes <- function(ask_before_applying_changes,
                           result,
                           init_script,

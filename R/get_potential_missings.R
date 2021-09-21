@@ -8,7 +8,7 @@
 #' @param infix_matches a boolean vector that indicates which infix
 #'   functions are used
 #'
-#' @return
+#' @return list of potential missed functions and their position.
 #' @noRd
 get_potential_missings <- function(script,
                                    line_matches,

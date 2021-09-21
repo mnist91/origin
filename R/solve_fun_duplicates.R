@@ -3,6 +3,8 @@
 #' @param dups duplicate functions
 #' @param pkgs vector of checked packages to determine order
 #'
+#' @return No return value, called for side effects
+#'
 #' @noRd
 solve_fun_duplicates <- function(dups, pkgs) {
   # Require User interaction if duplicates are detected

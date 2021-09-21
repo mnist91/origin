@@ -40,7 +40,8 @@
 #' @template verbose
 #' @template use_markers
 #'
-#' @return NULL
+#' @return No return value, called for side effects
+#'
 #' @export
 #'
 #' @examples

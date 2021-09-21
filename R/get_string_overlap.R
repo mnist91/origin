@@ -2,7 +2,8 @@
 #'
 #' @param x a character vector
 #'
-#' @return a character string
+#' @return a character string that is the overlap of all elements of x. An empty
+#'   string `""` if no overlap exists.
 #' @noRd
 #'
 #' @examples

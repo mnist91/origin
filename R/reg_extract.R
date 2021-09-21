@@ -7,6 +7,7 @@
 #' @param ... arguments passed to \link[base]{gregexpr}
 #'
 #' @return a character vector
+#' @noRd
 reg_extract <- function(x, pattern, invert = FALSE, ...) {
   out <- regmatches(x = x,
                     m = gregexpr(pattern = pattern,

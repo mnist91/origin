@@ -14,7 +14,7 @@
 #' @template check_local_conflicts
 #' @template path_to_local_functions
 #'
-#' @return NULL
+#' @return No return value, called for side effects
 originize_selection <-
   function(
     context = rstudioapi::getSourceEditorContext(),

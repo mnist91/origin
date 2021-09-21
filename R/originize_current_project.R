@@ -14,7 +14,7 @@
 #' @template verbose
 #' @template use_markers
 #'
-#' @return
+#' @return No return value, called for side effects
 #' @noRd
 originize_current_project <-
   function(path = ".",

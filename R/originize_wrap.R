@@ -20,7 +20,9 @@
 #' @param selected_lines logical, only necessary for originize selection
 #' @param context a document context regarding the selected r script
 #'
-#' @return NULL
+#' @return either `NULL` if writing to a file or the originized file if
+#'  overwrite selected/highlighted text.
+#'
 #' @noRd
 
 # Huge complexity due to many checks
