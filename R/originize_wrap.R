@@ -129,7 +129,8 @@ originize_wrap <-
         # Then, it is unclear which local functions are to consider and
         # the check is skipped
         if (project_path_found &&
-            !all(not_in_project <- startsWith(x = normalizePath(files),
+            !all(not_in_project <- startsWith(x = normalizePath(files,
+                                                                winslash = "/"),
                                               prefix = project_path))
         ) {
           project_path_found <- FALSE
