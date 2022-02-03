@@ -46,6 +46,7 @@ originize_wrap <-
            selected_lines = NULL,
            context = NULL) {
 
+    # Parameter checks ---------------------------------------------------------
     if (!is.null(path_to_local_functions) &&
         !dir.exists(path_to_local_functions)) {
       stop(paste("Given path_to_local_functions",
@@ -89,7 +90,7 @@ originize_wrap <-
                                  nm     = pkgs)
 
     if (length(unlist(functions)) == 0) {
-      stop("Given packages do no export functions.")
+      stop("Given packages do not export functions.")
     }
 
     # exclude unwanted functions
