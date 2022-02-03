@@ -105,7 +105,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                                         check_local_conflicts = FALSE,
                                         verbose = FALSE,
                                         ask_before_applying_changes = FALSE),
-                         regexp = "Given packages do no export functions.",
+                         regexp = "Given packages do not export functions.",
                          fixed = TRUE)
 
 
