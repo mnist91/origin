@@ -54,7 +54,6 @@ originize_file <-
     overwrite = getOption("origin.overwrite", TRUE),
     ask_before_applying_changes =
       getOption("origin.ask_before_applying_changes", TRUE),
-    ignore_comments = getOption("origin.ignore_comments", TRUE),
     check_conflicts = getOption("origin.check_conflicts", TRUE),
     check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
     add_base_packages = getOption("origin.add_base_packages", FALSE),
@@ -80,7 +79,6 @@ originize_file <-
                    pkgs = pkgs,
                    overwrite = overwrite,
                    ask_before_applying_changes = ask_before_applying_changes,
-                   ignore_comments = ignore_comments,
                    check_conflicts = check_conflicts,
                    check_base_conflicts = check_base_conflicts,
                    add_base_packages = add_base_packages,

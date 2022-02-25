@@ -9,7 +9,6 @@
 #' @param functions a vector with function names
 #' @param ignore_comments a boolean, if TRUE lines starting with # are ignored
 #' @param pkg package name from which the functions stem from
-#' @template verbose
 #'
 #' @return list of match information of exported functions in the script
 #' @noRd
@@ -17,8 +16,7 @@
 check_functions <- function(script,
                             functions,
                             ignore_comments = TRUE,
-                            pkg = NULL,
-                            verbose = TRUE) {
+                            pkg = NULL) {
   # remove function with infix characters like %, &, [] and :
   infix_function_tokens <- c("*", "%", "?", "^", "$", "(", ")", "[",
                              "]", "{", "}", ":", "=", "<", ">")

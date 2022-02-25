@@ -38,27 +38,23 @@ testthat::test_that("check_functions has correct output", {
   tmp1 <- check_functions(script,
                           functions,
                           ignore_comments = TRUE,
-                          pkg = NULL,
-                          verbose = TRUE)
+                          pkg = NULL)
 
   tmp2 <- check_functions(script,
                           functions,
                           ignore_comments = TRUE,
-                          pkg = "this_pkg",
-                          verbose = TRUE)
+                          pkg = "this_pkg")
 
   tmp3 <- check_functions(script,
                           functions,
                           ignore_comments = FALSE,
-                          pkg = NULL,
-                          verbose = FALSE)
+                          pkg = NULL)
 
   functions <- c("setDT", "%sdfn%")
   tmp4 <- check_functions(script,
                           functions,
                           ignore_comments = FALSE,
-                          pkg = NULL,
-                          verbose = FALSE)
+                          pkg = NULL)
 
   # compare results
   testthat::expect_equal(tmp1, res1)

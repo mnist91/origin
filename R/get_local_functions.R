@@ -36,7 +36,7 @@ get_local_functions <- function(path = ".") {
   local_funs <- suppressWarnings(
     sort(unique(unlist(
       lapply(X = files,
-             FUN = function(x) find_functions(readLines(x)))
+             FUN = find_functions)
     )))
   )
 

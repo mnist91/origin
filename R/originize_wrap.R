@@ -8,7 +8,6 @@
 #' @template pkgs
 #' @template overwrite
 #' @template ask_before_applying_changes
-#' @template ignore_comments
 #' @template check_conflicts
 #' @template check_base_conflicts
 #' @template check_local_conflicts
@@ -34,7 +33,6 @@ originize_wrap <-
            pkgs,
            overwrite = TRUE,
            ask_before_applying_changes =TRUE,
-           ignore_comments = TRUE,
            check_conflicts = TRUE,
            check_base_conflicts = TRUE,
            add_base_packages = FALSE,
@@ -106,106 +104,18 @@ originize_wrap <-
     # from checked packages.
     # Note that all projects R scripts are searched for function definitions
     if (check_local_conflicts) {
-
-      # get root path of the current project
-      if (is.null(path_to_local_functions)) {
-        project_path <- try(rstudioapi::getActiveProject())
-
-        # In case R is not run from wihtin RStudio or origin is called from
-        # within a project, inform the user and determine the root path
-        # by the shared root path of all files.
-        project_path_found <- TRUE
-        if (inherits(project_path, "try-error")) {
-          project_path_found <- FALSE
-          warning(paste("RStudio not running. Hence, no project path to",
-                        "search for local functions can be determined."))
-        } else if (is.null(project_path)) {
-          project_path_found <- FALSE
-          warning(paste("origin not run from within a project.",
-                        "Cannot check for local functions"))
-        }
-
-        # Are all checked files in the current project?
-        # It is possible to originize one project from within another project
-        # Then, it is unclear which local functions are to consider and
-        # the check is skipped
-        if (project_path_found &&
-            !all(not_in_project <- startsWith(x = normalizePath(files,
-                                                                winslash = "/"),
-                                              prefix = project_path))
-        ) {
-          project_path_found <- FALSE
-          warning(sprintf(paste("%s files are not in the current",
-                                "project path %s.\n",
-                                "Cannot check for local functions due to",
-                                "unclear root directory."),
-                          length(not_in_project),
-                          project_path))
-        }
-
-      } else {
-        # a directory is provided
-        project_path <- path_to_local_functions
-      }
-
-
-      if (project_path_found &&
-          !is.null(project_path) &&
-          !is.na(project_path) &&
-          nzchar(project_path)) {
-
-        # locally defined functions
-        local_funs <-
-          get_local_functions(path = project_path)
-
-        if (length(local_funs) > 0) {
-          # overlaps of local and exported functions
-          dups <- get_fun_duplicates(c(list(local = local_funs),
-                                       functions))
-          local_dups <- dups[dups %in% dups[names(dups) == "local"]]
-
-          # in case there is an overlap
-          if (length(local_dups) > 0) {
-
-            script_collapsed <- paste(lapply(X = scripts,
-                                             FUN = paste,
-                                             collapse = ""),
-                                      collapse = "")
-
-            # are any masked functions used in the durrently checks script(s)
-            local_dups <- sort(local_dups[names(local_dups) != "local"])
-
-            local_dups_with_pkg <-
-              stats::setNames(object = unique(local_dups),
-                              nm = by(data = names(local_dups),
-                                      INDICES = local_dups,
-                                      FUN = paste,
-                                      collapse = ", "))
-
-            local_dup_funs_in_script <- vapply(X = local_dups_with_pkg,
-                                               FUN = function(f) {
-                                                 grepl(pattern = f,
-                                                       x = script_collapsed,
-                                                       fixed = TRUE)
-                                               },
-                                               FUN.VALUE = logical(1),
-                                               USE.NAMES = TRUE)
-
-            if (any(local_dup_funs_in_script)) {
-              # inform the user
-              solve_local_duplicates(
-                local_dups_with_pkg[local_dup_funs_in_script])
-
-              # exclude these local functions from originizing
-              functions <-
-                exclude_functions(
-                  functions,
-                  list(unname(local_dups_with_pkg[local_dup_funs_in_script])))
-            }
-          }
-        }
-      }
+      script_collapsed <- paste(lapply(X = scripts,
+                                       FUN = paste,
+                                       collapse = ""),
+                                collapse = "")
+      functions <- exclude_local_functions(functions,
+                                           files,
+                                           scripts,
+                                           path_to_local_functions,
+                                           script_collapsed)
     }
+
+
     # DUPLICATES ---------------------------------------------------------------
     # find functions, that are called within multiple packages
     # a automatic assignment is not possible in such cases
@@ -218,22 +128,14 @@ originize_wrap <-
         stats::setNames(object = unique(dups),
                         nm = by(names(dups), dups, paste, collapse = ", "))
 
-      if (!exists("script_collapsed")) {
-        script_collapsed <- paste(lapply(X = scripts,
-                                         FUN = paste,
-                                         collapse = ""),
-                                  collapse = "")
-      }
+      # parse all scripts
+      script_parsed <- Reduce(f = rbind,
+                              lapply(X = files,
+                                     FUN = get_parsed_data))
 
-      # which duplicates are in the script
-      dup_funs_in_script <- vapply(X = dups_with_pkg,
-                                   FUN = function(f) {
-                                     grepl(pattern = f,
-                                           x = script_collapsed,
-                                           fixed = TRUE)
-                                   },
-                                   FUN.VALUE = logical(1),
-                                   USE.NAMES = TRUE)
+      # which duplicates are in the script, independet of whther be used as a
+      # regular function (SYMBOL_FUNCTION_CALL)
+      dup_funs_in_script <- dups_with_pkg %in% script_parsed$text
 
       # Require User interaction if duplicates are detected
       if (any(dup_funs_in_script)) {
@@ -268,23 +170,24 @@ originize_wrap <-
 
     # in case this full script collapsing has not happend earlier.
     # better performance if an error is triggered prior to this step
-    if (!exists("script_collapsed")) {
-      script_collapsed <- paste(lapply(X = scripts,
-                                       FUN = paste,
-                                       collapse = ""),
-                                collapse = "")
+    if (!exists("script_parsed")) {
+      # parse all scripts
+      script_parsed <- Reduce(f = rbind,
+                              lapply(X = files,
+                                     FUN = get_parsed_data))
     }
+
+    # TODO: still time improvement?
     functions <- lapply(functions,
                         FUN = function(funs) {
-                          funs[vapply(X = funs,
-                                      FUN = function(f) {
-                                        grepl(pattern = f,
-                                              x = script_collapsed,
-                                              fixed = TRUE)
-                                      },
-                                      FUN.VALUE = logical(1),
-                                      USE.NAMES = TRUE)]
+                          funs[funs %in% script_parsed$text]
                         })
+
+    originize(dat = script_parsed,
+              functions = functions,
+              pkgs = pkgs,
+              verbose = verbose,
+              use_markers = use_markers)
 
     # apply originize function to each file/script
     results <- mapply(
@@ -293,8 +196,6 @@ originize_wrap <-
                   script = s,
                   functions = functions,
                   pkgs = pkgs,
-                  overwrite = overwrite,
-                  ignore_comments = ignore_comments,
                   verbose = verbose,
                   use_markers = use_markers)
       },
