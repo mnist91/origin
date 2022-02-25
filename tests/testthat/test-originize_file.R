@@ -36,7 +36,6 @@ testthat::test_that("originize file", {
                  add_base_packages = FALSE,
                  ask_before_applying_changes = FALSE,
                  excluded_functions = list(dplyr = "last"),
-                 ignore_comments = TRUE,
                  use_markers = FALSE,
                  check_local_conflicts = FALSE,
                  verbose = FALSE)
@@ -64,7 +63,6 @@ testthat::test_that("originize file", {
                    ask_before_applying_changes = FALSE,
                    check_local_conflicts = FALSE,
                    excluded_functions = list(dplyr = "last"),
-                   ignore_comments = TRUE,
                    use_markers = FALSE,
                    verbose = TRUE)
   )
@@ -93,7 +91,6 @@ testthat::test_that("originize file", {
                      check_local_conflicts = FALSE,
                      ask_before_applying_changes = FALSE,
                      excluded_functions = list(dplyr = "last"),
-                     ignore_comments = TRUE,
                      use_markers = TRUE,
                      verbose = TRUE)
 
@@ -114,7 +111,6 @@ testthat::test_that("originize file", {
                      check_local_conflicts = FALSE,
                      ask_before_applying_changes = FALSE,
                      excluded_functions = list(dplyr = "last"),
-                     ignore_comments = TRUE,
                      use_markers = TRUE,
                      verbose = TRUE),
       regexp = "RStudio not running")

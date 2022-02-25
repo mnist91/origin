@@ -2,32 +2,21 @@
 #'
 #' @param pkg a package name
 #' @param script character vector of script lines
-#' @template file
-#' @template overwrite
-#' @template ignore_comments
-#' @template verbose
 #' @param functions a vector with function names
 #'
 #' @noRd
 #' @return list that contains all information to where insert which package
 get_origins <- function(pkg,
                         script,
-                        file = NULL,
-                        overwrite = FALSE,
-                        ignore_comments = TRUE,
-                        verbose = FALSE,
-                        functions = NULL) {
+                        functions = NULL,
+                        specific = FALSE,
+                        infix_functions = NULL) {
 
 
-  # get all exported functions from a package --------------------------------
-  if (is.null(functions)) {
-    functions <- get_exported_functions(pkg)
-  }
-
+  # get all used functions in the script --------------------------------
   l <- check_functions(script = script,
                        functions = functions,
-                       pkg = pkg,
-                       verbose = verbose)
+                       pkg = pkg)
 
   # make function-Output available
   matches <- l$matches
@@ -62,7 +51,7 @@ get_origins <- function(pkg,
   # e.g. *apply "FUN = "
   # e.g. purr ".f = "
   # regular expression, to identify usage with *apply/purrr
-  fun_arguments <- c("FUN", "\\.f")
+  fun_arguments <- c("\\WFUN", "\\W\\.f")
   assign_options <- c("=", " = ", "= ", " =")
   leading_patterns <- paste(apply(expand.grid(fun_arguments, assign_options),
                                   MARGIN = 1,
@@ -78,10 +67,61 @@ get_origins <- function(pkg,
                                   perl = TRUE,
                                   fixed = FALSE,
                                   filter_nomatches = FALSE)
+  # TODO:
+  # dplyr::"mutate"(iris, x = 3)
+  # dplyr::`mutate`(iris, x = 3)
+  # "mutate"(iris, x = 3)
+  # `mutate`(iris, x = 3)
+  if (specific) {
 
-  matches <- Map(comb_matches,
-                 functional_calls$matches,
-                 regular_calls$matches)
+    specific_pattern_regex <- paste0("(", pkg, "\\s*\\:\\:+\\s*(", funs_prep, "))")
+    specific_calls <- get_matches(script[line_matches],
+                                  line = which(line_matches),
+                                  regex = specific_pattern_regex,
+                                  perl = TRUE,
+                                  filter_nomatches = FALSE)
+
+    if (length(infix_functions) > 0) {
+      infix_funs_prep <- paste0(escape_strings(infix_functions), collapse = "|")
+      infix_fun_regex <- paste0("(?<=\\W)(", infix_funs_prep, ")(?=\\W)")
+      infix_calls <- get_matches(script[line_matches],
+                                 line = which(line_matches),
+                                 regex = infix_fun_regex,
+                                 perl = TRUE,
+                                 filter_nomatches = FALSE)
+      matches <- Map(comb_matches,
+                     functional_calls$matches,
+                     regular_calls$matches,
+                     specific_calls$matches,
+                     infix_calls$matches)
+      match_length <- Map(comb_matches,
+                          functional_calls$log_length,
+                          regular_calls$log_length,
+                          specific_calls$log_length,
+                          infix_calls$log_length)
+    } else {
+      matches <- Map(f = comb_matches,
+                     functional_calls$matches,
+                     regular_calls$matches,
+                     specific_calls$matches)
+      match_length <- Map(f = comb_matches,
+                          functional_calls$log_length,
+                          regular_calls$log_length,
+                          specific_calls$log_length)
+
+    }
+
+
+
+  } else {
+    matches <- Map(comb_matches,
+                   functional_calls$matches,
+                   regular_calls$matches)
+    match_length <- Map(comb_matches,
+                        functional_calls$log_length,
+                        regular_calls$log_length)
+  }
+
 
   has_match <- lapply(matches, length) != 0
 
@@ -89,9 +129,7 @@ get_origins <- function(pkg,
   orig_list <- list(line = regular_calls$line[has_match],
                     string = regular_calls$string[has_match],
                     matches = matches[has_match],
-                    # log_length = Map(comb_matches,
-                    #                  functional_calls$match_length,
-                    #                  regular_calls$match_length)[has_match],
+                    match_length = match_length[has_match],
                     log_length = lapply(matches[has_match],
                                         FUN = function(x) rep(0, length(x))),
                     pkg = rep(paste0(pkg, "::"), n_matches),
@@ -102,8 +140,7 @@ get_origins <- function(pkg,
 
 
 # keep results of greprex where a match has been found
-comb_matches <- function(x, y) {
-  x <- x[x != -1]
-  y <- y[y != -1]
-  c(x, y)
+comb_matches <- function(...) {
+  x <- c(...)
+  return(x[x != -1])
 }

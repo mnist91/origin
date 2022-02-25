@@ -4,44 +4,69 @@
 #' @param file file name of the script
 #' @param functions list of function names to check
 #' @param pkgs packages to consider
-#' @param overwrite whether to overwrite files on disk
 #' @param ignore_comments whether to ignore comments from originizing
 #' @template verbose
 #' @template use_markers
 #'
 #' @return list of information where which package is (potentially) missing
 #' @noRd
-originize <- function(script,
-                      file,
+originize <- function(dat,
                       functions,
                       pkgs = getOption("origin.pkgs", .packages()),
-                      overwrite = FALSE,
-                      ignore_comments = TRUE,
                       verbose = FALSE,
                       use_markers =
                         getOption("origin.use_markers_for_logging")) {
+
+  browser()
+  dat_fctns <- Reduce(f = rbind,
+                      x = Map(f = function(pkg, fcts) {
+                        data.frame(pkg = pkg,
+                                   fct = fcts)},
+                        pkgs,
+                        functions))
+
+  dat$Id <- seq_len(nrow(dat))
+  dat_fctns$MERGE_HELPER <- "FUNCTION_CALL"
+  dat <- merge.data.frame(x = dat,
+                   y = dat_fctns,
+                   by.x = c("text", "usage"),
+                   by.y = c("fct", "MERGE_HELPER"),
+                   all.x = TRUE,
+                   sort = FALSE,
+  )
+
+  dat_fctns$MERGE_HELPER <- "SPECIAL"
+  dat <- merge.data.frame(x = dat,
+                   y = dat_fctns,
+                   by.x = c("text", "token"),
+                   by.y = c("fct", "MERGE_HELPER"),
+                   all.x = TRUE,
+                   sort = FALSE,
+  )
+
+  dat <- dat[order(dat$Id),]
+  dat[!is.na(dat$pkg.x), "pkg"] <- dat[!is.na(dat$pkg.x), "pkg.x"]
+  dat[!is.na(dat$pkg.y), "pkg"] <- dat[!is.na(dat$pkg.y), "pkg.y"]
+  dat$pkg.y <- NULL
+  dat$pkg.x <- NULL
 
 
   # get relevant function information
   # TODO: still relevant / much time improvement here?
   fun_list <- check_functions(script = script,
                               functions = unlist(functions),
-                              verbose = verbose,
                               ignore_comments = ignore_comments)
 
   if (length(fun_list$line_matches) == 0) {
     return(NULL)
   }
+
   # iterate over all functions and find position where package:: is necessary
   replacement_list <-
     Map(f = function(pkg, funs) {
       get_origins(pkg             = pkg,
                   script          = script,
-                  functions       = funs,
-                  file            = file,
-                  overwrite       = overwrite,
-                  ignore_comments = ignore_comments,
-                  verbose         = verbose)
+                  functions       = funs)
     },
     pkgs,
     functions
@@ -70,7 +95,7 @@ originize <- function(script,
   fixed_lines_dat <- Reduce(rbind, fixed_lines_list)
 
 
-  # if no logging is desired, skpi all relevant steps
+  # if no logging is desired, skip all relevant steps
   if (!verbose) {
     script[fixed_lines_dat$line] <- fixed_lines_dat$string
 
@@ -94,7 +119,7 @@ originize <- function(script,
                                 x           = script[is_html_line]))
     }
 
-    # get positions of potential missined (infix) functions
+    # get positions of potential missing (infix) functions
     potential_missings <-
       get_potential_missings(script = script_logging,
                              line_matches = fun_list$line_matches,
@@ -103,8 +128,14 @@ originize <- function(script,
                              infix_functions = fun_list$infix_functions,
                              infix_matches = fun_list$infix_matches)
 
+    # match lengths are not needed here
+    replacement_list <- lapply(X = replacement_list,
+                               FUN = function(rl) {
+                                 rl$match_length <- NULL
+                                 rl
+                               })
 
-    # the insertion positions must be adjustet to the escaped HTML-characters
+    # the insertion positions must be adjusted to the escaped HTML-characters
     if (use_markers && has_html) {
       is_html <- gregexpr(pattern = "<|>",
                           text = script)

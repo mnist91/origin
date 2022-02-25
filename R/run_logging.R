@@ -8,11 +8,11 @@
 run_logging <- function(dat, use_markers) {
 
   if (length(dat$line) == 0) {
-    message("No functions detected in script(s)")
+    message("No functions detected in scripts")
     return(invisible(NULL))
   }
 
-  # infoke markers tab
+  # infoke markers tabs
   if (use_markers) {
     rstudioapi::sourceMarkers(name = "origin",
                               markers = dat)

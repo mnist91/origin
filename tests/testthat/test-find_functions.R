@@ -25,7 +25,8 @@ testthat::test_that("Test find functions", {
     "myfun =",
     "function(x) 3",
     # = multiple lines
-    "antoher this9.my.my_fun999.992 =",
+    "antoher
+    this9.my.my_fun999.992 =",
     "function",
     "",
     "(sdfklsf)",
@@ -36,8 +37,8 @@ testthat::test_that("Test find functions", {
 
 
     # crazy function name
-    "this9.my.my_fun999.99 = function(sdfklsf)",
-    "{this9.my.my_fun999.99 = function(sdfklsf)}",
+    "this9.my.my_fun999.99 = function(sdfklsf) 3",
+    "{this9.my.my_fun999.99 = function(sdfklsf) 4}",
 
     # just a function call
     "here_fun <- funny(3)",
@@ -49,26 +50,38 @@ testthat::test_that("Test find functions", {
     "  aaskjrfun3 =        function(qwertz) 4",
     "huge_fun <-      function    (x, y, z) {",
     "123",
-    "}"
+    "}",
+    "myfun = function(x = 3) {1
+      anotherfun <- function() 3
+      }
+      blabb <- 3
+      lapply(1:3, FUN = function(x) 3)
+      thisfun = \\() 3
+      blubb
+      thafun <- \\() 3
+      "
   )
 
   result <- find_functions(x = script)
-  testthat::expect_equal(result,
-                         c("another.fun1",
-                           "another_fun2",
-                           "anotherfun3",
-                           "another.fun1",
-                           "another_fun2",
-                           "anotherfun3",
-                           "myfun",
-                           "this9.my.my_fun999.992",
-                           "thisfun",
-                           "this9.my.my_fun999.99",
-                           "this9.my.my_fun999.99",
-                           "aaskjrfun1",
-                           "aaskjrfun2",
-                           "aaskjrfun3",
-                           "huge_fun"
-                         ))
+  testthat::expect_equal(result[1], "another.fun1")
+  testthat::expect_equal(result[2], "another_fun2")
+  testthat::expect_equal(result[3], "anotherfun3")
+  testthat::expect_equal(result[4], "another.fun1")
+  testthat::expect_equal(result[5], "another_fun2")
+  testthat::expect_equal(result[6], "anotherfun3")
+  testthat::expect_equal(result[7], "myfun")
+  testthat::expect_equal(result[8], "this9.my.my_fun999.992")
+  testthat::expect_equal(result[9], "thisfun")
+  testthat::expect_equal(result[10], "this9.my.my_fun999.99")
+  testthat::expect_equal(result[11], "this9.my.my_fun999.99")
+  testthat::expect_equal(result[12], "aaskjrfun1")
+  testthat::expect_equal(result[13], "aaskjrfun2")
+  testthat::expect_equal(result[14], "aaskjrfun3")
+  testthat::expect_equal(result[15], "huge_fun")
+  testthat::expect_equal(result[16], "myfun")
+  testthat::expect_equal(result[17], "anotherfun")
+  testthat::expect_equal(result[18], "thisfun")
+  testthat::expect_equal(result[19], "thafun")
+
 
 })

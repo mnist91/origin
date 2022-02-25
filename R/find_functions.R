@@ -1,37 +1,16 @@
 #' Find Function Names
 #'
-#' @param x a character vector
+#' @param file a character string linking to a R file path
 #'
 #' @return a character vector
 #' @noRd
-find_functions <- function(x) {
+find_functions <- function(file) {
 
-  # remove whitespace on the left
-  x <- sub(pattern = "^[[:space:]]+", replacement = "", x = x, perl = TRUE)
+  # get information about parsed data
+  dat <- get_parsed_data(file = file)
 
-  # detect comments
-  comment <- startsWith(x = x,
-                        prefix = "#")
-
-  # exclude commented lines
-  x <- x[!comment]
-
-  # collapse string together to get function definitions over two lines
-  # Begin Exclude Linting
-  # myfun <-
-  #   function() ...
-  # End Exclude Linting
-  s <- paste(x, collapse = "\n")
-
-  # find function names
-  fun_names <-
-    unlist(
-      use.names = FALSE,
-      reg_extract(
-        x = s,
-        pattern = "[\\w.]+(?=[[:space:]]*(<-|<<-|=)[[:space:]]*function[[:space:]]*\\()", # Exclude Linting
-        perl = TRUE))
+  # the corresponding symbols are the function names
+  fun_names <- dat[dat$usage == "FUNCTION_DEFINITION", "text"]
 
   return(fun_names)
 }
-

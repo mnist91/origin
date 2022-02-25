@@ -50,7 +50,6 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
                 add_base_packages = FALSE,
                 ask_before_applying_changes = FALSE,
                 excluded_functions = list(dplyr = "last"),
-                ignore_comments = TRUE,
                 use_markers = FALSE,
                 check_local_conflicts = FALSE,
                 verbose = FALSE)
@@ -101,7 +100,6 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
                 add_base_packages = FALSE,
                 ask_before_applying_changes = FALSE,
                 excluded_functions = list(dplyr = "last"),
-                ignore_comments = TRUE,
                 use_markers = FALSE,
                 check_local_conflicts = FALSE,
                 verbose = FALSE)

@@ -26,7 +26,6 @@ testthat::test_that("Highlighting of plain text", {
                            check_local_conflicts = FALSE,
                            ask_before_applying_changes = FALSE,
                            excluded_functions = list(dplyr = "last"),
-                           ignore_comments = TRUE,
                            use_markers = FALSE,
                            verbose = FALSE)
 
