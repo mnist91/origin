@@ -17,15 +17,15 @@ set_marker_type <- function(x,
   # all available markers type options in order of importance
   # each marker entry has assigned one type only
   if (use_markers) {
-    mapping <- list(insert = "info",
-                    infix = "box",
-                    missed = "warning")
-    type_order <- c("usage", "info", "style", "box", "warning", "error")
+    mapping <- list(SPECIAL = "box",
+                    MISSING = "warning",
+                    INSERT  = "info")
+    type_order <- c("usage", "style", "box", "warning", "info", "error")
   } else {
-    mapping <- list(insert = "+",
-                    infix = "i",
-                    missed = "-")
-    type_order <- c("+", "i", "-")
+    mapping <- list(SPECIAL = "i",
+                    MISSING = "-",
+                    INSERT  = "+")
+    type_order <- c("i", "-", "+")
   }
 
   # which type is mapped onto which kind of logging

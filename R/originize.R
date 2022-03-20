@@ -16,200 +16,222 @@ originize <- function(dat,
                       verbose = FALSE,
                       use_markers =
                         getOption("origin.use_markers_for_logging")) {
-
-  browser()
+  
+  # data.frame of function-package pairs
   dat_fctns <- Reduce(f = rbind,
                       x = Map(f = function(pkg, fcts) {
-                        data.frame(pkg = pkg,
-                                   fct = fcts)},
+                        data.frame(pkg = paste0(pkg, "::"),
+                                   fct = fcts,
+                                   pkg_nchar = nchar(pkg) + 2L)},
                         pkgs,
                         functions))
-
+  
+  # set an id column to sort the data into its original order after joins
   dat$Id <- seq_len(nrow(dat))
+  
+  # find function calls in scripts
   dat_fctns$MERGE_HELPER <- "FUNCTION_CALL"
   dat <- merge.data.frame(x = dat,
-                   y = dat_fctns,
-                   by.x = c("text", "usage"),
-                   by.y = c("fct", "MERGE_HELPER"),
-                   all.x = TRUE,
-                   sort = FALSE,
+                          y = dat_fctns,
+                          by.x = c("text", "usage"),
+                          by.y = c("fct", "MERGE_HELPER"),
+                          all.x = TRUE,
+                          sort = FALSE,
   )
-
-  dat_fctns$MERGE_HELPER <- "SPECIAL"
-  dat <- merge.data.frame(x = dat,
-                   y = dat_fctns,
-                   by.x = c("text", "token"),
-                   by.y = c("fct", "MERGE_HELPER"),
-                   all.x = TRUE,
-                   sort = FALSE,
-  )
-
-  dat <- dat[order(dat$Id),]
-  dat[!is.na(dat$pkg.x), "pkg"] <- dat[!is.na(dat$pkg.x), "pkg.x"]
-  dat[!is.na(dat$pkg.y), "pkg"] <- dat[!is.na(dat$pkg.y), "pkg.y"]
-  dat$pkg.y <- NULL
-  dat$pkg.x <- NULL
-
-
-  # get relevant function information
-  # TODO: still relevant / much time improvement here?
-  fun_list <- check_functions(script = script,
-                              functions = unlist(functions),
-                              ignore_comments = ignore_comments)
-
-  if (length(fun_list$line_matches) == 0) {
-    return(NULL)
+  
+  # sort it in the original order
+  dat <- dat[order(dat$Id), ]
+  
+  add_pkg <- !is.na(dat$pkg_nchar)
+  # cases, for which no corresponding package has been found set added string
+  # length to 0
+  dat$pkg_nchar[!add_pkg] <- 0
+  
+  
+  dat_out <- dat
+  dat_out$text[add_pkg] <- paste0(dat_out$pkg[add_pkg],
+                                  dat_out$text[add_pkg])
+  
+  fix_column_values <- function(dat) {
+    # calculate, how many characters must be added to the line.
+    # necessary to return a white space preserving result
+    dat$nchar_csum <- unlist(
+      # using tapply() as it is used in `by()`. This skips unneeded steps like
+      # converting the vector into a data.frame
+      tapply(X = seq_along(dat$pkg_nchar), 
+             INDEX = list(dat$line1, dat$file), 
+             FUN = function(x) cumsum(dat$pkg_nchar[x])))
+    
+    dat$col1 <- dat$col1 + dat$nchar_csum - dat$pkg_nchar
+    dat$col2 <- dat$col2 + dat$nchar_csum
+    
+    return(dat)
   }
-
-  # iterate over all functions and find position where package:: is necessary
-  replacement_list <-
-    Map(f = function(pkg, funs) {
-      get_origins(pkg             = pkg,
-                  script          = script,
-                  functions       = funs)
-    },
-    pkgs,
-    functions
-    )
-
-
-  # keep package info only if matches are present
-  replacement_list <- Filter(function(l) length(l) > 0, replacement_list)
-
-  # combine results for all packages
-  combined <- Reduce(f = function(...) {
-    Map(f = c,
-        ...)
-  },
-  x = replacement_list)
-
-  # insert package:: to the relevant positions
-  fixed_lines_list <- lapply(
-    X = sort(unique(combined$line)),
-    FUN = prep_line_originize,
-    lines = combined$line,
-    matches = combined$matches,
-    pkg = combined$pkg,
-    string = combined$string)
-
-  # combine all lines
-  fixed_lines_dat <- Reduce(rbind, fixed_lines_list)
-
-
+  
+  dat_out <- fix_column_values(dat_out)
+  
+  browser()
+  result <- revert_parse_data(dat_out)
+  
+  
+  
+  
   # if no logging is desired, skip all relevant steps
   if (!verbose) {
-    script[fixed_lines_dat$line] <- fixed_lines_dat$string
-
-    return(list(to_write = list(file = file, script = script),
-                logging_data = data.frame(line = fixed_lines_dat$line)))
-
+    return(list(to_write = result,
+                logging_data = result))
+    
   } else {
-
+    dat_logging <- dat
+    
+    dat_logging$log_type <- ""
+    
+    dat_logging[!is.na(dat_logging$pkg), "log_type"] <- "INSERT"
+    
+    # lines with function names that are not used as function names
+    dat_logging[dat_logging$text %in% dat_fctns$fct &
+                  is.na(dat_logging$pkg) &
+                  dat_logging$token == "SYMBOL", "log_type"] <- "MISSING"
+    
+    # lines with function names that are not used as function names
+    dat_logging[dat_logging$text %in% dat_fctns$fct &
+                  is.na(dat_logging$pkg) &
+                  dat_logging$token == "SPECIAL", "log_type"] <- "SPECIAL"
+    
+    # lines that are relevant for logging
+    rel_logging <- unique(dat_logging[nzchar(dat_logging$log_type), c("line1", "file")])
+    nrow(dat_logging)
+    dat_logging <- merge.data.frame(rel_logging, dat_logging, by = c("line1", "file"))
+    nrow(dat_logging)
+    dat_logging <- dat_logging[order(dat_logging$Id), ]
+    
+    
     # in case there are lines with html-characters which might intervene with
     # the markers logging output eventually, escape them
-    script_logging <- script
     if (use_markers &&
         (has_html <-
-         length(is_html_line <- which(grepl(pattern = "<|>", x = script))) > 0)
-    ) {
-      script_logging[is_html_line] <-
+         length(has_html_token <- which(grepl(pattern = "<|>", 
+                                              x = dat_logging$text))) > 0)) {
+      
+      # tokens with html characters to escape
+      html_txt <- dat_logging$text[has_html_token]
+      
+      # count added characters to each token to recover white spaces later
+      dat_logging$pkg_nchar[has_html_token] <- 
+        dat_logging$pkg_nchar[has_html_token] + 
+        # each escaped <> takes 3 additional characters of space
+        lengths(regmatches(html_txt, gregexpr("<|>", html_txt))) * 3
+      
+      # replace escapable html characters
+      dat_logging$text[has_html_token]  <-
         gsub(pattern     = ">",
              replacement = "&gt;",
              x           = gsub(pattern     = "<",
                                 replacement = "&lt;",
-                                x           = script[is_html_line]))
+                                x           = html_txt))
     }
-
-    # get positions of potential missing (infix) functions
-    potential_missings <-
-      get_potential_missings(script = script_logging,
-                             line_matches = fun_list$line_matches,
-                             functions = unlist(functions),
-                             functions_in_script = fun_list$functions_in_script,
-                             infix_functions = fun_list$infix_functions,
-                             infix_matches = fun_list$infix_matches)
-
-    # match lengths are not needed here
-    replacement_list <- lapply(X = replacement_list,
-                               FUN = function(rl) {
-                                 rl$match_length <- NULL
-                                 rl
-                               })
-
-    # the insertion positions must be adjusted to the escaped HTML-characters
-    if (use_markers && has_html) {
-      is_html <- gregexpr(pattern = "<|>",
-                          text = script)
-      replacement_list <-
-        lapply(X = replacement_list,
-               FUN = function(rl) {
-
-                 # which lines in the script that have insertions
-                 # for this package are with HTMLs
-                 relevant_script <- intersect(x = rl$line,
-                                              y = is_html_line)
-
-                 # which lines with functions from this package
-                 # have HTML-characters
-                 relevant_replacement_line <- rl$line %in% is_html_line
-
-                 if (length(relevant_script) > 0) {
-
-                   # if any, iterate over these insertions
-                   # and add 3 tokens to the matching position
-                   # < -> &lt;
-                   # > -> &gt;
-                   # each plus three tokens
-                   rl$matches[relevant_replacement_line] <-
-                     Map(f = function(htmls, matches) {
-                       unlist(lapply(X = matches,
-                                     FUN = function(mtchs) {
-                                       mtchs + sum(mtchs > htmls) * 3
-                                     }))
-                     },
-                     is_html[relevant_script],
-                     rl$matches[relevant_replacement_line])
-                 }
-
-                 return(rl)
-               })
+    
+    # html strings to wrap highlighted areas
+    if (use_markers) {
+      ins_start_string <- sprintf('<text style="color: %s;">',
+                                  getOption("origin.color_added_package"))
+      mis_start_string <-  sprintf('<text style="color: %s;">',
+                                   getOption("origin.color_missed_function"))
+      spe_start_string <-  sprintf('<text style="color: %s;">',
+                                   getOption("origin.color_infix_function"))
+      end_string <- "</text>"
+      start_wrapper <- "<div>"
+      end_wrapper <- "</div"
+      
+      # bash colors for colored console text
+      # mimics behavior of crayon
+    } else {
+      # TODO: color codes depending on theme
+      ins_start_string <- "\033[36m"
+      mis_start_string <- "\033[31m"
+      spe_start_string <- "\033[33m"
+      end_string <- "\033[39m"
+      start_wrapper <- "\033[39m"
+      end_wrapper <- "\033[39m"
     }
+    
+    add_color <- function(dat, type, start_string, end_string) {
+      
+      # no occasions for this log type
+      if (!any(rel_tokens <- dat$log_type == type)) {
+        return(dat)
+      }
+      
+      if (type == "INSERT") {
+        dat[rel_tokens, "text"] <- 
+          # only hoghlight inserted package name
+          paste0(start_string, dat[rel_tokens, "pkg"], end_string, 
+                 dat[rel_tokens, "text"])
+        
+      } else {
+        dat[rel_tokens, "text"] <- 
+          # highlight original token
+          paste0(start_string, dat[rel_tokens, "text"], end_string)
+      }
+      
+      # how many characters were added
+      # relevant for reverting data 
+      dat[rel_tokens, "pkg_nchar"] <- 
+        dat[rel_tokens, "pkg_nchar"] + nchar(start_string) + nchar(end_string)
+      
+      return(dat)
+    }
+    
+    dat_logging <- add_color(dat_logging, 
+                             type = "INSERT", 
+                             start_string = ins_start_string, 
+                             end_string = end_string)
+    dat_logging <- add_color(dat_logging, 
+                             type = "MISSING", 
+                             start_string = mis_start_string, 
+                             end_string = end_string)
+    dat_logging <- add_color(dat_logging, 
+                             type = "SPECIAL", 
+                             start_string = spe_start_string, 
+                             end_string = end_string)
+    
+    # TODO. data structure
+    revert_parse_data(fix_column_values(dat_logging), recover_empty_lines = FALSE) 
+    xdat <- fix_column_values(dat_logging)
+    xcol1 <- xdat$col1
+    
+    xcol2 <- c(0, xdat$col2[-nrow(xdat)])
+    new_line <- which(xdat$line1[-1] != xdat$line1[-nrow(xdat)] |
+                        xdat$file[-1] != xdat$file[-nrow(xdat)]) + 1
+    end_line <- c(new_line - 1, nrow(xdat))
+    new_line <- c(1, new_line)
+    xcol2[new_line] <- 0
+    n_ws <- xdat$col1 - xcol2 - 1
+    ws <- strrep(" ", n_ws)
+    
+    # add whitespaces to the tokens
+    xdat$text <- paste0(ws, xdat$text)
+    xdat
+    
+    log_dat <- by(data = xdat, 
+       INDICES = list(xdat$line1, xdat$file), 
+       FUN = function(xd) data.frame(file = xd$file[1],
+                                     line = xd$line1[1],
+                                     column = xd$col1[which.min(xd$log_type != "")],
+                                     type = set_marker_type(xd$log_type),
+                                     message = paste(xd$text, collapse = "")))
+    
+    logging_data <- Reduce(f = rbind, x = log_dat)
 
-    # combine positions of potential missings
-    logging_comb <-  Reduce(
-      f = function(...) {
-        Map(f = c,
-            ...)
-      },
-      x = c(replacement_list,
-            Filter(f = Negate(is.null),
-                   x = potential_missings)))
 
-    # prepare strings and insert color highlighting where needed
-    fixed_lines_list <- lapply(
-      X = sort(unique(logging_comb$line)),
-      FUN = prep_line_logging,
-      lines = logging_comb$line,
-      matches = logging_comb$matches,
-      pkg = logging_comb$pkg,
-      log_length = logging_comb$log_length,
-      type = logging_comb$type,
-      string = script_logging[logging_comb$line],
-      use_markers = use_markers)
-
-    # combine all lines
-    logging_data <- Reduce(rbind, fixed_lines_list)
-
-    if (use_markers && !is.null(logging_data)) {
+    if (use_markers && !is.null(logging_data) && nrow(logging_data) > 0) {
       attr(logging_data$message, which = "class") <- c("html", "character")
     }
-
-    logging_data$file <- file
-
+    
     script[fixed_lines_dat$line] <- fixed_lines_dat$string
-
-    return(list(to_write = list(file = file, script = script),
+    
+    return(list(to_write = result,
                 logging_data = logging_data))
   }
-
+  
 }

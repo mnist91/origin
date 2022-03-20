@@ -369,6 +369,7 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                                                           FUN = `[[`,
                                                           "logging_data")))
     if (!is.null(logging_data_missings) && nrow(logging_data_missings) > 0) {
+      browser()
       rstudioapi::sourceMarkers(name = "origin - Function and Package Usage",
                                 markers = logging_data_missings)
     }
