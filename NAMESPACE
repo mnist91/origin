@@ -2,6 +2,7 @@
 
 export(get_exported_functions)
 export(get_local_functions)
+export(get_parsed_data)
 export(get_pkgs_from_description)
 export(originize_dir)
 export(originize_file)

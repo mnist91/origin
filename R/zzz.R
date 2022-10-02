@@ -9,7 +9,6 @@
     origin.color_missed_function = "#ff0000",
     origin.color_infix_function = "#ffa500",
     origin.overwrite = TRUE,
-    origin.ignore_comments = TRUE,
     origin.check_conflicts = TRUE,
     origin.check_base_conflicts = TRUE,
     origin.add_base_packages = FALSE,

@@ -11,7 +11,6 @@ originize_pkg(
   exclude_files = NULL,
   overwrite = getOption("origin.overwrite", TRUE),
   ask_before_applying_changes = getOption("origin.ask_before_applying_changes", TRUE),
-  ignore_comments = getOption("origin.ignore_comments", TRUE),
   check_conflicts = getOption("origin.check_conflicts", TRUE),
   check_base_conflicts = getOption("origin.check_base_conflicts", TRUE),
   add_base_packages = getOption("origin.add_base_packages", FALSE),
@@ -44,8 +43,6 @@ only the logging is triggered. Note that, depending on
 
 \item{ask_before_applying_changes}{if TRUE, the user has to approve
 changes made by origin prior to applying them.}
-
-\item{ignore_comments}{if TRUE, commented lines are ignored.}
 
 \item{check_conflicts}{if TRUE, possible namespace conflicts between
 functions exported by packages listed in pkgs are checked. See details.}
@@ -107,7 +104,6 @@ check_base_conflicts checks whether functions listed in pkgs mask R functions
 originize_pkg(path = rstudioapi::getActiveProject(),
               overwrite = TRUE,
               ask_before_applying_changes = TRUE,
-              ignore_comments = TRUE,
               exclude_files = c("dont_originize_this.R",
                                 "dont_originize_that.R"),
               verbose = TRUE)

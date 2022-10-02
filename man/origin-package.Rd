@@ -4,8 +4,7 @@
 \name{origin-package}
 \alias{origin}
 \alias{origin-package}
-\title{origin: Explicitly Qualifying Namespaces by Automatically Adding 'pkg::' to
-    Functions}
+\title{origin: Explicitly Qualifying Namespaces by Automatically Adding 'pkg::' to Functions}
 \description{
 To learn more about origin, start with the vignette:
 `browseVignettes(package = "origin")`

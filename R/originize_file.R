@@ -4,7 +4,6 @@
 #' @template pkgs
 #' @template overwrite
 #' @template ask_before_applying_changes
-#' @template ignore_comments
 #' @template check_conflicts
 #' @template check_base_conflicts
 #' @template check_local_conflicts
@@ -40,7 +39,6 @@
 #'                pkgs = c("dplyr", "data.table"),
 #'                overwrite = TRUE,
 #'                ask_before_applying_changes = TRUE,
-#'                ignore_comments = TRUE,
 #'                excluded_functions = list(dplyr = c("%>%", "tibble"),
 #'                                          data.table = c(":=", "%like%"),
 #'                                          # generally exclude

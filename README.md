@@ -56,7 +56,6 @@ This is especially useful when using the RStudio Addins.
   - `origin.path_to_local_functions`: the path to the root directory of all local functions.
   defaults to the project root of the currently opened project in RStudio.
   - `origin.excluded_functions`: a (named) list of functions to exclude from checking. See details.
-  - `origin.ignore_comments`: should comments be ignored.
   - `origin.verbose`: some sort of logging is performed, either in the 
   console or via the markers tab in RStudio.
   - `origin.use_markers_for_logging`: whether to use the Markers tab in RStudio.

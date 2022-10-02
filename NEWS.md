@@ -1,5 +1,5 @@
 # origin 0.5.3
-- Fixed function documention files to add missing Rd-tags
+- Fixed function documentation files to add missing Rd-tags
 - Fixed the description field in the DESCRIPTION file to single quote 'RStudio'.
   Both fixes are to meet requirements to submit on CRAN.
 

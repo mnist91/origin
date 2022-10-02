@@ -4,7 +4,6 @@
 #' @param file file name of the script
 #' @param functions list of function names to check
 #' @param pkgs packages to consider
-#' @param ignore_comments whether to ignore comments from originizing
 #' @template verbose
 #' @template use_markers
 #'
