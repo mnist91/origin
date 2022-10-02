@@ -73,7 +73,7 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                "or the `pkgs` argument."))
   }
 
-  if (any(unknown_pkgs <- !pkgs %in% rownames(installed.packages()))) {
+  if (any((unknown_pkgs <- !pkgs %in% rownames(installed.packages())))) {
     stop(paste(sum(unknown_pkgs), "uninstalled packages:",
                paste(pkgs[unknown_pkgs], collapse = ", ")))
   }

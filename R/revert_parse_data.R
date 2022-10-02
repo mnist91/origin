@@ -1,5 +1,4 @@
 revert_parse_data <- function(parse_data, recover_empty_lines = TRUE){
-  
   res <- by(data = parse_data,
             # consider each line separately
             # TODO: exclude loop

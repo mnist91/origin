@@ -11,3 +11,4 @@ originize_dir(path = file.path("inst", "testpath"),
               pkgs = "dplyr",
               verbose = TRUE,
               ask_before_applying_changes = TRUE)
+

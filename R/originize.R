@@ -15,7 +15,7 @@ originize <- function(dat,
                       verbose = FALSE,
                       use_markers =
                         getOption("origin.use_markers_for_logging")) {
-  
+
   # data.frame of function-package pairs
   dat_fctns <- Reduce(f = rbind,
                       x = Map(f = function(pkg, fcts) {
@@ -69,8 +69,12 @@ originize <- function(dat,
   
   dat_out <- fix_column_values(dat_out)
   
-  browser()
-  result <- revert_parse_data(dat_out)
+  # result <- revert_parse_data(dat_out)
+  
+  files <- unique(dat_out$file)
+  result <- setNames(lapply(files, 
+                            function(f) revert_parse_data(dat_out[dat_out$file == f,])),
+                     files)
   
   
   
@@ -78,7 +82,7 @@ originize <- function(dat,
   # if no logging is desired, skip all relevant steps
   if (!verbose) {
     return(list(to_write = result,
-                logging_data = result))
+                logging_data = list()))
     
   } else {
     dat_logging <- dat
@@ -195,7 +199,7 @@ originize <- function(dat,
                              end_string = end_string)
     
     # TODO. data structure
-    revert_parse_data(fix_column_values(dat_logging), recover_empty_lines = FALSE) 
+    # revert_parse_data(fix_column_values(dat_logging), recover_empty_lines = FALSE) 
     xdat <- fix_column_values(dat_logging)
     xcol1 <- xdat$col1
     
@@ -213,21 +217,21 @@ originize <- function(dat,
     xdat
     
     log_dat <- by(data = xdat, 
-       INDICES = list(xdat$line1, xdat$file), 
-       FUN = function(xd) data.frame(file = xd$file[1],
-                                     line = xd$line1[1],
-                                     column = xd$col1[which.min(xd$log_type != "")],
-                                     type = set_marker_type(xd$log_type),
-                                     message = paste(xd$text, collapse = "")))
+                  INDICES = list(xdat$line1, xdat$file), 
+                  FUN = function(xd) data.frame(file = xd$file[1],
+                                                line = xd$line1[1],
+                                                column = xd$col1[which.min(xd$log_type != "")],
+                                                type = set_marker_type(xd$log_type),
+                                                message = paste(xd$text, collapse = "")))
     
     logging_data <- Reduce(f = rbind, x = log_dat)
-
-
+    
+    
     if (use_markers && !is.null(logging_data) && nrow(logging_data) > 0) {
       attr(logging_data$message, which = "class") <- c("html", "character")
     }
     
-    script[fixed_lines_dat$line] <- fixed_lines_dat$string
+    # script[fixed_lines_dat$line] <- fixed_lines_dat$string
     
     return(list(to_write = result,
                 logging_data = logging_data))

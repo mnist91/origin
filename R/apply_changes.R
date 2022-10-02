@@ -17,19 +17,19 @@ apply_changes <- function(ask_before_applying_changes,
                           context = NULL) {
 
   # did all scripts remain the same
-  all_unchanged <- all(mapply(function(x, y) isTRUE(all.equal(x, y)),
-                              init_script,
-                              lapply(result, function(l) l$to_write$script),
-                              SIMPLIFY = TRUE))
-
+  unchanged <- mapply(function(x, y) isTRUE(all.equal(x, y)),
+                      init_script,
+                      result$to_write,
+                      SIMPLIFY = TRUE)
+  
   # in case they are, notify the user
-  if (all_unchanged) {
+  if (all(unchanged)) {
     message("No unspecified functions detected. Script remains as is.")
     return(invisible(NULL))
-
+    
     # if changes were made, ask user if those can be overwrite the files
   } else {
-
+    
     # nocov start
     if (ask_before_applying_changes && interactive()) {
       cat("\nHappy with the result? \U0001f600\n\n")
@@ -40,23 +40,35 @@ apply_changes <- function(ask_before_applying_changes,
       }
     }
     # nocov end
-
+    
     if (type == "writeLines") {
       # extract non-empty new scripts
-    new_scripts <- Filter(result, f = function(l) !is.null(l$to_write$script))
-    # assign scripts where changes are made
-    lapply(X = new_scripts,
-           FUN = function(x) writeLines(text = x$to_write$script,
-                                        con = x$to_write$file))
-
-    return(invisible(NULL))
-
-
-
-    # return plane text
+      new_scripts <- result$to_write[!unchanged]
+      # assign scripts where changes are made
+      mapply(new_scripts,
+             names(new_scripts),
+             FUN = function(x, f) {
+               # NOTE: EOL-Issue:
+               # If a file does not end in an EOL mark (LF or CRLF),
+               # this often indicates a broken text file.
+               # readLines() does not read in the last line but triggers a
+               # warning of a file does not end in a EOL mark. 
+               # Instead of using tryCatch to use these warnings to 
+               # determine if a final line existed, all returned scripts 
+               # will end with a final line which is consistent with git.
+               x[length(x) + 1] <- ""
+               
+               writeLines(text = x,
+                          con = f)})
+      
+      return(invisible(NULL))
+      
+      
+      
+      # return plane text
     } else if (type == "paste") {
       script_out <- result[[1]]$to_write$script
-
+      
       # replace character(0) by "" for more consistent testing
       script_out <- rapply(object = script_out,
                            f = function(x) {
@@ -64,29 +76,29 @@ apply_changes <- function(ask_before_applying_changes,
                            },
                            how = "replace")
       return(paste(script_out, collapse = "\n"))
-
-
-
-
-
+      
+      
+      
+      
+      
       # insert Text via apistudioapi
     } else if (type == "insertText") {
       to_insert <- paste(result[[1]]$to_write$script, collapse = "\n")
-
+      
       selected_range <- context$selection[1][[1]]$range
-
+      
       # if end of selection is at beginning of a new line, extra line
       # break is required to keep the same document structure
       if (selected_range$end[2] == 1) {
         to_insert <- paste0(to_insert, "\n")
       }
-
+      
       rstudioapi::insertText(text = to_insert,
                              location = context$selection[1][[1]]$range,
                              id = context$id)
       return(invisible(NULL))
-
+      
     }
-
+    
   }
 }
