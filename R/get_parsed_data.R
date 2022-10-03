@@ -23,7 +23,7 @@ get_parsed_data <- function(file = "",
   # get positions where funcitons are called/used
   dat <- get_function_calls(dat)
 
-  if (nzchar(file)) {
+  if (!is.null(file) && nzchar(file) && nrow(dat) > 0) {
     dat$file <- file
   }
   return(dat)

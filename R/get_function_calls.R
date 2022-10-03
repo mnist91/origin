@@ -16,8 +16,11 @@ get_function_calls <- function(dat, exclude_namespaced_funs = TRUE) {
   relevant_symbols <- symbol_token[symbol_token %in% (argument_token + 1)]
   # ... preceeded by a typical parameter name
   relevant_symbols <- relevant_symbols[relevant_symbols %in% (symbol_sub_token + 2)]
-  dat[relevant_symbols, "usage"] <- "FUNCTION_CALL"
   
+  if (length(relevant_symbols) > 0) {
+    dat[relevant_symbols, "usage"] <- "FUNCTION_CALL"
+  }
+
   # regular function calls, like detected by parsing or code highlighting
   fct_symbols <- which(dat$token == "SYMBOL_FUNCTION_CALL")
   
@@ -27,10 +30,14 @@ get_function_calls <- function(dat, exclude_namespaced_funs = TRUE) {
     fct_with_ns <- fct_symbols %in% (ns_symbols + 1)
     namespaced_fct_symbols <- fct_symbols[fct_with_ns]
     fct_symbols <- fct_symbols[!fct_with_ns]
-    dat[namespaced_fct_symbols, "usage"] <- "NAMESPACED_FUNCTION_CALL"
+    if (length(namespaced_fct_symbols) > 0) {
+      dat[namespaced_fct_symbols, "usage"] <- "NAMESPACED_FUNCTION_CALL"
   }
+}
   
-  dat[fct_symbols, "usage"] <- "FUNCTION_CALL"
+  if (length(fct_symbols) > 0) {
+    dat[fct_symbols, "usage"] <- "FUNCTION_CALL"
+  }
   
   return(dat)
 }

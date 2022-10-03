@@ -62,7 +62,7 @@ testthat::test_that("Test find functions", {
       "
   )
 
-  result <- find_functions(x = script)
+  result <- find_functions(text = script)
   testthat::expect_equal(result[1], "another.fun1")
   testthat::expect_equal(result[2], "another_fun2")
   testthat::expect_equal(result[3], "anotherfun3")
