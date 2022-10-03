@@ -45,7 +45,7 @@ iris %>% filter(filter) %>% filter(Spepal.Length > 3);iris %>% dplyr::filter(fil
 # ignore comments;# ignore comments
 # last()-function exported by both dplyr and data.table;# last()-function exported by both dplyr and data.table
   # indendet comments are also ignored last();  # indendet comments are also ignored last()
-  last()   # comments in the same line as code last();  data.table::last()   # comments in the same line as code data.table::last()
+  last()   # comments in the same line as code last();  data.table::last()   # comments in the same line as code last()
 ;
 # id() is a dplyr function;# id() is a dplyr function
 id <- 54;id <- 54

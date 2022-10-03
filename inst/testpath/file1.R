@@ -12,3 +12,4 @@ originize_dir(path = file.path("inst", "testpath"),
               verbose = TRUE,
               ask_before_applying_changes = TRUE)
 
+iris %>% filter(Species == "setosa") %>% filter(Spepal.Length > 3) %>% filter(TRUE)

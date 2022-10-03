@@ -57,7 +57,7 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
   testfile_after1 <- readLines(test_file_path1)
   testfile_after2 <- readLines(test_file_path2)
 
-  testthat::expect_equal(testfile_after1,
+  testthat::expect_equal(testfile_after1[1:20],
                          test_text[1:20, grepl("TARGET", nms, fixed = TRUE)])
   testthat::expect_equal(testfile_after2,
                          test_text[21:nrow(test_text),
