@@ -56,7 +56,7 @@ apply_changes <- function(ask_before_applying_changes,
                # Instead of using tryCatch to use these warnings to 
                # determine if a final line existed, all returned scripts 
                # will end with a final line which is consistent with git.
-               x[length(x) + 1] <- ""
+               # x[length(x) + 1] <- ""
                
                writeLines(text = x,
                           con = f)})
@@ -67,14 +67,10 @@ apply_changes <- function(ask_before_applying_changes,
       
       # return plane text
     } else if (type == "paste") {
-      script_out <- result[[1]]$to_write$script
+      script_out <- character(length(init_script[[1]]))
+      script_out[which(lapply(init_script[[1]], length) == 1)] <- 
+        result$to_write[[1]]
       
-      # replace character(0) by "" for more consistent testing
-      script_out <- rapply(object = script_out,
-                           f = function(x) {
-                             ifelse(length(x) == 0, "", x)
-                           },
-                           how = "replace")
       return(paste(script_out, collapse = "\n"))
       
       
@@ -83,7 +79,10 @@ apply_changes <- function(ask_before_applying_changes,
       
       # insert Text via apistudioapi
     } else if (type == "insertText") {
-      to_insert <- paste(result[[1]]$to_write$script, collapse = "\n")
+      to_insert <- character(length(init_script[[1]]))
+      to_insert[which(lapply(init_script[[1]], length) == 1)] <- 
+        result$to_write[[1]]
+      to_insert <- paste(to_insert, collapse = "\n")
       
       selected_range <- context$selection[1][[1]]$range
       

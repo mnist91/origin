@@ -130,9 +130,14 @@ originize_wrap <-
                         nm = by(names(dups), dups, paste, collapse = ", "))
       
       # parse all scripts
-      script_parsed <- Reduce(f = rbind,
-                              lapply(X = files,
-                                     FUN = get_parsed_data))
+      if (type == "writeLines"){
+        script_parsed <- Reduce(f = rbind,
+                                lapply(X = files,
+                                       FUN = get_parsed_data))
+      } else {
+        script_parsed <- get_parsed_data(text = unlist(scripts),
+                                         file = files)
+      }
       
       # which duplicates are in the script, independet of whther be used as a
       # regular function (SYMBOL_FUNCTION_CALL)
@@ -173,11 +178,16 @@ originize_wrap <-
     # better performance if an error is triggered prior to this step
     if (!exists("script_parsed")) {
       # parse all scripts
-      script_parsed <- Reduce(f = rbind,
-                              lapply(X = files,
-                                     FUN = get_parsed_data))
+      if (type == "writeLines"){
+        script_parsed <- Reduce(f = rbind,
+                                lapply(X = files,
+                                       FUN = get_parsed_data))
+      } else {
+        script_parsed <- get_parsed_data(text = unlist(scripts),
+                                         file = files)
+      }
     }
-    
+
     # TODO: still time improvement?
     functions <- lapply(functions,
                         FUN = function(funs) {
@@ -200,7 +210,7 @@ originize_wrap <-
                          pkgs = names(functions),
                          verbose = verbose,
                          use_markers = use_markers)
-    # apply originize function to each file/script
+    # apply originize function to each file/script#
     # results <- mapply(
     #   FUN = function(f, s) {
     #     originize(file = f,
@@ -217,7 +227,8 @@ originize_wrap <-
     # )
     
     # nothing to log
-    if (length(results$logging_data$file) == 0) {
+    if ((verbose && length(results$logging_data) == 0) ||
+        (!verbose && !results$logging_data)) {
       message("Nothing detected")
       return(NULL)
     }
@@ -228,6 +239,9 @@ originize_wrap <-
       empty_lines <- !nzchar(x)
       pos_empty_lines <- which(empty_lines)
       pos_filled_lines <- which(!empty_lines)
+      if (all(empty_lines)) {
+        return(pos_empty_lines)
+      } 
       to_append <- pos_empty_lines[pos_empty_lines > max(pos_filled_lines)]
       return(to_append)
     })
@@ -236,7 +250,7 @@ originize_wrap <-
     
     
     lines_to_append <- Filter(function(x) length(x)  > 0, lines_to_append)
-
+    
     if (length(lines_to_append) > 0) {
       for (file in files) {
         results$to_write[[file]][lines_to_append[[file]]] <- ""
