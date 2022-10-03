@@ -82,7 +82,7 @@ originize <- function(dat,
   # if no logging is desired, skip all relevant steps
   if (!verbose) {
     return(list(to_write = result,
-                logging_data = list()))
+                logging_data = any(!is.na(dat_out$pkg))))
     
   } else {
     dat_logging <- dat
