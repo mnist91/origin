@@ -73,7 +73,16 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                "or the `pkgs` argument."))
   }
 
-  if (any((unknown_pkgs <- !pkgs %in% rownames(installed.packages())))) {
+  # add base package
+  pkgs <- unique(c(pkgs, "base"))
+  
+  # Exclude Current Project Package 
+  prjct_pkg <- get_project_pkg()
+  if (!is.null(prjct_pkg)) {
+    pkgs <- base::setdiff(pkgs, prjct_pkg)
+  }
+  
+  if (any((unknown_pkgs <- !pkgs %in% rownames(utils::installed.packages())))) {
     stop(paste(sum(unknown_pkgs), "uninstalled packages:",
                paste(pkgs[unknown_pkgs], collapse = ", ")))
   }
@@ -279,7 +288,7 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
           pkg_matches$log_length <- Map(f = function(x, y) x[y],
                                         pkg_matches$log_length[any_valid],
                                         valid_pkg)
-          pkg_matches$type <- rep("insert", length(pkg_matches$log_length))
+          pkg_matches$type <- rep("INSERT", length(pkg_matches$log_length))
         } else {
           pkg_matches <- empty_list
         }
@@ -309,7 +318,7 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
 
           # Aufgehende Klammer nicht highlighten
           regular_calls$log_length <- lapply(regular_calls$log_length, `-`, 1)
-          regular_calls$type <- rep("missed", length(regular_calls$log_length))
+          regular_calls$type <- rep("MISSING", length(regular_calls$log_length))
           miss_fcts <- TRUE
         } else {
           regular_calls <- empty_list
@@ -369,7 +378,6 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                                                           FUN = `[[`,
                                                           "logging_data")))
     if (!is.null(logging_data_missings) && nrow(logging_data_missings) > 0) {
-      browser()
       rstudioapi::sourceMarkers(name = "origin - Function and Package Usage",
                                 markers = logging_data_missings)
     }
@@ -443,11 +451,16 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
     # helper variable to get summary statistics
     result$x <- rep(1, nrow(result))
 
-    out <- aggregate(x ~ pkg + fun, data = result, FUN = sum)
+    out <- stats::aggregate(x ~ pkg + fun,
+                            data = result,
+                            FUN = sum)
     names(out) <- c("pkg", "fun", "n_calls")
     out$conflict <- duplicated_all(out$fun)
 
-    mult_matches <- aggregate(pkg ~ fun, data = out, FUN = paste, collapse = ", ")
+    mult_matches <- stats::aggregate(pkg ~ fun,
+                                     data = out,
+                                     FUN = paste,
+                                     collapse = ", ")
     names(mult_matches) <- c("fun", "conflict_pkgs")
     out2 <- merge.data.frame(x = out,
                              y = mult_matches,

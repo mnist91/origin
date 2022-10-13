@@ -9,7 +9,7 @@ testthat::test_that("Preparation of new file by line", {
                      matches = list(c(10, 42, 72), 15, 1),
                      log_length = list(c(0, 0, 0), 0, 0),
                      pkg = c("dplyr::", "dplyr::", "purrr::"),
-                     type = c("insert", "insert", "insert"))
+                     type = c("INSERT", "INSERT", "INSERT"))
 
   # expected result
   result <- data.frame(

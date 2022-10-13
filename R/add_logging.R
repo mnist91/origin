@@ -40,7 +40,7 @@ add_logging <- function(string, splits, pkg, log_length, type, use_markers) {
       to_log <- substring(text = str,
                           first = c(1, len + 1),
                           last = c(len, nchar(str)))
-      if (type == "missed") {
+      if (type == "MISSING") {
         start_string <- mis_start_string
       } else {
         start_string <- spe_start_string

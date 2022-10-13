@@ -44,7 +44,7 @@ get_potential_missings <- function(script,
   n_potentials <- length(list_pot_missings$line)
   list_pot_missings <- c(list_pot_missings,
                          list(pkg = rep("", n_potentials),
-                              type = rep("missed", n_potentials)
+                              type = rep("MISSING", n_potentials)
                          ))
 
   # did infix functions such as "%like" or %>% which are not used with
@@ -73,7 +73,7 @@ get_potential_missings <- function(script,
     n_infixes <-  length(list_infixes$line)
     list_infixes <- c(list_infixes,
                        list(pkg = rep("", n_infixes),
-                            type = rep("infix", n_infixes)
+                            type = rep("SPECIAL", n_infixes)
                        ))
   } else {
     list_infixes <- NULL

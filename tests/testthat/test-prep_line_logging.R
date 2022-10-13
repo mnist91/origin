@@ -23,8 +23,8 @@ testthat::test_that("Preparation of new file by line", {
                         c(6L, 6L, 6L), c(6L, 6L, 6L), c(3L, 9L)),
       pkg = c("dplyr::", "dplyr::", "dplyr::", "purrr::", "", "",
               "", "", ""),
-      type = c("insert", "insert", "insert", "insert", "infix",
-               "infix", "missed", "missed", "missed"))
+      type = c("INSERT", "INSERT", "INSERT", "INSERT", "SPECIAL",
+               "SPECIAL", "MISSING", "MISSING", "MISSING"))
 
   # use_markers == FALSE -------------------------------------------------------
   result <-
@@ -32,12 +32,12 @@ testthat::test_that("Preparation of new file by line", {
       data.frame(
         line = 30L,
         message = "\033[39miris \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Species == \"setosa\") \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Spepal.Length > 3) \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(TRUE)\033[39m",# Exclude Linting
-        type = "i",
+        type = "+",
         column = 6,
         stringsAsFactors = FALSE),
       data.frame(line = 33L,
                  message = "\033[39miris \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(\033[31mfilter\033[39m) \033[33m%>%\033[39m \033[36mdplyr::\033[39mfilter(Spepal.Length > 3)\033[39m",# Exclude Linting
-                 type = "-",
+                 type = "+",
                  column = 6,
                  stringsAsFactors = FALSE),
       data.frame(line = 80L,
@@ -71,12 +71,12 @@ testthat::test_that("Preparation of new file by line", {
       data.frame(
         line = 30L,
         message = "<div>iris <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(Species == \"setosa\") <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(Spepal.Length > 3) <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(TRUE)</div",# Exclude Linting
-        type = "box",
+        type = "info",
         column = 6,
         stringsAsFactors = FALSE),
       data.frame(line = 33L,
                  message = "<div>iris <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(<text style=\"color: #ff0000;\">filter</text>) <text style=\"color: #ffa500;\">%>%</text> <text style=\"color: #00F9FF;\">dplyr::</text>filter(Spepal.Length > 3)</div", # Exclude Linting
-                 type = "warning",
+                 type = "info",
                  column = 6,
                  stringsAsFactors = FALSE),
       data.frame(line = 80L,

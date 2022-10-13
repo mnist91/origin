@@ -133,7 +133,7 @@ get_origins <- function(pkg,
                     log_length = lapply(matches[has_match],
                                         FUN = function(x) rep(0, length(x))),
                     pkg = rep(paste0(pkg, "::"), n_matches),
-                    type = rep("insert", n_matches))
+                    type = rep("INSERT", n_matches))
 
   return(orig_list)
 }

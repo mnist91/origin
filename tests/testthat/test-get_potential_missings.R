@@ -25,14 +25,14 @@ testthat::test_that("Find potential missed functions", {
                      matches = list(20, c(16, 35)),
                      log_length = list(3L, c(3L, 3L)),
                      pkg = c("", ""),
-                     type = c("infix", "infix")),
+                     type = c("SPECIAL", "SPECIAL")),
       pot_missings = list(line = 1:2,
                           string = c("mutate(dat, x = 3) %>% summarise(x == 1)",
                                      "filter(y == 2) %>% filter(x == 1) %>% ."),
                           matches = list(c(1, 24), c(1, 20)),
                           log_length = list(c(6L, 9L), c(6L, 6L)),
                           pkg = c("", ""),
-                          type = c("missed",  "missed")))
+                          type = c("MISSING",  "MISSING")))
   )
 
   # without infixes
@@ -52,7 +52,7 @@ testthat::test_that("Find potential missed functions", {
                           matches = list(c(1, 24), c(1, 20)),
                           log_length = list(c(6L, 9L), c(6L, 6L)),
                           pkg = c("", ""),
-                          type = c("missed",  "missed")))
+                          type = c("MISSING",  "MISSING")))
   )
 
 })
