@@ -9,6 +9,7 @@
 usethis::use_package("rstudioapi")
 usethis::use_package("dplyr", "Suggests")
 usethis::use_package("data.table", "Suggests")
+usethis::use_package("purrr", "Suggests")
 ## Add internal datasets ----
 ## If you have data in your package
 usethis::use_data_raw( name = "my_dataset", open = FALSE )
