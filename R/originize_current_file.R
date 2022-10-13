@@ -14,7 +14,7 @@
 #' @template verbose
 #' @template use_markers
 #'
-#' @return
+#' @return NULL, called for side effects
 #' @noRd
 originize_current_file <-
   function(file = rstudioapi::getSourceEditorContext()$path,

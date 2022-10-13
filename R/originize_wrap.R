@@ -246,7 +246,7 @@ originize_wrap <-
       return(to_append)
     })
     
-    lines_to_append <- setNames(lines_to_append, files)
+    lines_to_append <- stats::setNames(lines_to_append, files)
     
     
     lines_to_append <- Filter(function(x) length(x)  > 0, lines_to_append)

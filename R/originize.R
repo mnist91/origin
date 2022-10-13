@@ -15,7 +15,7 @@ originize <- function(dat,
                       verbose = FALSE,
                       use_markers =
                         getOption("origin.use_markers_for_logging")) {
-
+  
   # data.frame of function-package pairs
   dat_fctns <- Reduce(f = rbind,
                       x = Map(f = function(pkg, fcts) {
@@ -72,9 +72,10 @@ originize <- function(dat,
   # result <- revert_parse_data(dat_out)
   
   files <- unique(dat_out$file)
-  result <- setNames(lapply(files, 
-                            function(f) revert_parse_data(dat_out[dat_out$file == f,])),
-                     files)
+  result <- stats::setNames(
+    lapply(files, 
+           function(f) revert_parse_data(dat_out[dat_out$file == f,])),
+    files)
   
   
   
