@@ -67,14 +67,10 @@ get_origins <- function(pkg,
                                   perl = TRUE,
                                   fixed = FALSE,
                                   filter_nomatches = FALSE)
-  # TODO:
-  # dplyr::"mutate"(iris, x = 3)
-  # dplyr::`mutate`(iris, x = 3)
-  # "mutate"(iris, x = 3)
-  # `mutate`(iris, x = 3)
   if (specific) {
 
-    specific_pattern_regex <- paste0("(", pkg, "\\s*\\:\\:+\\s*(", funs_prep, "))")
+    specific_pattern_regex <- 
+      paste0("(", pkg, "\\s*\\:\\:+\\s*(", funs_prep, "))")
     specific_calls <- get_matches(script[line_matches],
                                   line = which(line_matches),
                                   regex = specific_pattern_regex,
@@ -82,7 +78,8 @@ get_origins <- function(pkg,
                                   filter_nomatches = FALSE)
 
     if (length(infix_functions) > 0) {
-      infix_funs_prep <- paste0(escape_strings(infix_functions), collapse = "|")
+      infix_funs_prep <- 
+        paste0(escape_strings(infix_functions), collapse = "|")
       infix_fun_regex <- paste0("(?<=\\W)(", infix_funs_prep, ")(?=\\W)")
       infix_calls <- get_matches(script[line_matches],
                                  line = which(line_matches),
@@ -141,6 +138,6 @@ get_origins <- function(pkg,
 
 # keep results of greprex where a match has been found
 comb_matches <- function(...) {
-  x <- c(...)
+  x <- c(...) # Exclude Linting
   return(x[x != -1])
 }

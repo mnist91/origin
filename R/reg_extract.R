@@ -16,5 +16,3 @@ reg_extract <- function(x, pattern, invert = FALSE, ...) {
                     invert = invert)
   return(out)
 }
-
-

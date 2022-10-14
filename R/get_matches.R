@@ -50,4 +50,3 @@ get_matches <- function(text,
   return(out)
 
 }
-

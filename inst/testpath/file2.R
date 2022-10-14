@@ -1,6 +1,1 @@
 arrange(iris, Sepal.Length)
-
-
-
-
-

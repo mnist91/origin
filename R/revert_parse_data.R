@@ -1,4 +1,4 @@
-revert_parse_data <- function(parse_data, recover_empty_lines = TRUE){
+revert_parse_data <- function(parse_data, recover_empty_lines = TRUE) {
   res <- by(data = parse_data,
             # consider each line separately
             # TODO: exclude loop
@@ -21,7 +21,7 @@ revert_parse_data <- function(parse_data, recover_empty_lines = TRUE){
             })
   
   # recover empty lines if needed
-  if (recover_empty_lines){
+  if (recover_empty_lines) {
     out <- character(max(parse_data$line1))
     out[unique(parse_data$line1)] <- res
     return(out)

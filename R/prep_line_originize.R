@@ -26,4 +26,3 @@ add_package <- function(string, splits, pkg) {
   out <- paste0(splitted[1], paste0(pkg, splitted[-1], collapse = ""))
   return(out)
 }
-

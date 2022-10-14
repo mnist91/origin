@@ -19,4 +19,3 @@ testthat::test_that("get local functions error handler", {
                          character())
 
 })
-

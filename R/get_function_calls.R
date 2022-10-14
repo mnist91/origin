@@ -15,7 +15,8 @@ get_function_calls <- function(dat, exclude_namespaced_funs = TRUE) {
   # ... preceeded by a parameter assignment operator
   relevant_symbols <- symbol_token[symbol_token %in% (argument_token + 1)]
   # ... preceeded by a typical parameter name
-  relevant_symbols <- relevant_symbols[relevant_symbols %in% (symbol_sub_token + 2)]
+  relevant_symbols <- 
+    relevant_symbols[relevant_symbols %in% (symbol_sub_token + 2)]
   
   if (length(relevant_symbols) > 0) {
     dat[relevant_symbols, "usage"] <- "FUNCTION_CALL"

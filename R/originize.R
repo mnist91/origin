@@ -69,12 +69,10 @@ originize <- function(dat,
   
   dat_out <- fix_column_values(dat_out)
   
-  # result <- revert_parse_data(dat_out)
-  
   files <- unique(dat_out$file)
   result <- stats::setNames(
     lapply(files, 
-           function(f) revert_parse_data(dat_out[dat_out$file == f,])),
+           function(f) revert_parse_data(dat_out[dat_out$file == f, ])),
     files)
   
   
@@ -103,9 +101,12 @@ originize <- function(dat,
                   dat_logging$token == "SPECIAL", "log_type"] <- "SPECIAL"
     
     # lines that are relevant for logging
-    rel_logging <- unique(dat_logging[nzchar(dat_logging$log_type), c("line1", "file")])
+    rel_logging <- unique(dat_logging[nzchar(dat_logging$log_type),
+                                      c("line1", "file")])
     nrow(dat_logging)
-    dat_logging <- merge.data.frame(rel_logging, dat_logging, by = c("line1", "file"))
+    dat_logging <- merge.data.frame(rel_logging,
+                                    dat_logging,
+                                    by = c("line1", "file"))
     nrow(dat_logging)
     dat_logging <- dat_logging[order(dat_logging$Id), ]
     
@@ -113,8 +114,7 @@ originize <- function(dat,
     # in case there are lines with html-characters which might intervene with
     # the markers logging output eventually, escape them
     if (use_markers &&
-        (has_html <-
-         length(has_html_token <- which(grepl(pattern = "<|>", 
+        (length(has_html_token <- which(grepl(pattern = "<|>", 
                                               x = dat_logging$text))) > 0)) {
       
       # tokens with html characters to escape
@@ -144,8 +144,6 @@ originize <- function(dat,
       spe_start_string <-  sprintf('<text style="color: %s;">',
                                    getOption("origin.color_infix_function"))
       end_string <- "</text>"
-      start_wrapper <- "<div>"
-      end_wrapper <- "</div"
       
       # bash colors for colored console text
       # mimics behavior of crayon
@@ -155,8 +153,6 @@ originize <- function(dat,
       mis_start_string <- "\033[31m"
       spe_start_string <- "\033[33m"
       end_string <- "\033[39m"
-      start_wrapper <- "\033[39m"
-      end_wrapper <- "\033[39m"
     }
     
     add_color <- function(dat, type, start_string, end_string) {
@@ -200,14 +196,11 @@ originize <- function(dat,
                              end_string = end_string)
     
     # TODO. data structure
-    # revert_parse_data(fix_column_values(dat_logging), recover_empty_lines = FALSE) 
     xdat <- fix_column_values(dat_logging)
-    xcol1 <- xdat$col1
     
     xcol2 <- c(0, xdat$col2[-nrow(xdat)])
     new_line <- which(xdat$line1[-1] != xdat$line1[-nrow(xdat)] |
                         xdat$file[-1] != xdat$file[-nrow(xdat)]) + 1
-    end_line <- c(new_line - 1, nrow(xdat))
     new_line <- c(1, new_line)
     xcol2[new_line] <- 0
     n_ws <- xdat$col1 - xcol2 - 1
@@ -219,11 +212,14 @@ originize <- function(dat,
     
     log_dat <- by(data = xdat, 
                   INDICES = list(xdat$line1, xdat$file), 
-                  FUN = function(xd) data.frame(file = xd$file[1],
-                                                line = xd$line1[1],
-                                                column = xd$col1[which.min(xd$log_type != "")],
-                                                type = set_marker_type(xd$log_type),
-                                                message = paste(xd$text, collapse = "")))
+                  FUN = function(xd) {
+                    data.frame(file = xd$file[1],
+                               line = xd$line1[1],
+                               column = xd$col1[which.min(xd$log_type != "")],
+                               type = set_marker_type(xd$log_type),
+                               message = paste(xd$text, collapse = ""))
+                  }
+    )
     
     logging_data <- Reduce(f = rbind, x = log_dat)
     
@@ -232,8 +228,7 @@ originize <- function(dat,
       attr(logging_data$message, which = "class") <- c("html", "character")
     }
     
-    # script[fixed_lines_dat$line] <- fixed_lines_dat$string
-    
+
     return(list(to_write = result,
                 logging_data = logging_data))
   }

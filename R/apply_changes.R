@@ -55,8 +55,8 @@ apply_changes <- function(ask_before_applying_changes,
                # warning of a file does not end in a EOL mark. 
                # Instead of using tryCatch to use these warnings to 
                # determine if a final line existed, all returned scripts 
-               # will end with a final line which is consistent with git.
-               # x[length(x) + 1] <- ""
+               # will end with a final line which is
+               # consistent with git. x[length(x) + 1] <- ""
                
                writeLines(text = x,
                           con = f)})

@@ -67,4 +67,3 @@ prep_line_logging <- function(line,
              stringsAsFactors = FALSE)
 
 }
-

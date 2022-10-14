@@ -4,7 +4,7 @@ exclude_functions <- function(funs, to_exclude) {
   has_name <- nzchar(names(to_exclude))
 
   # functions to exclude regardless of package
-  if (all(!has_name) ) {
+  if (all(!has_name)) {
     out <- lapply(X = funs, FUN = setdiff, y = unlist(to_exclude))
 
     # functions to exclude from specific packages

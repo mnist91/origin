@@ -411,13 +411,6 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
   # keep package info only if matches are present
   result_list <- Filter(function(l) length(l) > 0, result_list)
 
-  # combine results for all packages
-  combined <- Reduce(f = function(...) {
-    Map(f = c,
-        ...)
-  },
-  x = result_list)
-
 
   # vector of found functions
   found_functions <- lapply(result_list,

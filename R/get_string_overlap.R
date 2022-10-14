@@ -57,4 +57,3 @@ get_string_overlap <- function(x) {
 
   return(out)
 }
-

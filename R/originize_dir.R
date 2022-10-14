@@ -171,4 +171,3 @@ originize_dir <-
     return(invisible(NULL))
 
   }
-

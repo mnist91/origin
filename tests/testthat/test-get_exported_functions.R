@@ -12,7 +12,8 @@ testthat::test_that("export is correct", {
   
   
   export_functions <- get_exported_functions(pkg = "purrr")
-  testthat::expect_true(all(c("map", "walk", "imap", "pmap") %in% export_functions))
+  testthat::expect_true(all(c("map", "walk", "imap", "pmap") %in%
+                              export_functions))
   
   
 })

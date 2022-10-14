@@ -74,5 +74,3 @@ get_pkgs_from_description <- function() {
 
   return(pkgs)
 }
-
-

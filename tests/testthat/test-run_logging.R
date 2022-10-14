@@ -17,7 +17,6 @@ testthat::test_that("Invoke Logging", {
   # Markers logging
   dat <- data.frame(file = ".",
                     line = 1,
-                    # column = 0,
                     type = "info",
                     message = "mutate(dat)",
                     stringsAsFactors = FALSE)
