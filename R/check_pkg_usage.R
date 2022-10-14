@@ -1,3 +1,4 @@
+# Begin Exclude Linting
 check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                             path = getwd(),
                             recursive = TRUE,
@@ -545,6 +546,8 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
   return(invisible(out2))
 
 }
+# End Exclude Linting
+
 
 duplicated_all <- function(x) {
   x %in% x[duplicated(x)]
