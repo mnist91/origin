@@ -9,6 +9,7 @@ linters: lintr::linters_with_defaults(
   # commas_linter = lintr::commas_linter,
   # commented_code_linter = lintr::commented_code_linter,
   lintr::cyclocomp_linter(complexity_limit = 30),
+  object_usage_linter = NULL,
   lintr::object_name_linter(styles = "snake_case"),
   lintr::object_length_linter(length = 30L),
   # equals_na_linter = lintr::equals_na_linter,
