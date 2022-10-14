@@ -51,6 +51,8 @@ testthat::test_that("Test find functions", {
     "huge_fun <-      function    (x, y, z) {",
     "123",
     "}",
+    # anonymous functions are introduced with R Version 4.1
+    if (getRversion() >= 4.1) {
     "myfun = function(x = 3) {1
       anotherfun <- function() 3
       }
@@ -60,6 +62,17 @@ testthat::test_that("Test find functions", {
       blubb
       thafun <- \\() 3
       "
+      } else {
+    "myfun = function(x = 3) {1
+      anotherfun <- function() 3
+      }
+      blabb <- 3
+      lapply(1:3, FUN = function(x) 3)
+      thisfun = function() 3
+      blubb
+      thafun <- function() 3
+      "
+      }
   )
 
   result <- find_functions(text = script)
