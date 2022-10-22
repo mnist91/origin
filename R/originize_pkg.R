@@ -11,7 +11,7 @@
 #' @param recursive logical. Should scripts be originized recursively, this
 #'  means that all files in the subfolders will be searched as well.
 #'  See \link[base]{list.files}
-#' @param exclude_files a character vector of file paths that should be excluded
+#' @param exclude_files a character vector of file paths that should be
 #' excluded from being originized. Helpful if all but a few files should be
 #' considered by origin.
 #' @template overwrite

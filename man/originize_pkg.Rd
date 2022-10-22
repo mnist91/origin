@@ -32,7 +32,7 @@ mentioned in the DESCRIPTION file if the option `origin.pkgs` is not set.}
 means that all files in the subfolders will be searched as well.
 See \link[base]{list.files}}
 
-\item{exclude_files}{a character vector of file paths that should be excluded
+\item{exclude_files}{a character vector of file paths that should be
 excluded from being originized. Helpful if all but a few files should be
 considered by origin.}
 
