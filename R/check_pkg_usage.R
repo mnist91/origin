@@ -1,4 +1,34 @@
 # Begin Exclude Linting
+#' @title Check which packages are actually used in a project
+#'
+#' @template pkgs 
+#' @param path a character vector of full path names; the default corresponds 
+#' to the working directory, \link[base]{getwd}()
+#' @param recursive ogical. Should the listing recurse into directories?
+#' @param exclude_files a character vector of file paths that should be 
+#'  excluded from being checked Helpful if all but a few files should be
+#'  considered by origin.
+#' @param path_to_local_functions file path. Helpful if all project specific
+#'  functions are defined in a specific folder. This folder might not be a 
+#'  sub directory of the current project so the default to just find all 
+#'  function definitions would not be sufficient.
+#' @template check_local_conflicts 
+#' @template ignore_comments 
+#' @template use_markers
+#'
+#' @return `data.frame` invisibly, It consists of 5 columns. 
+#' - `fun`: all functions in alphabetical order
+#' - `pkg`: the package that exports this function
+#' - `n_calls`: how often the function has been used in the files
+#' - `conflict`: whether this function is exported by multiple checked packages
+#' - `covlict_pkgs`: in case of a conflict, which packages does 
+#'                   export the same function
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' check_pkg_usage()
+#' }
 check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                             path = getwd(),
                             recursive = TRUE,
@@ -176,6 +206,10 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
                                      FUN = paste,
                                      collapse = ""),
                               collapse = "")
+  }
+  
+  if (!nzchar(trimws(script_collapsed))) {
+    stop(sprintf("All scripts in this directory are empty: %s", path))
   }
 
   string_before_function <-
@@ -547,8 +581,3 @@ check_pkg_usage <- function(pkgs = getOption("origin.pkgs", .packages()),
 
 }
 # End Exclude Linting
-
-
-duplicated_all <- function(x) {
-  x %in% x[duplicated(x)]
-}
