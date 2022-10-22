@@ -115,4 +115,10 @@ testthat::test_that("originize file", {
                      verbose = TRUE),
       regexp = "RStudio not running")
   }
+  
+  testthat::expect_error(
+    originize_file(file = file.path("non", "existing", "file.R")),
+    regexp = "No file in this path")
+  
+  
 })

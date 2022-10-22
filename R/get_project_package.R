@@ -4,6 +4,8 @@ get_project_pkg <- function() {
     return(NULL)
   }
   
+  # only works from within an active rstudio session which covr does not provide
+  # nocov start
   prjct <- rstudioapi::getActiveProject()
   
   # not in a r project
@@ -20,6 +22,7 @@ get_project_pkg <- function() {
   }
   
   # read in the descirption file
+  
   description <- readLines(file.path(prjct, "DESCRIPTION"))
   
   # a package project must start with ´Type: Package´
@@ -38,4 +41,6 @@ get_project_pkg <- function() {
   pkg_name <- gsub("Package: ", "", pkg_name)
   
   return(pkg_name)
+  # nocov end
+  
 }

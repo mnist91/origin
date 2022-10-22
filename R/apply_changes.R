@@ -77,7 +77,8 @@ apply_changes <- function(ask_before_applying_changes,
       
       
       
-      # insert Text via apistudioapi
+      # insert Text via rstudioapi
+      # nocov start
     } else if (type == "insertText") {
       to_insert <- character(length(init_script[[1]]))
       to_insert[which(lapply(init_script[[1]], length) == 1)] <- 
@@ -96,6 +97,7 @@ apply_changes <- function(ask_before_applying_changes,
                              location = context$selection[1][[1]]$range,
                              id = context$id)
       return(invisible(NULL))
+      # nocov end
       
     }
     
