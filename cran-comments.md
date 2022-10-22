@@ -46,7 +46,7 @@ The Note is for a new submission. The mentioned misspelled word are known to R u
 
 * local MacOS Big Sur, R 4.1.1
 * tested with GitHub actions for R 3.5, R 3.6, R 4.0 on
-  - Ubuntu 18.04
+  - Ubuntu 20.04
   - macOS
   - Windows
   
