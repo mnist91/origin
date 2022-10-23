@@ -15,9 +15,8 @@ knitr::opts_chunk$set(
 ```
 
 In contrast to other programming languages, R has no widely established and 
-undisputed style guide (e.g. PEP 8 for Python). As a data scientist at 
-[STATWORX](https://www.statworx.com/en/), I helped to establish a company wide
-R style guide. While it mainly relies on the 
+undisputed style guide (e.g. PEP 8 for Python). As a data scientist, I helped 
+to establish a company wide R style guide. While it mainly relies on the 
 [tidyverse style guide](https://style.tidyverse.org/), we generally decided
 to be more explicit in our coding practice. This includes that we always refer
 to functions from non-native R packages with the double colon operator `::`. While it
@@ -28,7 +27,7 @@ faster conversions of both legacy code as well as currently written code.
 
 ## Purpose of `origin`
 
-The sole purpose is to add `pkg::` to an R function call, i.e. it changes
+The main purpose is to add `pkg::` to an R function call, i.e. it changes
 code like this:
 
 <img src="vignette_quickview.gif" width="650px" />
@@ -69,7 +68,6 @@ logging shows only what *would* happen. Note that `ask_before_applying_changes`
 still allows to keep control over your code before `origin` changes anything.
 * `ask_before_applying_changes`: whether changes should be applied
 immediately or the user must approve them first.
-* `ignore_comments`: should comments be ignored.
 * `check_conflicts`: should `origin` check for potential 
 namespace conflicts, i.e. a used function is defined in more than one considered
 package. User input is required to solve the issue. 
@@ -244,5 +242,96 @@ and workarounds are still required here. Either use
   ``` 
 
 
+## Check Package Usage since origin 1.0.0
 
+As a new feature origin origin exports the function `check_pkg_usage`. 
+Given you take over a project or just built a huge barrage of `library` calls
+over time. Which of those are actually still needed.
+Just run all those `library(...)` calls and then call `check_pkg_usage()`
 
+### Interpreting the Output of check_pkg_usage
+
+```
+result <- check_pkg_usage()
+Used Packages: 2 
+
+	data.table, testthat
+
+Unused Packages: 1 
+
+	dplyr
+
+Possible Namespace Conflicts:  1
+
+	last     	data.table >> dplyr
+
+Specifically (`pkg::fun()`) further used Packages: 1
+
+	purrr
+
+Functions with unknown origin: 1 
+
+	map
+```
+ The output shows
+ - we had attached 3 packages: {data.table}, {testthat}, and {dplyr}
+ - functions from {data.table} and {testthat} are used
+ - {dplyr} functions are not used
+ - a namespace conflict for the function `last` between {data.table} and {dplyr}
+ - additionally, we use purrr:: at some occasions
+ - we use the `map()` function that is not exported from {data.table}, 
+ {testthat}, or {dplyr}. Note that `map` is exported from {purrr} that is 
+ used elsewhere but here our code would fail since {purrr} is not attached 
+ and `map cannot be found. 
+ 
+ A markers Tab shows all unknown functions and unknown packages that are 
+ used explicitly
+ 
+ 
+### Interpreting the Result of check_pkg_usage
+ Having a closer look into `result`
+ 
+ ```
+#>       pkg         fun n_calls namespaced conflict conflict_pkgs
+#> 1    base        %in%      53      FALSE    FALSE            NA
+#> 2    base   .packages       8      FALSE    FALSE            NA
+#> 3    base      Filter       3      FALSE    FALSE            NA
+#> 4    base         Map       1      FALSE    FALSE            NA
+#> 5    base      Reduce       5      FALSE    FALSE            NA
+#> ...
+```
+
+It first shows a lot of base functions. That is, even though their are not explicitly attached, base r packages are always attached. The print output does not show them but if you want to deep dive into the functions that are used in the project they are available
+
+```
+#>             pkg              fun n_calls namespaced conflict conflict_pkgs
+#> 110  data.table           %like%      10      FALSE    FALSE            NA
+#> 111  data.table               :=       1      FALSE    FALSE            NA
+#> 112  data.table               CJ       1      FALSE    FALSE            NA
+#> 113  data.table    as.data.table       1      FALSE    FALSE            NA
+#> 114  data.table    as.data.table       3       TRUE    FALSE            NA
+#> 115  data.table             last       2       TRUE    FALSE            NA
+#> 116  data.table             last       1      FALSE     TRUE         dplyr
+```
+ Going further, there are a bunch of {data.table} functions that have been used.
+ Some are listed twice because they were sometimes called via `data.table::`,
+ sometimes not. Furthermore, `last` is marked with `conflict = TRUE`.
+ This is because {dplyr} does export a `last` function, as well. However, since 
+ {data.table} has the higher priority than {dplyr} in this project, {origin} 
+ considers it as an {data.table} function. Note that if a function is 
+ namespaced via `::`, no conflict is given.
+ 
+ 
+ Finally, at the end of the output:
+ 
+ ```
+#>         pkg  fun n_calls namespaced conflict conflict_pkgs
+#> 219    <NA>  map       1      FALSE       NA            NA
+#> 220  dplyr  <NA>       0         NA       NA            NA
+```
+Here we see the `map` function that dould not be assigned to one of the given packages
+and the {dplyr} package that has not been used.
+
+### Final Remarks
+Locally defined functions are also detected via parsing. These also do have a
+higher priority than exported function from other packages.

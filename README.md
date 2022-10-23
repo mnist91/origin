@@ -1,4 +1,4 @@
-# origin - 0.5.3 <img src="misc/origin.png" width=170 align="right" />
+# origin - 1.0.0 <img src="misc/origin.png" width=170 align="right" />
 
 
 | branch        | main | dev  |
@@ -24,13 +24,28 @@ write short code first and adapt it later.
 
 <img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/demo_originize_file.gif" width="650px" />
 
+Additionally, it provides an overview of all **acutally** used packages in a project. 
+That means, it does not only check which packages are called via `library()`,
+`require()`, etc. but checks which functions from which packages are eventually used.
+Usefull for quickly checking a project for which packages 
+are actually still needed when dealing with a huge barrage of `library` calls.
+
 
 ### Usage
+#### Originize Code
 To originize code either use the delivered RStudio addins or call the `origin`
 functions directly, i.e. `origin::originize_file` or `origin::originize_dir`.
 
 ```
 origin::originize_file("testfile.R", pkgs = c("dplyr", "data.table"))
+```
+
+#### Check Package Usage
+Again, either use the delivered RStudio addin or call the function explicitely
+```
+origin::check_pkg_usage(path = ".",
+                        pkgs = c("dplyr", "data.table"),
+                        use_markes = FALSE)
 ```
 
 ### Settings

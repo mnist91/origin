@@ -11,7 +11,6 @@ check_pkg_usage(
   exclude_files = NULL,
   path_to_local_functions = NULL,
   check_local_conflicts = TRUE,
-  ignore_comments = TRUE,
   use_markers = TRUE
 )
 }
@@ -37,8 +36,6 @@ function definitions would not be sufficient.}
 defined functions inside of the project mask exported functions
 packages listed in pkgs. It avoids mistakenly adding pkg:: to a
 custom local function.}
-
-\item{ignore_comments}{if TRUE, commented lines are ignored.}
 
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
