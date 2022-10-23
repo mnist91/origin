@@ -27,5 +27,6 @@ get_parsed_data <- function(file = "",
   if (!is.null(file) && nzchar(file) && nrow(dat) > 0) {
     dat$file <- file
   }
+  
   return(dat)
 }

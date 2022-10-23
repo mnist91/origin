@@ -23,7 +23,7 @@ get_function_calls <- function(dat, exclude_namespaced_funs = TRUE) {
   }
 
   # regular function calls, like detected by parsing or code highlighting
-  fct_symbols <- which(dat$token == "SYMBOL_FUNCTION_CALL")
+  fct_symbols <- which(dat$token %in% c("SYMBOL_FUNCTION_CALL", "SYMBOL"))
   
   # exclude functions that are already qualified by a namespace
   if (exclude_namespaced_funs) {
@@ -37,7 +37,9 @@ get_function_calls <- function(dat, exclude_namespaced_funs = TRUE) {
 }
   
   if (length(fct_symbols) > 0) {
-    dat[fct_symbols, "usage"] <- "FUNCTION_CALL"
+    dat[dat$token == "SYMBOL_FUNCTION_CALL" &
+          is.na(dat$usage), 
+        "usage"] <- "FUNCTION_CALL"
   }
   
   return(dat)

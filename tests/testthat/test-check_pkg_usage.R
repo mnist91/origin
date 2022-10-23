@@ -23,22 +23,26 @@ testthat::test_that("check_pkg_usage() working", {
     res <- check_pkg_usage(path = dir,
                            pkgs = c("data.table",
                                     "dplyr",
-                                    "purrr"
-                           ),
+                                    "purrr",
+                                    "testthat"),
                            recursive = FALSE, 
                            use_markers = FALSE), 
     regexp = 
-      paste0("Cannot check for local functions due to unclear rootdirectory",
+      paste0("Cannot check for local functions due to unclear root directory",
              "|RStudio not running"))
   
   testthat::expect_equal(res$fun, 
-                         c("as.IDate", "as.data.table", "bind_cols",
-                           "c", "copy", "filter", 
-                           "function", "if_else", "is.data.table",
-                           "last", "last", "n", 
-                           "n_distinct", "setkey", NA))
+                         c("c", "lapply", "%between%", "%like%",
+                           ":=", "as.IDate", "as.data.table", 
+                           "copy", "is.data.table", "last", 
+                           "setkey", "setkey", "%>%", "bind_cols", 
+                           "filter", "id", "if_else", "mutate",
+                           "n", "n_distinct", "map", 
+                           "bind_cols_2", NA))
   testthat::expect_equal(res$n_calls, 
-                         c(1, 1, 10, 2, 1, 7, 1, 1, 1, 3, 3, 6, 5, 3, 0))
+                         c(2, 10, 2, 2, 1, 1, 1, 1, 1, 4, 3,
+                           3, 6, 10, 7, 1, 1, 2, 6, 
+                           5, 4, 1, 0))
   
 })
 

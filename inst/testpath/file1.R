@@ -16,3 +16,5 @@ iris %>%
   dplyr::filter(Species == "setosa") %>%
   dplyr::filter(Spepal.Length > 3) %>%
   dplyr::filter(TRUE)
+
+last(knj, 1)

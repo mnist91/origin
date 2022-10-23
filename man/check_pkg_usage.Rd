@@ -5,8 +5,8 @@
 \title{Check which packages are actually used in a project}
 \usage{
 check_pkg_usage(
-  pkgs = getOption("origin.pkgs", .packages()),
   path = getwd(),
+  pkgs = getOption("origin.pkgs", .packages()),
   recursive = TRUE,
   exclude_files = NULL,
   path_to_local_functions = NULL,
@@ -16,11 +16,11 @@ check_pkg_usage(
 )
 }
 \arguments{
-\item{pkgs}{a character vector with package names. Defaults to the result of
-\link[base]{.packages} but only if the option `origin.pkgs` is not specified.}
-
 \item{path}{a character vector of full path names; the default corresponds 
 to the working directory, \link[base]{getwd}()}
+
+\item{pkgs}{a character vector with package names. Defaults to the result of
+\link[base]{.packages} but only if the option `origin.pkgs` is not specified.}
 
 \item{recursive}{ogical. Should the listing recurse into directories?}
 
@@ -46,15 +46,23 @@ the console.}
 }
 \value{
 `data.frame` invisibly, It consists of 5 columns. 
-- `fun`: all functions in alphabetical order
 - `pkg`: the package that exports this function
+- `fun`: all functions in alphabetical order
 - `n_calls`: how often the function has been used in the files
+- `namespaced`: logical, whether the function has been called explicitly 
+                via `pkg::fct` or implicitly by an attached package
 - `conflict`: whether this function is exported by multiple checked packages
-- `covlict_pkgs`: in case of a conflict, which packages does 
-                  export the same function
+- `conflict_pkgs`: in case of a conflict, which packages does 
+                  export the same function but are masked
+ Note that functions for that it is unknown from which package they are 
+ exported have an `NA` in the `pkg` column.
+ Similiarly, Packages that are checked but no functions from these are
+ used are listed but have an `NA` in the `fun` column
 }
 \description{
-Check which packages are actually used in a project
+Provide a folder and a vector of package names to check, 
+which packages are actually in use and which functions are used but not 
+exported by the provided packages.
 }
 \examples{
 \dontrun{

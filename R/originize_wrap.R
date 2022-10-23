@@ -195,7 +195,7 @@ originize_wrap <-
                         })
     
     # keep relevant packages only,
-    # i.e. packages that ecport functions that might be used
+    # i.e. packages that export functions that might be used
     functions <- Filter(function(x) length(x) > 0,
                         functions)
     

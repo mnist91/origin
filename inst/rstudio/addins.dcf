@@ -9,6 +9,11 @@ Binding: originize_current_file
 Interactive: false
 
 Name: Originize Current Project
-Description: Add package:: to functions in current file
+Description: Add package:: to functions in current project
 Binding: originize_current_project
+Interactive: false
+
+Name: Check Package Usage
+Description: Check which Packages are used in a project
+Binding: check_pkg_usage
 Interactive: false

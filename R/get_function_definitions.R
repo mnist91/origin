@@ -22,6 +22,10 @@ get_function_definitions <- function(dat) {
   # in case function definitions are detected
   if (length(relevant_symbols) > 0) {
     dat[relevant_symbols, "usage"] <- "FUNCTION_DEFINITION"
+  } else if (nrow(dat) > 0) {
+    dat$usage <- NA_character_
+  } else {
+    dat$usage <- character(0)
   }
   return(dat)
 }
