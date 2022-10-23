@@ -17,7 +17,6 @@
 #'  sub directory of the current project so the default to just find all 
 #'  function definitions would not be sufficient.
 #' @template check_local_conflicts 
-#' @template ignore_comments 
 #' @template use_markers
 #'
 #' @return `data.frame` invisibly, It consists of 5 columns. 
@@ -45,9 +44,8 @@ check_pkg_usage <- function(path = getwd(),
                             exclude_files = NULL,
                             path_to_local_functions = NULL,
                             check_local_conflicts = TRUE,
-                            ignore_comments = TRUE,
                             use_markers = TRUE) {
-  
+
   files <- list_files(path = path,
                       exclude_folders = c("renv", "packrat",
                                           ".git", ".Rproj"),
@@ -309,6 +307,7 @@ check_pkg_usage <- function(path = getwd(),
                        c("stats", "graphics", "grDevices",
                          "datasets", "utils", "methods", "base",
                          "user_defined_functions"))
+  used_pkgs <- intersect(used_pkgs, pkgs)
   unused_packages <- setdiff(pkgs, used_pkgs)
   unused_packages <- setdiff(unused_packages,
                              c("stats", "graphics", "grDevices",
@@ -379,7 +378,6 @@ check_pkg_usage <- function(path = getwd(),
       }
     }
     
-    
     # mark functions that are not in given packages and NOT namespaced, hence 
     # their origin is unknown
     dat_logging[dat_logging$text %in% undefined_functions &
@@ -414,7 +412,7 @@ check_pkg_usage <- function(path = getwd(),
   if (length(unused_packages) > 0) {
     cat("\t", paste(unused_packages, collapse = ", "), "\n\n", sep = "")
   }
-  
+
   if (any(dat2$conflict)) {
     dat_conflict <- dat2[dat2$conflict, ]
     max_display <- 10

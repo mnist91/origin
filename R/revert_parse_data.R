@@ -14,7 +14,7 @@ revert_parse_data <- function(parse_data, recover_empty_lines = TRUE) {
               n_ws <- args$col1 - c(0, args$col2[-n_cases]) - 1
               
               # create needed whitespace
-              ws <- strrep(" ", n_ws)
+              ws <- strrep(" ", times = n_ws)
               
               # add whitespaces to the tokens
               paste(ws, args$text, collapse = "", sep = "")

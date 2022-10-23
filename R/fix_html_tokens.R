@@ -28,14 +28,17 @@ fix_html_tokens <- function(dat) {
 }
 
 fix_column_values <- function(dat) {
-  # calculate, how many characters must be added to the line.
-  # necessary to return a white space preserving result
-  dat$nchar_csum <- unlist(
-    # using tapply() as it is used in `by()`. This skips unneeded steps like
-    # converting the vector into a data.frame
-    tapply(X = seq_along(dat$pkg_nchar), 
-           INDEX = list(dat$line1, dat$file), 
-           FUN = function(x) cumsum(dat$pkg_nchar[x])))
+  grps <- paste(dat$line1, dat$file)
+  # using tapply() as it is used in `by()`. This skips unneeded steps like
+  # converting the vector into a data.frame
+  cumsums <- tapply(X     = dat$pkg_nchar, 
+                    INDEX = grps, 
+                    # calculate, how many characters must be added to the line.
+                    # necessary to return a white space preserving result
+                    FUN   = cumsum,
+                    simplify = FALSE)
+  # NOTE: tapply does not retain the order of the array!
+  dat$nchar_csum <- unlist(cumsums[unique(grps)])
   
   dat$col1 <- dat$col1 + dat$nchar_csum - dat$pkg_nchar
   dat$col2 <- dat$col2 + dat$nchar_csum
@@ -139,7 +142,6 @@ make_logging_data <- function(dat, use_markers, type_fun) {
   
   # add whitespaces to the tokens
   xdat$text <- paste0(ws, xdat$text)
-  xdat
   
   log_dat <- by(data = xdat, 
                 INDICES = list(xdat$line1, xdat$file), 
