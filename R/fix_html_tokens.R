@@ -1,3 +1,4 @@
+# for the markers output, escape html specific tokens
 fix_html_tokens <- function(dat) {
   has_html_token <- which(grepl(pattern = "<|>", 
                                 x = dat$text))
@@ -27,6 +28,7 @@ fix_html_tokens <- function(dat) {
   return(dat)
 }
 
+# recapturing the original code structure after insertions have been made
 fix_column_values <- function(dat) {
   grps <- paste(dat$line1, dat$file)
   # using tapply() as it is used in `by()`. This skips unneeded steps like
@@ -46,6 +48,7 @@ fix_column_values <- function(dat) {
   return(dat)
 }
 
+# add color highlighting for specific strings
 add_color <- function(dat, type, start_string, end_string,
                       type_fun = "originize") {
   
@@ -74,7 +77,7 @@ add_color <- function(dat, type, start_string, end_string,
   return(dat)
 }
 
-
+# geenrate logging data from input data
 make_logging_data <- function(dat, use_markers, type_fun) {
   # lines that are relevant for logging
   rel_logging <- unique(dat[nzchar(dat$log_type),
@@ -129,9 +132,10 @@ make_logging_data <- function(dat, use_markers, type_fun) {
                            start_string = spe_start_string, 
                            end_string = end_string)
   
-  # TODO. data structure
+  # fix data structure
   xdat <- fix_column_values(dat_logging)
   
+  # calcualte needed whitespaces
   xcol2 <- c(0, xdat$col2[-nrow(xdat)])
   new_line <- which(xdat$line1[-1] != xdat$line1[-nrow(xdat)] |
                       xdat$file[-1] != xdat$file[-nrow(xdat)]) + 1

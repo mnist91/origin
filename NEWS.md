@@ -1,3 +1,30 @@
+# origin 1.0.0
+This is a new release of `origin` with significant changes and improvements. 
+It adds a complete new purpose by checking the actual usage of packages in a 
+project. Under the hood, parsed code rather than regexes are used to originize
+code and check package usages.
+
+### Features
+- The new function `check_package_usage` takes a directory that contains R files
+(sub directories included by default) and a vector of R package names. It checks
+  + which (of the given) packages are **used**
+  + which (of the given) packages are **not used**
+  + possible **namespace conflicts** 
+  + which **other packages** are used via `pkg::fct`
+  + used **functions with unknown origin**
+  
+    Note that `check_package_usage` dows **not** look for packages that
+    might have exported those functions, even if the missed package has 
+    been called via `::` at another occasion in the same code.
+    
+This functionality makes it easy to quickly check a project for which packages 
+are actually still needed when dealing with a huge barrage of `library` calls.
+Markers show where unspecified functions are called, either specifically 
+via `pkg::` or with completely unknown origin
+A detailled output, although returned invisibly, gives an overview of 
+which functions are used how often.
+  
+
 # origin 0.5.3
 - Fixed function documentation files to add missing Rd-tags
 - Fixed the description field in the DESCRIPTION file to single quote 'RStudio'.

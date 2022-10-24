@@ -212,7 +212,7 @@ Happy with the result? 😀
 
 ## Discussion
 Whether or not to add `pkg::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
-[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org/namespace.html#imports) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favor of it.
+[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favor of it.
 
 Pros
 
@@ -253,6 +253,7 @@ Just run all those `library(...)` calls and then call `check_pkg_usage()`
 
 ```
 result <- check_pkg_usage()
+result
 Used Packages: 2 
 
 	data.table, testthat
@@ -292,6 +293,7 @@ Functions with unknown origin: 1
  Having a closer look into `result`
  
  ```
+ as.data.frame(result)
 #>       pkg         fun n_calls namespaced conflict conflict_pkgs
 #> 1    base        %in%      53      FALSE    FALSE            NA
 #> 2    base   .packages       8      FALSE    FALSE            NA
@@ -329,7 +331,7 @@ It first shows a lot of base functions. That is, even though their are not expli
 #> 219    <NA>  map       1      FALSE       NA            NA
 #> 220  dplyr  <NA>       0         NA       NA            NA
 ```
-Here we see the `map` function that dould not be assigned to one of the given packages
+Here we see the `map` function that would not be assigned to one of the given packages
 and the {dplyr} package that has not been used.
 
 ### Final Remarks

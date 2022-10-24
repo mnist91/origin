@@ -53,7 +53,7 @@ the console.}
                   export the same function but are masked
  Note that functions for that it is unknown from which package they are 
  exported have an `NA` in the `pkg` column.
- Similiarly, Packages that are checked but no functions from these are
+ Similarly, Packages that are checked but no functions from these are
  used are listed but have an `NA` in the `fun` column
 }
 \description{

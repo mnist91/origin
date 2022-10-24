@@ -31,6 +31,10 @@ testthat::test_that("check_pkg_usage() working", {
       paste0("Cannot check for local functions due to unclear root directory",
              "|RStudio not running"))
   
+  testthat::capture_output(testthat::expect_equal(res, print(res)))
+
+  testthat::expect_output(print(res), "Used Packages: 3.+Unused Packages: 1")
+  
   testthat::expect_equal(res$fun, 
                          c("c", "lapply", "%between%", "%like%",
                            ":=", "as.IDate", "as.data.table", 

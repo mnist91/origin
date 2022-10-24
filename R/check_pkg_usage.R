@@ -30,7 +30,7 @@
 #'                   export the same function but are masked
 #'  Note that functions for that it is unknown from which package they are 
 #'  exported have an `NA` in the `pkg` column.
-#'  Similiarly, Packages that are checked but no functions from these are
+#'  Similarly, Packages that are checked but no functions from these are
 #'  used are listed but have an `NA` in the `fun` column
 #' @export
 #'
@@ -45,7 +45,7 @@ check_pkg_usage <- function(path = getwd(),
                             path_to_local_functions = NULL,
                             check_local_conflicts = TRUE,
                             use_markers = TRUE) {
-
+  
   files <- list_files(path = path,
                       exclude_folders = c("renv", "packrat",
                                           ".git", ".Rproj"),
@@ -201,7 +201,7 @@ check_pkg_usage <- function(path = getwd(),
   if (length(unlist(functions)) == 0) {
     stop("No exported functions in given packages.")
   }
-
+  
   script_parsed <- Reduce(f = rbind,
                           Filter(f = function(x) !is.null(x),
                                  x = lapply(X   = files,
@@ -383,7 +383,7 @@ check_pkg_usage <- function(path = getwd(),
     dat_logging[dat_logging$text %in% undefined_functions &
                   dat_logging$usage == "FUNCTION_CALL",
                 "log_type"] <- "MISSING"
-
+    
     dat_logging$pkg_nchar <- 0
     # lines that are relevant for logging
     logging_data <- make_logging_data(dat_logging,
@@ -401,65 +401,21 @@ check_pkg_usage <- function(path = getwd(),
     }
   }
   
-  
-  
-  cat("Used Packages:", length(used_pkgs), "\n\n")
-  if (length(used_pkgs) > 0) {
-    cat("\t", paste(used_pkgs, collapse = ", "), "\n\n", sep = "")
-  }
-  
-  cat("Unused Packages:", length(unused_packages), "\n\n")
-  if (length(unused_packages) > 0) {
-    cat("\t", paste(unused_packages, collapse = ", "), "\n\n", sep = "")
-  }
-
-  if (any(dat2$conflict)) {
-    dat_conflict <- dat2[dat2$conflict, ]
-    max_display <- 10
-    # show 10 functions in details at maximum
-    more_than_10 <- nrow(dat_conflict) > max_display
-    if (more_than_10) {
-      dat_conflict_add <- dat_conflict[(max_display + 1):nrow(dat_conflict), ]
-      dat_conflict <- dat_conflict[1:max_display, ]
-    }
-    # make all unknown functions of equal size
-    dat_conflict$fun <- format(dat_conflict$fun, 
-                               width = min(max(nchar(dat_conflict$fun))))
-    cat("Possible Namespace Conflicts: ", nrow(dat_conflict), "\n\n")
-    cat(paste("\t", dat_conflict$fun, "\t",
-              dat_conflict$pkg, " >> ", dat_conflict$conflict_pkgs,
-              sep = "", collapse = "\n"))
-    if (more_than_10) {
-      cat("\n\tand", nrow(dat_conflict_add), "more:", 
-          toString(dat_conflict_add$fun))
-    }
-    cat("\n\n")
-  }
-  
-  
-  cat("Specifically (`pkg::fun()`) further used Packages:",
-      length(other_used_pkgs),
-      "\n\n")
-  if (length(other_used_pkgs) > 0) {
-    cat("\t", paste(other_used_pkgs, collapse = ", "), "\n\n", sep = "")
-  }
-  
-  if (length(undefined_functions) > 0) {
-    cat("Functions with unknown origin:", length(undefined_functions), "\n\n")
-    cat("\t", paste(undefined_functions, collapse = ", "), "\n\n", sep = "")
-    
-    
-  } else {
-    cat("All used functions defined! \U0001F973 \n")
-  }
-  
+  # prepare data for output --------------------------
+  # combine all data sources
   dat_out <- rbind(dat1, dat2)
   dat_out <- dat_out[order(dat_out$pkg, dat_out$fun, dat_out$namespaced), ]
   dat_out <- rbind(dat_out, dat_undefined_funs, dat_unused_packages)
   rownames(dat_out) <- NULL
   
+  # attach checked packages via an attribute
+  attr(dat_out, "pkgs") <- pkgs
   
-  return(invisible(dat_out))
+  # give specific class for printing
+  class(dat_out) <- c("pkg_usage", class(dat_out))
+  
+  
+  return(dat_out)
   
 }
 # End Exclude Linting
