@@ -1,3 +1,53 @@
+# Submission 1.0.0
+
+Changed approach from using regexes to parsing code and using its token 
+representation. Furthermore, a new functionality to check which packages are 
+actually used in a project
+
+## Test environments
+
+* local MacOS Monterey, R 4.2.1
+* tested with GitHub actions for R 3.6, R 4.1, R 4.2 on
+  - Ubuntu 20.04
+  - macOS
+  - Windows
+* rhub::check_for_cran() 
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
+
+## R CMD check results
+There were no ERRORs or WARNINGs. 
+There are 2 NOTEs:
+
+* ONLY on win-builder: checking for detritus in the temp directory ... NOTE
+  Found the following files/directories: 'lastMiKTeXException'. 
+  This is a known Rhub issue (https://github.com/r-hub/rhub/issues/503).
+* ONLY on Fedora Linux (R-hub): checking HTML version of manual ... NOTE
+  Skipping checking HTML validation: no command 'tidy' found. I cannot 
+  change that Tidy is not on the path, or update Tidy on the external
+  Fedora Linux server. 
+
+## Test environments
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
+
+## R CMD check results
+> On windows-x86_64-devel (r-devel)
+  checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+    'lastMiKTeXException'
+
+> On fedora-clang-devel (r-devel)
+  checking HTML version of manual ... NOTE
+  Skipping checking HTML validation: no command 'tidy' found
+
+0 errors v | 0 warnings v | 2 notes x
+
+
+
+
 ## 3rd Resubmission Notes
 - Fixed quoting of RStudio
 - Added missing Value Rd-tags
@@ -23,7 +73,7 @@ so that it’s installed, then always refer to it explicitly with pkg::fun().
 Unless there is a strong reason not to, it’s better to be explicit. It’s a 
 little more work to write, but a lot easier to read when you come back to the 
 code in the future. The converse is not true."
-https://r-pkgs.org/namespace.html#imports
+R Packages, 1st Edition
 
 Finally, not all R projects are in fact packages, hence do not have a NAMESPACE.
 It is sometimes much easier to understand unknown code if it is clear from which 
@@ -46,7 +96,7 @@ The Note is for a new submission. The mentioned misspelled word are known to R u
 
 * local MacOS Big Sur, R 4.1.1
 * tested with GitHub actions for R 3.5, R 3.6, R 4.0 on
-  - Ubuntu 20.04
+  - Ubuntu 18.04
   - macOS
   - Windows
   
