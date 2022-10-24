@@ -77,4 +77,3 @@ print.pkg_usage <- function(x, ...) {
   
   return(invisible(x))
 }
-

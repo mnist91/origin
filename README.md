@@ -24,10 +24,10 @@ write short code first and adapt it later.
 
 <img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/demo_originize_file.gif" width="650px" />
 
-Additionally, it provides an overview of all **acutally** used packages in a project. 
+Additionally, it provides an overview of all **actually** used packages in a project. 
 That means, it does not only check which packages are called via `library()`,
 `require()`, etc. but checks which functions from which packages are eventually used.
-Usefull for quickly checking a project for which packages 
+Useful for quickly checking a project for which packages 
 are actually still needed when dealing with a huge barrage of `library` calls.
 
 
@@ -41,7 +41,7 @@ origin::originize_file("testfile.R", pkgs = c("dplyr", "data.table"))
 ```
 
 #### Check Package Usage
-Again, either use the delivered RStudio addin or call the function explicitely
+Again, either use the delivered RStudio addin or call the function explicitly
 ```
 origin::check_pkg_usage(path = ".",
                         pkgs = c("dplyr", "data.table"),
@@ -138,7 +138,7 @@ The logging highlights three cases:
 
 ### Discussion
 Whether or not to add `pkg::` to each (imported) function is a [controversial](https://stackoverflow.com/q/4372145/8107362)
-[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org/namespace.html#imports) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favor of it.
+[issue](https://stackoverflow.com/q/23232791/8107362) in the R community. While the tidyverse style guide does not mention explicit namespacing, [R Packages](https://r-pkgs.org) and the [Google R style guide](https://google.github.io/styleguide/Rguide.html#qualifying-namespaces) are in favor of it.
 
 Pros
 

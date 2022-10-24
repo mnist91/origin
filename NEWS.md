@@ -13,7 +13,7 @@ code and check package usages.
   + which **other packages** are used via `pkg::fct`
   + used **functions with unknown origin**
   
-    Note that `check_package_usage` dows **not** look for packages that
+    Note that `check_package_usage` does **not** look for packages that
     might have exported those functions, even if the missed package has 
     been called via `::` at another occasion in the same code.
     
@@ -21,8 +21,8 @@ This functionality makes it easy to quickly check a project for which packages
 are actually still needed when dealing with a huge barrage of `library` calls.
 Markers show where unspecified functions are called, either specifically 
 via `pkg::` or with completely unknown origin
-A detailled output, although returned invisibly, gives an overview of 
-which functions are used how often.
+A detailed data.frame output, hidden under the custom `print` method, 
+gives a deepdive of which functions are used how often.
   
 
 # origin 0.5.3

@@ -21,7 +21,7 @@ to the working directory, \link[base]{getwd}()}
 \item{pkgs}{a character vector with package names. Defaults to the result of
 \link[base]{.packages} but only if the option `origin.pkgs` is not specified.}
 
-\item{recursive}{ogical. Should the listing recurse into directories?}
+\item{recursive}{logical. Should the listing recurse into directories?}
 
 \item{exclude_files}{a character vector of file paths that should be 
 excluded from being checked Helpful if all but a few files should be

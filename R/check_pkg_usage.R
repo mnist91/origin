@@ -8,7 +8,7 @@
 #' @param path a character vector of full path names; the default corresponds 
 #' to the working directory, \link[base]{getwd}()
 #' @template pkgs 
-#' @param recursive ogical. Should the listing recurse into directories?
+#' @param recursive logical. Should the listing recurse into directories?
 #' @param exclude_files a character vector of file paths that should be 
 #'  excluded from being checked Helpful if all but a few files should be
 #'  considered by origin.
