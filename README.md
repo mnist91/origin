@@ -1,5 +1,7 @@
 # origin - 1.0.0 <img src="misc/origin.png" width=170 align="right" />
 
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/origin)](https://cran.r-project.org/package=origin)
+[![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/origin)](https://cran.r-project.org/package=origin)
 
 | branch        | main | dev  |
 | ------------- | ------ | ---- |
