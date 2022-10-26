@@ -1,6 +1,7 @@
 testthat::test_that("get local functions", {
 
-  dir <- tempdir(check = TRUE)
+  dir <- tempfile()
+  dir.create(dir)
   writeLines(c("myfun <- function(x) 3",
                "myfun2 =function () 1234",
                "myfun3 <- ",

@@ -263,9 +263,13 @@ originize_wrap <-
         # in case the last line of a script is empty, strsplit does not create
         # an empty character. Hence, the script object is one element shorter
         # than lines selected and the assignment would fial
-        results$logging_data$line <-
-          selected_lines[results$logging_data$line]
-        
+        if (!is.null(selected_lines)) {
+          results$logging_data$line <- selected_lines[results$logging_data$line] # nocov
+          
+          # only for running tests
+        } else {
+          results$logging_data$line <- seq_along(results$logging_data[[1]])
+        }
         run_logging(results$logging_data, use_markers = use_markers)
       } else {
         run_logging(
