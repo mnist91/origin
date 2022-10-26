@@ -15,7 +15,7 @@ apply_changes <- function(ask_before_applying_changes,
                           init_script,
                           type,
                           context = NULL) {
-
+  
   # did all scripts remain the same
   unchanged <- mapply(function(x, y) isTRUE(all.equal(x, y)),
                       init_script,
@@ -78,7 +78,6 @@ apply_changes <- function(ask_before_applying_changes,
       
       
       # insert Text via rstudioapi
-      # nocov start
     } else if (type == "insertText") {
       to_insert <- character(length(init_script[[1]]))
       to_insert[which(lapply(init_script[[1]], length) == 1)] <- 
@@ -87,17 +86,20 @@ apply_changes <- function(ask_before_applying_changes,
       
       selected_range <- context$selection[1][[1]]$range
       
+      # nocov start
       # if end of selection is at beginning of a new line, extra line
       # break is required to keep the same document structure
-      if (selected_range$end[2] == 1) {
-        to_insert <- paste0(to_insert, "\n")
+      if (!is.null(selected_range)) {
+        if (selected_range$end[2] == 1) {
+          to_insert <- paste0(to_insert, "\n")
+        }
+        
+        rstudioapi::insertText(text = to_insert,
+                               location = context$selection[1][[1]]$range,
+                               id = context$id)
       }
-      
-      rstudioapi::insertText(text = to_insert,
-                             location = context$selection[1][[1]]$range,
-                             id = context$id)
-      return(invisible(NULL))
       # nocov end
+      return(invisible(NULL))
       
     }
     
