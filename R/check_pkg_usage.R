@@ -216,13 +216,13 @@ check_pkg_usage <- function(path = getwd(),
     gsub("`", "", x)
   }
   
-  dat_empty_sceleton <- data.frame(pkg = character(),
-                                   fun = character(), 
-                                   n_calls = numeric(),
-                                   namespaced = logical(),
-                                   conflict = logical(),
-                                   conflict_pkgs = character(),
-                                   stringsAsFactors = FALSE)
+  df_empty_sceleton <- data.frame(pkg = character(),
+                                  fun = character(), 
+                                  n_calls = numeric(),
+                                  namespaced = logical(),
+                                  conflict = logical(),
+                                  conflict_pkgs = character(),
+                                  stringsAsFactors = FALSE)
   
   
   # functions that are explicitly namespaced and their corresponding package
@@ -235,27 +235,28 @@ check_pkg_usage <- function(path = getwd(),
     namespaced_functions <- rm_backticks(namespaced_functions)
     
     # combine the information in a data frame
-    dat1 <- data.frame(pkg = script_parsed[pos_namespaced_fct2, "text"],
-                       fun = namespaced_functions, 
-                       stringsAsFactors = FALSE)
+    df_namespaced_funs <- 
+      data.frame(pkg = script_parsed[pos_namespaced_fct2, "text"],
+                 fun = namespaced_functions, 
+                 stringsAsFactors = FALSE)
     # helper variable to get summary statistics
-    dat1$n_calls <- 1
+    df_namespaced_funs$n_calls <- 1
     
-    dat1 <- stats::aggregate(n_calls ~ pkg + fun,
-                             data = dat1,
-                             FUN = sum)
-    dat1$namespaced <- TRUE
-    dat1$conflict <- FALSE
-    dat1$conflict_pkgs <- NA_character_
+    df_namespaced_funs <- stats::aggregate(n_calls ~ pkg + fun,
+                                           data = df_namespaced_funs,
+                                           FUN = sum)
+    df_namespaced_funs$namespaced <- TRUE
+    df_namespaced_funs$conflict <- FALSE
+    df_namespaced_funs$conflict_pkgs <- NA_character_
     
   } else {
     # shallow data frame for easier stacking
-    dat1 <- dat_empty_sceleton
+    df_namespaced_funs <- df_empty_sceleton
   }
   
   found_functions <- 
     script_parsed[script_parsed$usage %in% "FUNCTION_CALL" |
-                    script_parsed$token == "SPECIAL", "text"]
+                    script_parsed$token %in% "SPECIAL", "text"]
   found_functions <- rm_backticks(found_functions)
   all_fcts <- un_list(functions)
   
@@ -268,42 +269,42 @@ check_pkg_usage <- function(path = getwd(),
   
   if (length(defined_functions) > 0) {
     # combine the information in a data frame
-    dat2 <- data.frame(fun = defined_functions, 
-                       stringsAsFactors = FALSE)
+    df_defined_funs <- data.frame(fun = defined_functions, 
+                                  stringsAsFactors = FALSE)
     # helper variable to get summary statistics
-    dat2$n_calls <- 1
+    df_defined_funs$n_calls <- 1
     
-    dat2 <- stats::aggregate(n_calls ~ fun,
-                             data = dat2,
-                             FUN = sum)
+    df_defined_funs <- stats::aggregate(n_calls ~ fun,
+                                        data = df_defined_funs,
+                                        FUN = sum)
     
-    pkg_source <-   lapply(X   = dat2$fun, 
+    pkg_source <-   lapply(X   = df_defined_funs$fun, 
                            FUN = function(x) names(all_fcts[all_fcts == x]))
-    dat2$pkg <- unlist(lapply(X   = pkg_source, 
-                              FUN = `[[`, 
-                              1))
-    dat2$namespaced <- FALSE
-    dat2$conflict <- lapply(X   = pkg_source, 
-                            FUN = length) > 1
-    dat2$conflict_pkgs <- NA_character_
-    dat2$conflict_pkgs[dat2$conflict] <- 
-      lapply(X   = lapply(X   = pkg_source[dat2$conflict],
+    df_defined_funs$pkg <- unlist(lapply(X   = pkg_source, 
+                                         FUN = `[[`, 
+                                         1))
+    df_defined_funs$namespaced <- FALSE
+    df_defined_funs$conflict <- lapply(X   = pkg_source, 
+                                       FUN = length) > 1
+    df_defined_funs$conflict_pkgs <- NA_character_
+    df_defined_funs$conflict_pkgs[df_defined_funs$conflict] <- 
+      lapply(X   = lapply(X   = pkg_source[df_defined_funs$conflict],
                           FUN = `[`, 
                           -1),
              FUN = paste,
              collapse = ", ")
   } else {
-    dat2 <- dat_empty_sceleton
+    df_defined_funs <- df_empty_sceleton
   }
   
-  if (nrow(dat1) > 0) {
-    other_used_pkgs <- sort(setdiff(dat1$pkg, pkgs))
+  if (nrow(df_namespaced_funs) > 0) {
+    other_used_pkgs <- sort(setdiff(df_namespaced_funs$pkg, pkgs))
   } else {
     other_used_pkgs <- character(0)
   }
   
   
-  used_pkgs <- setdiff(c(dat1$pkg, dat2$pkg),
+  used_pkgs <- setdiff(c(df_namespaced_funs$pkg, df_defined_funs$pkg),
                        c("stats", "graphics", "grDevices",
                          "datasets", "utils", "methods", "base",
                          "user_defined_functions"))
@@ -315,43 +316,44 @@ check_pkg_usage <- function(path = getwd(),
                                "user_defined_functions"))
   
   if (length(unused_packages) > 0) {
-    dat_unused_packages <- data.frame(pkg = sort(unused_packages),
-                                      fun = NA_character_,
-                                      n_calls = 0,
-                                      namespaced = NA,
-                                      conflict = NA,
-                                      conflict_pkgs = NA_character_,
-                                      stringsAsFactors = FALSE)
+    df_unused_packages <- data.frame(pkg = sort(unused_packages),
+                                     fun = NA_character_,
+                                     n_calls = 0,
+                                     namespaced = NA,
+                                     conflict = NA,
+                                     conflict_pkgs = NA_character_,
+                                     stringsAsFactors = FALSE)
   } else {
-    dat_unused_packages <- dat_empty_sceleton
+    df_unused_packages <- df_empty_sceleton
   }
   
   
   if (length(undefined_functions) > 0) {
     undefined_funs_tbl <- table(undefined_functions)
-    dat_undefined_funs <- data.frame(pkg = NA_character_,
-                                     fun = names(undefined_funs_tbl),
-                                     n_calls = as.numeric(undefined_funs_tbl),
-                                     namespaced = FALSE,
-                                     conflict = NA,
-                                     conflict_pkgs = NA_character_,
-                                     stringsAsFactors = FALSE)
+    df_undefined_funs <- data.frame(pkg = NA_character_,
+                                    fun = names(undefined_funs_tbl),
+                                    n_calls = as.numeric(undefined_funs_tbl),
+                                    namespaced = FALSE,
+                                    conflict = NA,
+                                    conflict_pkgs = NA_character_,
+                                    stringsAsFactors = FALSE)
   } else {
-    dat_undefined_funs <- dat_empty_sceleton
+    df_undefined_funs <- df_empty_sceleton
   }
   
   
   
   if (use_markers) {
-    dat_logging <- script_parsed
+    df_logging <- script_parsed
     
-    dat_logging$log_type <- ""
+    df_logging$log_type <- ""
     
-    if (nrow(dat1) > 0) {
+    if (nrow(df_namespaced_funs) > 0) {
       # mark functions that are not in given packages but namespaced
-      to_insert <- dat_logging$text %in% dat1[!dat1$pkg %in% pkgs, "fun"] &
-        dat_logging$usage == "NAMESPACED_FUNCTION_CALL" &
-        !is.na(dat_logging$usage)
+      to_insert <- 
+        df_logging$text %in% 
+        df_namespaced_funs[!df_namespaced_funs$pkg %in% pkgs, "fun"] &
+        df_logging$usage %in% "NAMESPACED_FUNCTION_CALL"
       
       # to highlight the full namespaced call (`pkg::fct`), put them together
       # in a single line. For this, the following tweak is needed
@@ -362,60 +364,59 @@ check_pkg_usage <- function(path = getwd(),
         to_insert_pos2 <- to_insert_pos0 - 2
         
         # paste the `pkg::fct` together
-        dat_logging[to_insert_pos0, "text"] <- 
-          paste0(dat_logging[to_insert_pos2, "text"],
-                 dat_logging[to_insert_pos1, "text"],
-                 dat_logging[to_insert_pos0, "text"])
+        df_logging[to_insert_pos0, "text"] <- 
+          paste0(df_logging[to_insert_pos2, "text"],
+                 df_logging[to_insert_pos1, "text"],
+                 df_logging[to_insert_pos0, "text"])
         # take the start of the call the sart of `pkg`
-        dat_logging[to_insert_pos0, "col1"] <- 
-          dat_logging[to_insert_pos2, "col1"]
+        df_logging[to_insert_pos0, "col1"] <- 
+          df_logging[to_insert_pos2, "col1"]
         # use color highlighting for insertions
-        dat_logging[to_insert,
-                    "log_type"] <- "INSERT"
+        df_logging[to_insert,
+                   "log_type"] <- "INSERT"
         # remove merged rows
-        dat_logging <- dat_logging[-c(to_insert_pos2, to_insert_pos1), ]
+        df_logging <- df_logging[-c(to_insert_pos2, to_insert_pos1), ]
         
       }
     }
     
     # mark functions that are not in given packages and NOT namespaced, hence 
     # their origin is unknown
-    dat_logging[dat_logging$text %in% undefined_functions &
-                  dat_logging$usage == "FUNCTION_CALL",
-                "log_type"] <- "MISSING"
+    df_logging[df_logging$text %in% undefined_functions &
+                 df_logging$usage %in% "FUNCTION_CALL",
+               "log_type"] <- "MISSING"
     
-    dat_logging$pkg_nchar <- 0
+    df_logging$pkg_nchar <- 0
     # lines that are relevant for logging
-    logging_data <- make_logging_data(dat_logging,
+    logging_data <- make_logging_data(df_logging,
                                       use_markers = use_markers,
                                       type_fun = "check")
     
-    
-  }
-  
-  
-  if (use_markers) {
-    if (!is.null(logging_data) && nrow(logging_data) > 0) {
+    if (!is.null(logging_data) &&
+        nrow(logging_data) > 0 &&
+        interactive()) {
+      # nocov start
       rstudioapi::sourceMarkers(name = "origin - Function and Package Usage",
-                                markers = logging_data)
+                                markers = logging_data) 
+      # nocov end
     }
   }
   
   # prepare data for output --------------------------
   # combine all data sources
-  dat_out <- rbind(dat1, dat2)
-  dat_out <- dat_out[order(dat_out$pkg, dat_out$fun, dat_out$namespaced), ]
-  dat_out <- rbind(dat_out, dat_undefined_funs, dat_unused_packages)
-  rownames(dat_out) <- NULL
+  df_out <- rbind(df_namespaced_funs, df_defined_funs)
+  df_out <- df_out[order(df_out$pkg, df_out$fun, df_out$namespaced), ]
+  df_out <- rbind(df_out, df_undefined_funs, df_unused_packages)
+  rownames(df_out) <- NULL
   
   # attach checked packages via an attribute
-  attr(dat_out, "pkgs") <- pkgs
+  attr(df_out, "pkgs") <- pkgs
   
   # give specific class for printing
-  class(dat_out) <- c("pkg_usage", class(dat_out))
+  class(df_out) <- c("pkg_usage", class(df_out))
   
   
-  return(dat_out)
+  return(df_out)
   
 }
 # End Exclude Linting
