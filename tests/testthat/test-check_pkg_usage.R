@@ -1,4 +1,4 @@
-testthat::test_that("check_pkg_usage() working", {
+testthat::test_that("check_pkg_usage() working on test", {
   dir <- tempfile()
   dir.create(dir)
   test_file <- file.path(dir, "testfile.R")
@@ -30,13 +30,9 @@ testthat::test_that("check_pkg_usage() working", {
     regexp = 
       paste0("Cannot check for local functions due to unclear root directory",
              "|RStudio not running"))
-  
-  testthat::capture_output(testthat::expect_equal(res, print(res)))
 
-  testthat::expect_output(print(res), "Used Packages: 3.+Unused Packages: 1")
-  
   testthat::expect_equal(res$fun, 
-                         c("c", "lapply", "%between%", "%like%",
+                         c("c", "lapply", "paste", "%between%", "%like%",
                            ":=", "as.IDate", "as.data.table", 
                            "copy", "is.data.table", "last", 
                            "setkey", "setkey", "%>%", "bind_cols", 
@@ -44,8 +40,8 @@ testthat::test_that("check_pkg_usage() working", {
                            "n", "n_distinct", "map", 
                            "bind_cols_2", NA))
   testthat::expect_equal(res$n_calls, 
-                         c(2, 10, 2, 2, 1, 1, 1, 1, 1, 4, 3,
-                           3, 6, 10, 7, 1, 1, 3, 6, 
+                         c(2, 10, 1, 2, 2, 1, 1, 1, 1, 1, 4, 3,
+                           3, 7, 10, 7, 1, 1, 3, 6, 
                            5, 4, 1, 0))
   
   # run function with markers
@@ -59,10 +55,12 @@ testthat::test_that("check_pkg_usage() working", {
       paste0("Cannot check for local functions due to unclear root directory",
              "|RStudio not running"))
   
+  testthat::expect_snapshot(print(res))
+  
 })
 
 
-testthat::test_that("check_pkg_usage working", {
+testthat::test_that("check_pkg_usage working on target", {
   dir <- tempfile()
   dir.create(dir)
   test_file <- file.path(dir, "testfile.R")
@@ -92,16 +90,9 @@ testthat::test_that("check_pkg_usage working", {
     regexp = 
       paste0("Cannot check for local functions due to unclear root directory",
              "|RStudio not running"))
-  
-  testthat::capture_output(testthat::expect_equal(res, print(res)))
 
-  testthat::expect_output(print(res), 
-                          paste0("Used Packages: 2.+Unused Packages: 0.+",
-                                 "further used Packages: 2.+",
-                                 "Functions with unknown origin: 1"))
-  
   testthat::expect_equal(res$fun, 
-                         c("c", "lapply", "%between%", "%like%",
+                         c("c", "lapply", "paste", "%between%", "%like%",
                            ":=", "as.IDate", "as.data.table", 
                            "copy", "is.data.table", "last",
                            "setkey", "bind_cols", "filter", 
@@ -109,6 +100,7 @@ testthat::test_that("check_pkg_usage working", {
                            "n_distinct", "map", "%>%", "bind_cols_2"
                          ))
 
+  testthat::expect_snapshot(res)
 })
 
 
@@ -130,3 +122,4 @@ testthat::test_that("check_pkg_usage fails - empty file", {
                                            use_markers = FALSE),
                            "All scripts in this directory are empty"))
 })
+

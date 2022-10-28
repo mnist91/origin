@@ -68,7 +68,7 @@ apply_changes <- function(ask_before_applying_changes,
       # return plane text
     } else if (type == "paste") {
       script_out <- character(length(init_script[[1]]))
-      script_out[which(lapply(init_script[[1]], length) == 1)] <- 
+      script_out[seq_along(result$to_write[[1]])] <- 
         result$to_write[[1]]
       
       return(paste(script_out, collapse = "\n"))

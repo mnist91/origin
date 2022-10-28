@@ -56,8 +56,10 @@ originize <- function(dat,
   
   files <- unique(dat_out$file)
   result <- stats::setNames(
-    lapply(files, 
-           function(f) revert_parse_data(dat_out[dat_out$file == f, ])),
+    lapply(files,
+           FUN = function(f) {
+             revert_parse_data(dat_out[dat_out$file == f, ])
+           }),
     files)
   
   
