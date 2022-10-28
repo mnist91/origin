@@ -33,6 +33,7 @@
 #'  Similarly, Packages that are checked but no functions from these are
 #'  used are listed but have an `NA` in the `fun` column
 #' @export
+#' @importFrom stats setNames
 #'
 #' @examples
 #' \dontrun{
@@ -103,12 +104,6 @@ check_pkg_usage <- function(path = getwd(),
     warning("The following packages are provided more than once: ",
             paste(unique(pkgs[dup_pkgs]), collapse = ", "))
     pkgs <- unique(pkgs)
-  }
-  
-  if (length(pkgs) == 0) {
-    stop(paste("No packages specified. Please use either",
-               "`options(origin.pkgs = c('pkg', ...))`",
-               "or the `pkgs` argument."))
   }
   
   # add base package
