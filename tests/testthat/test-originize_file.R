@@ -35,7 +35,6 @@ testthat::test_that("originize file", {
                  overwrite = TRUE,
                  add_base_packages = FALSE,
                  ask_before_applying_changes = FALSE,
-                 # excluded_functions = list(dplyr = "last"),
                  use_markers = FALSE,
                  check_local_conflicts = FALSE,
                  verbose = FALSE)
@@ -122,4 +121,3 @@ testthat::test_that("originize file", {
 
 
 })
-
