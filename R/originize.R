@@ -81,7 +81,8 @@ originize <- function(dat,
     dat_logging[dat_logging$text %in% dat_fctns$fct &
                   is.na(dat_logging$pkg) &
                   dat_logging$token == "SYMBOL" &
-                  !dat_logging$usage %in% "NAMESPACED_FUNCTION_CALL",
+                  !dat_logging$usage %in% c("NAMESPACED_FUNCTION_CALL",
+                                            "METHOD_CALL"),
                 "log_type"] <- "MISSING"
 
     # lines with function names that are not used as function names

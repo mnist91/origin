@@ -18,3 +18,5 @@ iris %>%
   dplyr::filter(TRUE)
 
 last(knj, 1)
+myclass$last()
+myclass@last()
