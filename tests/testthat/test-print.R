@@ -11,7 +11,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- "pkg2"
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -34,7 +34,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- "pkg1"
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -54,7 +54,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- "pkg2"
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -74,7 +74,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- "pkg2"
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -94,7 +94,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- "pkg1"
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -117,7 +117,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- c("pkg1", "pkg123")
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -127,7 +127,7 @@ cli::test_that_cli(
 cli::test_that_cli(
   configs = c("plain", "ansi"),
   "print.pkg_usage - unused packages", {
-    res <- data.frame(pkg           = LETTERS,
+    res <- data.frame(pkg           = LETTERS[1:13],
                       fun           = NA,
                       n_calls       = 0,
                       namespaced    = TRUE,
@@ -137,7 +137,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- "pkg1"
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)
@@ -157,7 +157,7 @@ cli::test_that_cli(
     class(res) <- c("pkg_usage", "data.frame")
     attr(res, "pkgs") <- LETTERS
     res
-    
+
     testthat::local_edition(3)
     testthat::expect_snapshot({
       print(res)

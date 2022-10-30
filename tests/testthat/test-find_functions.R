@@ -97,4 +97,5 @@ testthat::test_that("Test find functions", {
   testthat::expect_equal(result[19], "thafun")
 
 
+  testthat::expect_equal(find_functions(text = ""), character(0))
 })

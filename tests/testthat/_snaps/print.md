@@ -258,20 +258,14 @@
       == Package Usage Report ========================================================
       -- Used Packages: 0 ------------------------------------------------------------
       
-      -- Unused Packages: 26 ---------------------------------------------------------
-      i A     i N
-      i B     i O
-      i C     i P
-      i D     i Q
-      i E     i R
-      i F     i S
-      i G     i T
-      i H     i U
-      i I     i V
-      i J     i W
-      i K     i X
-      i L     i Y
-      i M     i Z
+      -- Unused Packages: 13 ---------------------------------------------------------
+      i A     i H
+      i B     i I
+      i C     i J
+      i D     i K
+      i E     i L
+      i F     i M
+      i G     
       
     Message <cliMessage>
       v All used functions defined! 🥳
@@ -285,20 +279,14 @@
       [36m==[39m [1m[36mPackage Usage Report[39m[22m [36m========================================================[39m
       [36m--[39m [1mUsed Packages: 0[22m [36m------------------------------------------------------------[39m
       
-      [36m--[39m [1mUnused Packages: 26[22m [36m---------------------------------------------------------[39m
-      [33mi[39m A     [33mi[39m N
-      [33mi[39m B     [33mi[39m O
-      [33mi[39m C     [33mi[39m P
-      [33mi[39m D     [33mi[39m Q
-      [33mi[39m E     [33mi[39m R
-      [33mi[39m F     [33mi[39m S
-      [33mi[39m G     [33mi[39m T
-      [33mi[39m H     [33mi[39m U
-      [33mi[39m I     [33mi[39m V
-      [33mi[39m J     [33mi[39m W
-      [33mi[39m K     [33mi[39m X
-      [33mi[39m L     [33mi[39m Y
-      [33mi[39m M     [33mi[39m Z
+      [36m--[39m [1mUnused Packages: 13[22m [36m---------------------------------------------------------[39m
+      [33mi[39m A     [33mi[39m H
+      [33mi[39m B     [33mi[39m I
+      [33mi[39m C     [33mi[39m J
+      [33mi[39m D     [33mi[39m K
+      [33mi[39m E     [33mi[39m L
+      [33mi[39m F     [33mi[39m M
+      [33mi[39m G     
       
     Message <cliMessage>
       [32mv[39m All used functions defined! 🥳
