@@ -5,7 +5,7 @@ get_function_definitions <- function(dat) {
   fun_token <- which(dat$token %in% "FUNCTION")
   anonym_fun_token1 <- which(dat$token %in% "'\\\\'")
   anonym_fun_token2 <- which(dat$token %in% "'('")
-  
+
   # symbol must be prior to assignment AND
   relevant_symbols <- symbol_token[symbol_token %in% (assign_token - 1)]
   relevant_symbols <- relevant_symbols[
@@ -18,7 +18,7 @@ get_function_definitions <- function(dat) {
                        # 2. an opening bracket
                        assign_token %in% (anonym_fun_token2 - 2)
         ]) - 1)]
-  
+
   # in case function definitions are detected
   if (length(relevant_symbols) > 0) {
     dat[relevant_symbols, "usage"] <- "FUNCTION_DEFINITION"

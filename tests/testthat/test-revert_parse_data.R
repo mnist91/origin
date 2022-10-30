@@ -1,4 +1,5 @@
-test_that("revert_parse_data", {
+testthat::test_that("revert_parse_data", {
+  # Begin Exclude Linting
   x <- c("",
          "x <- function(x) {",
          "      mean(1:3, na.rm = TRUE)",
@@ -14,14 +15,15 @@ test_that("revert_parse_data", {
          "Lorem ipsum dolor sit amet,\\n consectetur adipiscing elit') %>% c()",
          "# trailing empty lines cannot be recovered",
          "")
+  # End Exclude Linting
   x_parsed <- get_parsed_data(x, file = "test.R")
-  
+
   testthat::expect_equal(revert_parse_data(x_parsed),
                          expected = x[-length(x)])
   testthat::expect_equal(revert_parse_data(x_parsed,
                                            recover_empty_lines = TRUE),
                          expected = x[-length(x)])
-  
+
   # empty lines up to the last filled input can be recovered
   testthat::expect_equal(revert_parse_data(x_parsed,
                                            recover_empty_lines = FALSE),
@@ -29,7 +31,7 @@ test_that("revert_parse_data", {
 })
 
 
-test_that("revert_parse_data - strings > 1000 chr", {
+testthat::test_that("revert_parse_data - strings > 1000 chr", {
   x <- c("'Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
          "sed do eiusmod tempor incididunt ut labore et dolore",
          "magna aliqua. Venenatis tellus in metus vulputate eu",
@@ -56,7 +58,7 @@ test_that("revert_parse_data - strings > 1000 chr", {
          "Convallis posuere morbi leo urna molestie at elementum eu.'"
   )
   x_parsed <- get_parsed_data(x, file = "test2.R")
-  
+
   testthat::expect_equal(revert_parse_data(x_parsed),
                          rep("[1261 chars quoted with ''']", times = length(x)))
 })

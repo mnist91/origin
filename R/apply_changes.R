@@ -10,26 +10,27 @@
 #' @return either `NULL` if writing to a file or the originized file if
 #'  overwrite selected/highlighted text.
 #' @noRd
+#' @importFrom utils menu
 apply_changes <- function(ask_before_applying_changes,
                           result,
                           init_script,
                           type,
                           context = NULL) {
-  
+
   # did all scripts remain the same
   unchanged <- mapply(function(x, y) isTRUE(all.equal(x, y)),
                       init_script,
                       result$to_write,
                       SIMPLIFY = TRUE)
-  
+
   # in case they are, notify the user
   if (all(unchanged)) {
     message("No unspecified functions detected. Script remains as is.")
     return(invisible(NULL))
-    
+
     # if changes were made, ask user if those can be overwrite the files
   } else {
-    
+
     # nocov start
     if (ask_before_applying_changes && interactive()) {
       cat("\nHappy with the result? \U0001f600\n\n")
@@ -40,7 +41,7 @@ apply_changes <- function(ask_before_applying_changes,
       }
     }
     # nocov end
-    
+
     if (type == "writeLines") {
       # extract non-empty new scripts
       new_scripts <- result$to_write[!unchanged]
@@ -57,35 +58,35 @@ apply_changes <- function(ask_before_applying_changes,
                # determine if a final line existed, all returned scripts 
                # will end with a final line which is
                # consistent with git. x[length(x) + 1] <- ""
-               
+
                writeLines(text = x,
                           con = f)})
-      
+
       return(invisible(NULL))
-      
-      
-      
+
+
+
       # return plane text
     } else if (type == "paste") {
       script_out <- character(length(init_script[[1]]))
-      script_out[seq_along(result$to_write[[1]])] <- 
+      script_out[seq_along(result$to_write[[1]])] <-
         result$to_write[[1]]
-      
+
       return(paste(script_out, collapse = "\n"))
-      
-      
-      
-      
-      
+
+
+
+
+
       # insert Text via rstudioapi
     } else if (type == "insertText") {
       to_insert <- character(length(init_script[[1]]))
-      to_insert[which(lapply(init_script[[1]], length) == 1)] <- 
+      to_insert[which(lapply(init_script[[1]], length) == 1)] <-
         result$to_write[[1]]
       to_insert <- paste(to_insert, collapse = "\n")
-      
+
       selected_range <- context$selection[1][[1]]$range
-      
+
       # nocov start
       # if end of selection is at beginning of a new line, extra line
       # break is required to keep the same document structure
@@ -93,15 +94,15 @@ apply_changes <- function(ask_before_applying_changes,
         if (selected_range$end[2] == 1) {
           to_insert <- paste0(to_insert, "\n")
         }
-        
+
         rstudioapi::insertText(text = to_insert,
                                location = context$selection[1][[1]]$range,
                                id = context$id)
       }
       # nocov end
       return(invisible(NULL))
-      
+
     }
-    
+
   }
 }

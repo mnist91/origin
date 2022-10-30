@@ -16,6 +16,6 @@ find_functions <- function(file = ".", text = NULL) {
   # the corresponding symbols are the function names
   fun_names <- dat[dat$usage == "FUNCTION_DEFINITION", "text"]
   fun_names <- fun_names[!is.na(fun_names)]
-  
+
   return(fun_names)
 }

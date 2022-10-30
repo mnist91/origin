@@ -18,7 +18,10 @@ BugReports: https://github.com/mnist91/origin/issues
 Depends: 
     R (>= 2.10)
 Imports: 
-    rstudioapi
+    cli,
+    rstudioapi,
+    stats,
+    utils
 Suggests: 
     data.table,
     dplyr,

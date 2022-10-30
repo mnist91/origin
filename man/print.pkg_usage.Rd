@@ -4,10 +4,12 @@
 \alias{print.pkg_usage}
 \title{Print the summary of check_pkg_usage}
 \usage{
-\method{print}{pkg_usage}(x, ...)
+\method{print}{pkg_usage}(x, max_display = 10L, ...)
 }
 \arguments{
 \item{x}{a pkg_usage_object}
+
+\item{max_display}{maximum number of unknown functions or conflicts to print}
 
 \item{...}{passed to other methods}
 }

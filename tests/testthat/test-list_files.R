@@ -13,7 +13,7 @@ testthat::test_that("excluding folders in list_files works", {
   writeLines(text = LETTERS, con = file.path(subdir2, "tmp_sub2.R"))
 
   # one folder
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = "sub2",
                                exclude_symlinks = TRUE,
                                full.names = TRUE,
@@ -25,7 +25,7 @@ testthat::test_that("excluding folders in list_files works", {
                       file.path(subdir1, "tmp_sub1.R"))))
 
   # one folder
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = "sub2",
                                exclude_symlinks = FALSE, # no difference here
                                full.names = TRUE,
@@ -37,7 +37,7 @@ testthat::test_that("excluding folders in list_files works", {
                       file.path(subdir1, "tmp_sub1.R"))))
 
   # multiple folders
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = c("sub1", "sub2"),
                                exclude_symlinks = TRUE,
                                full.names = TRUE,
@@ -48,7 +48,7 @@ testthat::test_that("excluding folders in list_files works", {
                file.path(dir, "tmp_root.R"))
 
   # multiple folders
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = c("sub1", "sub2"),
                                exclude_symlinks = FALSE, # no difference here
                                full.names = TRUE,
@@ -59,7 +59,7 @@ testthat::test_that("excluding folders in list_files works", {
                file.path(dir, "tmp_root.R"))
 
   # no folders
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = NULL,
                                exclude_symlinks = TRUE,
                                full.names = TRUE,
@@ -72,7 +72,7 @@ testthat::test_that("excluding folders in list_files works", {
                       file.path(subdir2, "tmp_sub2.R"))))
 
   # no folders & symlinks
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = NULL,
                                exclude_symlinks = TRUE, # no difference here
                                full.names = TRUE,
@@ -83,7 +83,7 @@ testthat::test_that("excluding folders in list_files works", {
                file.path(dir, "tmp_root.R"))
 
   # no folders no symlinks
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = NULL,
                                exclude_symlinks = FALSE, # no difference here
                                full.names = TRUE,
@@ -94,7 +94,7 @@ testthat::test_that("excluding folders in list_files works", {
                file.path(dir, "tmp_root.R"))
 
   # with directories & multiple folders
-  expect_equal(sort(list_files(path = dir,
+  testthat::expect_equal(sort(list_files(path = dir,
                                exclude_folders = c("sub1", "sub2"),
                                exclude_symlinks = TRUE,
                                full.names = TRUE,
