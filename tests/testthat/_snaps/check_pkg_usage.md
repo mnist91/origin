@@ -16,8 +16,6 @@
       x filter          x n          
       x id              x n_distinct 
       x if_else         
-    Message <cliMessage>
-      
 
 # check_pkg_usage working on target
 
@@ -37,6 +35,4 @@
       
       -- Functions with unknown origin: 1 --------------------------------------------
       x bind_cols_2
-    Message <cliMessage>
-      
 
