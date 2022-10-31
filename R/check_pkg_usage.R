@@ -401,8 +401,9 @@ check_pkg_usage <- function(path = getwd(),
   # give specific class for printing
   class(df_out) <- c("pkg_usage", class(df_out))
 
-
-  return(df_out)
+  print(df_out)
+  
+  return(invisible(df_out))
 
 }
 # End Exclude Linting
