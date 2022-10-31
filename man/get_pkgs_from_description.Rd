@@ -4,7 +4,11 @@
 \alias{get_pkgs_from_description}
 \title{Get Packages from the DESCRIPTION file}
 \usage{
-get_pkgs_from_description()
+get_pkgs_from_description(path = NULL)
+}
+\arguments{
+\item{path}{Path to a DESC>RIPTION file, If `NULL` (default), the functions
+searches for a description file in the current active project}
 }
 \value{
 character vector of package names
