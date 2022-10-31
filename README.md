@@ -49,6 +49,7 @@ origin::check_pkg_usage(path = ".",
                         pkgs = c("dplyr", "data.table"),
                         use_markes = FALSE)
 ```
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/check_pkg_usage.png" width="650px" />
 
 ### Settings
 Most argument defaults of `origin` functions can be set via `options()`. 
