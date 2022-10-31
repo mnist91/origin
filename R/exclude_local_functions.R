@@ -59,6 +59,7 @@ exclude_local_functions <- function(functions,
 
   } else {
     # a directory is provided
+    project_path_found <- TRUE
     project_path <- path_to_local_functions
   }
   # nocov end
