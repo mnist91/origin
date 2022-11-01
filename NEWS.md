@@ -1,3 +1,24 @@
+# origin 1.1.0
+### Features
+- `check_pck_usage` now allows for no provided packages, resulting in checking
+  all standard R packages.
+- enhanced `print.pkg_usage()` function. Using {cli} to properly style console 
+  outputs. 
+- `ask_before_applying_changes` now mutes all
+  checks, i.e. a large number of files, local functions mask exported functions,
+  and the presence and order of function conflicts, 
+  [#4](https://github.com/mnist91/origin/issues/4).
+  Thanks to @Dschaykib for the feature request. 
+
+### Bugfixes
+- While originizing, recover strings that span multiple lines or exceed 1000
+  characters. 
+- Logging highlighting: missed functions are properly flagged and no flagging 
+  of namespaced functions.
+- Functions exported by multiple packages are properly handled
+- Methods called from RC/R6 classes via (`instance$method()`) are no longer 
+  flagged as functions.
+
 # origin 1.0.0
 This is a new release of `origin` with significant changes and improvements. 
 It adds a complete new purpose by checking the actual usage of packages in a 
@@ -22,7 +43,7 @@ are actually still needed when dealing with a huge barrage of `library` calls.
 Markers show where unspecified functions are called, either specifically 
 via `pkg::` or with completely unknown origin
 A detailed data.frame output, hidden under the custom `print` method, 
-gives a deepdive of which functions are used how often.
+gives a deep dive of which functions are used how often.
   
 
 # origin 0.5.3
