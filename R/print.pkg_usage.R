@@ -192,7 +192,7 @@ print.pkg_usage <- function(x, max_display = 10L, ...) {
     }
 
   } else {
-    cli::cli_alert_success("All used functions defined! \U0001F973")
+    cli::cli_alert_success("All used functions defined!")
   }
 
   cli::cli_end(cnt)

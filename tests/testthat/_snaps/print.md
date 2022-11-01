@@ -24,7 +24,7 @@
     Output
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - conflicts [ansi]
@@ -53,7 +53,7 @@
     Output
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
 # print.pkg_usage - conflicts - indention [plain]
@@ -82,7 +82,7 @@
     Output
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - conflicts - indention [ansi]
@@ -111,7 +111,7 @@
     Output
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
 # print.pkg_usage - unknown functions [plain]
@@ -168,7 +168,7 @@
       i pkg1
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - pkg:: usage new package [ansi]
@@ -185,7 +185,7 @@
       [32mi[39m pkg1
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
 # print.pkg_usage - pkg:: usage given package [plain]
@@ -200,7 +200,7 @@
       -- Unused Packages: 0 ----------------------------------------------------------
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - pkg:: usage given package [ansi]
@@ -215,7 +215,7 @@
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
 # print.pkg_usage - user_defined_functions [plain]
@@ -231,7 +231,7 @@
       -- Unused Packages: 0 ----------------------------------------------------------
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - user_defined_functions [ansi]
@@ -247,7 +247,7 @@
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
 # print.pkg_usage - unused packages [plain]
@@ -268,7 +268,7 @@
       i G     
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - unused packages [ansi]
@@ -289,7 +289,7 @@
       [33mi[39m G     
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
 # print.pkg_usage - used packages [plain]
@@ -316,7 +316,7 @@
       -- Unused Packages: 0 ----------------------------------------------------------
       
     Message <cliMessage>
-      v All used functions defined! 🥳
+      v All used functions defined!
       
 
 # print.pkg_usage - used packages [ansi]
@@ -343,6 +343,6 @@
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
     Message <cliMessage>
-      [32mv[39m All used functions defined! 🥳
+      [32mv[39m All used functions defined!
       
 
