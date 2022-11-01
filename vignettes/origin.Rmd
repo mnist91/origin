@@ -252,27 +252,22 @@ Just run all those `library(...)` calls and then call `check_pkg_usage()`
 ### Interpreting the Output of check_pkg_usage
 
 ```
-result <- check_pkg_usage()
-result
-Used Packages: 2 
+== Package Usage Report ================================================
+-- Used Packages: 2 ----------------------------------------------------
+v data.table
+v testthat  
 
-	data.table, testthat
+-- Unused Packages: 1 --------------------------------------------------
+i dplyr
 
-Unused Packages: 1 
+-- Possible Namespace Conflicts:  1 -----------------------------------
+x last     	data.table >> dplyr
 
-	dplyr
+-- Specifically (`pkg::fun()`) further used Packages: 2 ----------------
+i purrr
 
-Possible Namespace Conflicts:  1
-
-	last     	data.table >> dplyr
-
-Specifically (`pkg::fun()`) further used Packages: 1
-
-	purrr
-
-Functions with unknown origin: 1 
-
-	map
+-- Functions with unknown origin: 1 ------------------------------------
+x map
 ```
  The output shows
  - we had attached 3 packages: {data.table}, {testthat}, and {dplyr}
