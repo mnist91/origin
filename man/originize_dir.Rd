@@ -42,8 +42,8 @@ only the logging is triggered. Note that, depending on
 
 \item{ask_before_applying_changes}{if TRUE, the user has to approve
 changes made by origin prior to applying them. Note that this mutes all
-checks, i.e. large number of files, local functions mask exported functions,
-and the presence and order of function conflicts.}
+checks, i.e. large number of files, local functions mask 
+exported functions, and the presence and order of function conflicts.}
 
 \item{check_conflicts}{if TRUE, possible namespace conflicts between
 functions exported by packages listed in pkgs are checked. See details.}
