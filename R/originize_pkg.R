@@ -71,12 +71,12 @@ originize_pkg <-
     path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
     check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
   ) {
-
+    
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
            "potential conflicts is required!")
     }
-
+    
     files <- list_files(path = path,
                         exclude_folders = c("renv", "packrat",
                                             ".git", ".Rproj"),
@@ -85,8 +85,8 @@ originize_pkg <-
                         recursive = recursive,
                         pattern = "\\.R$",
                         ignore.case = TRUE)
-
-
+    
+    
     # TODO: non absolute paths
     if (!is.null(exclude_files)) {
       if (any(!exclude_files %in% files)) {
@@ -95,18 +95,20 @@ originize_pkg <-
       }
       files <- files[!files %in% exclude_files]
     }
-
-
+    
+    
     # warning if many files are about to be originized
     n_files <- length(files)
-    if (n_files > 20) {
-      cat(sprintf("You are about to originize %s files.\nProceed?", n_files))
+    if (n_files > 20 && ask_before_applying_changes) {
       if (interactive()) {
-        answer <- utils::menu(choices = c("YES", "NO", "Show files")) # nocov
+        # nocov start
+        cat(sprintf("You are about to originize %s files.\nProceed?", n_files))
+        answer <- utils::menu(choices = c("YES", "NO", "Show files"))
+        # nocov end
       } else {
         answer <- 1
       }
-
+      
       if (answer == 2) {
         stop("Execution halted") # nocov
       } else if (answer == 3) {
@@ -117,21 +119,21 @@ originize_pkg <-
         } else {
           answer2 <- 1
         }
-
+        
         if (answer2 == 2) {
           stop("Execution halted") # nocov
         }
       }
     }
-
+    
     # read file
     scripts <- suppressWarnings(lapply(files, readLines))
-
+    
     # check for empty scripts
     empty_scripts <- vapply(X = scripts,
                             FUN = length,
                             FUN.VALUE = integer(1)) == 0
-
+    
     if (all(empty_scripts)) {
       message("All provided scripts are empty")
       return(invisible(NULL))
@@ -139,7 +141,7 @@ originize_pkg <-
       scripts <- scripts[!empty_scripts]
       files <- files[!empty_scripts]
     }
-
+    
     originize_wrap(scripts = scripts,
                    files = files,
                    type = "writeLines",
@@ -154,7 +156,7 @@ originize_pkg <-
                    use_markers = use_markers,
                    path_to_local_functions = path_to_local_functions,
                    check_local_conflicts = check_local_conflicts)
-
+    
     return(invisible(NULL))
-
+    
   }

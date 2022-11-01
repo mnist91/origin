@@ -28,9 +28,11 @@ write short code first and adapt it later.
 
 Additionally, it provides an overview of all **actually** used packages in a project. 
 That means, it does not only check which packages are called via `library()`,
-`require()`, etc. but checks which functions from which packages are eventually used.
+`require()`, etc. but determines which functions from which packages are eventually used.
 Useful for quickly checking a project for which packages 
 are actually still needed when dealing with a huge barrage of `library` calls.
+
+<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/check_pkg_usage.png" width="650px" />
 
 
 ### Usage
@@ -49,7 +51,6 @@ origin::check_pkg_usage(path = ".",
                         pkgs = c("dplyr", "data.table"),
                         use_markes = FALSE)
 ```
-<img src="https://raw.githubusercontent.com/mnist91/origin/dev/misc/check_pkg_usage.png" width="650px" />
 
 ### Settings
 Most argument defaults of `origin` functions can be set via `options()`. 
@@ -57,7 +58,9 @@ This is especially useful when using the RStudio Addins.
 
   - `origin.pkgs`: which packages to check for functions used in the code (see **Considered Packages**).
   - `origin.ask_before_applying_changes`: whether changes should be applied
-  immediately or the user must approve them first.
+    immediately or the user must approve them first. Note that this mutes all
+    checks, i.e. large number of files, local functions mask exported functions,
+    and the presence and order of function conflicts.
   - `origin.overwrite`: actually insert `pkg::` into the code. Otherwise,
   logging shows only what *would* happen. Note that `ask_before_applying_changes`
   still allows to keep control over your code before `origin` changes anything.

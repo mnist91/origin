@@ -43,7 +43,7 @@ originize_wrap <-
            path_to_local_functions = NULL,
            selected_lines = NULL,
            context = NULL) {
-
+    
     # Parameter checks ---------------------------------------------------------
     if (!is.null(path_to_local_functions) &&
         !dir.exists(path_to_local_functions)) {
@@ -52,54 +52,54 @@ originize_wrap <-
                  "does not exist.",
                  "Cannot check for local functions."))
     }
-
+    
     if (!check_base_conflicts && add_base_packages) {
       stop("When adding base packages checking for ",
            "potential conflicts is required.")
     }
-
+    
     if (ask_before_applying_changes && !verbose) {
       stop(paste("Without verbose == TRUE no changes are visible before",
                  "applying. `verbose` must be TRUE if",
                  "ask_before_applying_changes is TRUE."))
     }
-
+    
     # make sure no package is considered multiple times
     if (any((dup_pkgs <- duplicated(pkgs)))) {
       warning("The following packages are provided more than once: ",
               paste(unique(pkgs[dup_pkgs]), collapse = ", "))
       pkgs <- unique(pkgs)
     }
-
+    
     # exclude base R packages from checks for duplicates
     if (!check_base_conflicts) {
       pkgs <- setdiff(pkgs, c(getOption("defaultPackages"), "base"))
     }
-
+    
     if (length(pkgs) == 0) {
       stop(paste("No packages specified. Please use either",
                  "`options(origin.pkgs = c('pkg', ...))`",
                  "or the `pkgs` argument."))
     }
-
+    
     # get all exported functions from each package
     functions <- stats::setNames(object = lapply(X   = pkgs,
                                                  FUN = get_exported_functions),
                                  nm     = pkgs)
-
+    
     if (length(unlist(functions)) == 0) {
       stop("Given packages do not export functions.")
     }
-
+    
     # exclude unwanted functions
     if (length(excluded_functions) > 0) {
       functions <- exclude_functions(functions, excluded_functions)
     }
-
+    
     if (length(unlist(functions)) == 0) {
       stop("You excluded all exported functions from the given packages.")
     }
-
+    
     # check if locally defined functions share names with exported functions
     # from checked packages.
     # Note that all projects R scripts are searched for function definitions
@@ -112,9 +112,10 @@ originize_wrap <-
                                            files,
                                            scripts,
                                            path_to_local_functions,
-                                           script_collapsed)
+                                           script_collapsed,
+                                           ask_before_applying_changes)
     }
-
+    
     # parse all scripts
     if (type == "writeLines"){
       script_parsed <- Reduce(f = rbind,
@@ -131,12 +132,12 @@ originize_wrap <-
       script_parsed <- get_parsed_data(text = scripts_vec,
                                        file = files)
     }
-
+    
     # DUPLICATES ---------------------------------------------------------------
     # find functions, that are called within multiple packages
     # a automatic assignment is not possible in such cases
     # a deterministic order is chosen
-
+    
     rel_tokens <- c("SYMBOL", "SYMBOL_FUNCTION_CALL")
     given_texts <- unique(script_parsed[script_parsed$token %in% rel_tokens,
                                         "text"])
@@ -146,17 +147,19 @@ originize_wrap <-
       dups_with_pkg <-
         stats::setNames(object = unique(dups),
                         nm = by(names(dups), dups, paste, collapse = ", "))
-
-
+      
+      
       # which duplicates are in the script, independet of whther be used as a
       # regular function (SYMBOL_FUNCTION_CALL)
       dup_funs_in_script <- dups_with_pkg %in% given_texts
-
+      
       # Require User interaction if duplicates are detected
       if (any(dup_funs_in_script)) {
-        solve_fun_duplicates(dups = dups_with_pkg[dup_funs_in_script],
-                             pkgs = pkgs)
-
+        solve_fun_duplicates(
+          dups = dups_with_pkg[dup_funs_in_script],
+          pkgs = pkgs,
+          ask_before_applying_changes = ask_before_applying_changes)
+        
         # remove unneeded duplicates 
         to_rm <- dups[dups %in% dups_with_pkg[dup_funs_in_script]]
         to_rm <- to_rm[duplicated(to_rm)]
@@ -168,14 +171,14 @@ originize_wrap <-
                                           })
       }
     }
-
+    
     # do not consider base packages in originizing
     if (!add_base_packages) {
       pkgs <- setdiff(pkgs, c(getOption("defaultPackages"), "base"))
       functions <- functions[!names(functions) %in%
                                c(getOption("defaultPackages"), "base")]
     }
-
+    
     if (length(pkgs) == 0) {
       stop(
         paste(
@@ -185,12 +188,12 @@ originize_wrap <-
           # lintr considers this as a file path
           "packages, inspect the `add_base_packages` argument/option.")) # Exclude Linting
     }
-
-
+    
+    
     if (length(unlist(functions)) == 0) {
       stop("No non-excluded exported functions in given packages.")
     }
-
+    
     # TODO: still time improvement?
     functions <-
       lapply(
@@ -198,12 +201,12 @@ originize_wrap <-
         FUN = function(funs) {
           funs[funs %in% given_texts]
         })
-
+    
     # keep relevant packages only,
     # i.e. packages that export functions that might be used
     functions <- Filter(function(x) length(x) > 0,
                         functions)
-
+    
     # nothing to log
     if (length(functions) == 0) {
       message("Nothing detected")
@@ -215,7 +218,7 @@ originize_wrap <-
     names(scripts) <- files
     trunc <- grepl(pattern = "^\\[[0-9]+ chars quoted with",
                    x = script_parsed$text)
-
+    
     if (any(trunc)) {
       # loop over all truncated strings
       for (tt in which(trunc)) {
@@ -223,7 +226,7 @@ originize_wrap <-
         df_trunc <- script_parsed[tt, ]
         # get lines that contain the initial text
         imp <- unlist(scripts[[ df_trunc$file ]][df_trunc$line1:df_trunc$line2])
-
+        
         # if the string does not start at the beginning of the line, cut what
         # comes before the string
         imp[1] <- substr(imp[1],
@@ -238,20 +241,20 @@ originize_wrap <-
         script_parsed[tt, "text"] <- paste(imp, collapse = "\n")
       }
     }
-
+    
     results <- originize(dat = script_parsed,
                          functions = functions,
                          pkgs = names(functions),
                          verbose = verbose,
                          use_markers = use_markers)
-
+    
     # nothing to log
     if ((verbose && length(results$logging_data) == 0) ||
         (!verbose && !results$logging_data)) {
       message("Nothing detected")
       return(NULL)
     }
-
+    
     # Empty Lines --------------------------------------------------------------
     # empty lines at the ending of the scirpt are excluded by parseData.
     lines_to_append <- lapply(scripts, function(x) {
@@ -264,18 +267,18 @@ originize_wrap <-
       to_append <- pos_empty_lines[pos_empty_lines > max(pos_filled_lines)]
       return(to_append)
     })
-
+    
     lines_to_append <- stats::setNames(lines_to_append, files)
-
-
+    
+    
     lines_to_append <- Filter(function(x) length(x)  > 0, lines_to_append)
-
+    
     if (length(lines_to_append) > 0) {
       for (file in files) {
         results$to_write[[file]][lines_to_append[[file]]] <- ""
       }
     }
-
+    
     # invoke logging
     if (verbose) {
       if (type == "insertText") {
@@ -284,7 +287,7 @@ originize_wrap <-
         # than lines selected and the assignment would fial
         if (!is.null(selected_lines)) {
           results$logging_data$line <- selected_lines[results$logging_data$line] # nocov
-
+          
           # only for running tests
         } else {
           results$logging_data$line <- seq_along(results$logging_data[[1]])
@@ -296,7 +299,7 @@ originize_wrap <-
           use_markers = use_markers)
       }
     }
-
+    
     if (overwrite) {
       # overwrite script files
       out <- apply_changes(
@@ -305,11 +308,11 @@ originize_wrap <-
         init_script = scripts,
         type = type,
         context = context)
-
+      
     } else {
       out <- NULL
     }
-
+    
     return(invisible(out))
   }
 # End Exclude Linting

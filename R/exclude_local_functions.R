@@ -9,6 +9,7 @@
 #' @param scripts list of r scripts
 #' @param path_to_local_functions specific path to loacal functions.
 #'   Defaults to "."
+#' @template ask_before_applying_changes
 #'
 #' @return cleaned functions-list
 #' @noRd
@@ -16,7 +17,8 @@ exclude_local_functions <- function(functions,
                                     files,
                                     scripts,
                                     path_to_local_functions,
-                                    script_collapsed) {
+                                    script_collapsed,
+                                    ask_before_applying_changes = TRUE) {
   # get root path of the current project
   if (is.null(path_to_local_functions)) {
     project_path <- try(rstudioapi::getActiveProject())
@@ -111,7 +113,8 @@ exclude_local_functions <- function(functions,
         if (any(local_dup_funs_in_script)) {
           # inform the user
           solve_local_duplicates(
-            local_dups_with_pkg[local_dup_funs_in_script])
+            local_dups_with_pkg[local_dup_funs_in_script],
+            ask_before_applying_changes = ask_before_applying_changes)
 
           # exclude these local functions from originizing
           functions <-
