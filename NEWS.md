@@ -1,4 +1,4 @@
-# origin 1.1.0
+# origin 1.1.0 (02 Nov 2022)
 ### Features
 - `check_pck_usage` now allows for no provided packages, resulting in checking
   all standard R packages.
@@ -19,7 +19,7 @@
 - Methods called from RC/R6 classes via (`instance$method()`) are no longer 
   flagged as functions.
 
-# origin 1.0.0
+# origin 1.0.0 (24 Oct 2022)
 This is a new release of `origin` with significant changes and improvements. 
 It adds a complete new purpose by checking the actual usage of packages in a 
 project. Under the hood, parsed code rather than regexes are used to originize
@@ -46,7 +46,7 @@ A detailed data.frame output, hidden under the custom `print` method,
 gives a deep dive of which functions are used how often.
   
 
-# origin 0.5.3
+# origin 0.5.3 (22 Sep 2021)
 - Fixed function documentation files to add missing Rd-tags
 - Fixed the description field in the DESCRIPTION file to single quote 'RStudio'.
   Both fixes are to meet requirements to submit on CRAN.
