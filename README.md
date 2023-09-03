@@ -6,7 +6,7 @@
 | branch        | main | dev  |
 | ------------- | ------ | ---- |
 | R CMD check   | [![main](https://github.com/mnist91/origin/actions/workflows/r-cmd-check-fix.yml/badge.svg?branch=main)](https://github.com/mnist91/origin/actions/workflows/r-cmd-check-fix.yml) | [![dev](https://github.com/mnist91/origin/actions/workflows/r-cmd-check-fix.yml/badge.svg?branch=dev)](https://github.com/mnist91/origin/actions/workflows/r-cmd-check-fix.yml) |
-| test coverage | [![main-test-coverage](https://img.shields.io/codecov/c/github/mnist91/origin/main.svg)](https://codecov.io/gh/mnist91/origin/branch/main) | [![dev-test-coverage](https://img.shields.io/codecov/c/github/mnist91/origin/dev.svg)](https://codecov.io/gh/mnist91/origin/branch/dev) |
+| test coverage | [![main-test-coverage](https://img.shields.io/codecov/c/github/mnist91/origin/main.svg)](https://app.codecov.io/gh/mnist91/origin/branch/main) | [![dev-test-coverage](https://img.shields.io/codecov/c/github/mnist91/origin/dev.svg)](https://app.codecov.io/gh/mnist91/origin/branch/dev) |
 | lints         | [![main-lints](https://github.com/mnist91/origin/actions/workflows/lints.yml/badge.svg?branch=main)](https://github.com/mnist91/origin/actions/workflows/lints.yml) | [![dev-lints](https://github.com/mnist91/origin/actions/workflows/lints.yml/badge.svg?branch=dev)](https://github.com/mnist91/origin/actions/workflows/lints.yml) |
 
 
