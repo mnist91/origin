@@ -52,7 +52,7 @@ testthat::test_that("Test find functions", {
     "123",
     "}",
     # anonymous functions are introduced with R Version 4.1
-    if (getRversion() >= 4.1) {
+    if (getRversion() >= "4.1") {
     "myfun = function(x = 3) {1
       anotherfun <- function() 3
       }

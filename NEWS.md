@@ -1,3 +1,9 @@
+# origin 1.1.1 (03 Sep 2023)
+### Bugfix
+- Due to the change of _R_CHECK_STOP_ON_INVALID_NUMERIC_VERSION_INPUTS_=true,
+a test now trhows an error. This has been fixed in this new patch.
+
+
 # origin 1.1.0 (02 Nov 2022)
 ### Features
 - `check_pck_usage` now allows for no provided packages, resulting in checking
