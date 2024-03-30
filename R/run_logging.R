@@ -12,7 +12,7 @@ run_logging <- function(dat, use_markers) {
     return(invisible(NULL))
   }
 
-  # infoke markers tabs
+  # invoke markers tabs
   if (use_markers) {
     rstudioapi::sourceMarkers(name = "origin",
                               markers = dat)
