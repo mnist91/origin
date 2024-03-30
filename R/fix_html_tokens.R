@@ -70,7 +70,7 @@ add_color <- function(dat, type, start_string, end_string,
   }
 
   # how many characters were added
-  # relevant for reverting data 
+  # relevant for reverting data
   dat[rel_tokens, "pkg_nchar"] <-
     dat[rel_tokens, "pkg_nchar"] + nchar(start_string) + nchar(end_string)
 
@@ -97,7 +97,9 @@ make_logging_data <- function(dat, use_markers, type_fun) {
   }
 
   # html strings to wrap highlighted areas
-  if (use_markers) {
+  # html format is not supported anymore:
+  # see: https://github.com/rstudio/rstudio/issues/10062#issuecomment-1044883002
+  if (use_markers & FALSE) {
     ins_start_string <- sprintf('<text style="color: %s;">',
                                 getOption("origin.color_added_package"))
     mis_start_string <-  sprintf('<text style="color: %s;">',
