@@ -11,22 +11,26 @@ jobs:
       fail-fast: false
       matrix:
         config:
+          # WINDOWS
           - {os: windows-latest, r: '3.6'}
           - {os: windows-latest, r: '4.0'}
           - {os: windows-latest, r: '4.2'}
+          # MAC
           - {os: macOS-latest, r: '3.6'}
           - {os: macOS-latest, r: '4.0'}
           - {os: macOS-latest, r: '4.2'}
-          - {os: ubuntu-20.04, r: '3.6', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04, r: '4.0', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04, r: '4.2', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          # LINUX
+          - {os: ubuntu-latest, r: '3.6'}
+          - {os: ubuntu-latest, r: '4.0'}
+          - {os: ubuntu-latest, r: '4.2'}
+
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -36,10 +40,13 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2.2.8
+      - name: Session info
+        run: version
+        shell: Rscript {0}
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          cache-version: 3
-          extra-packages: any::rcmdcheck, local::.
+          extra-packages: any::rcmdcheck
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
