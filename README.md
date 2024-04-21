@@ -1,7 +1,9 @@
-# origin - 1.1.0 <img src="misc/origin.png" width=170 align="right" />
+# origin - 1.1.2 <img src="misc/origin.png" width=170 align="right" />
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/origin)](https://cran.r-project.org/package=origin)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/origin)](https://cran.r-project.org/package=origin)
+[![codecov](https://codecov.io/gh/mnist91/origin/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mnist91/origin?branch=main)
+[![R-CMD-check](https://github.com/mnist91/origin/actions/workflows/r-cmd-check-fix.yml/badge.svg)](https://github.com/mnist91/origin/actions/workflows/r-cmd-check-fix.yml)
 
 | branch        | main | dev  |
 | ------------- | ------ | ---- |
