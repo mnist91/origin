@@ -9,7 +9,7 @@
       -- Unused Packages: 0 ----------------------------------------------------------
       
       -- Possible Namespace Conflicts:  26 -------------------------------------------
-    Message <cliMessage>
+    Message
       x A    pkg1 >> pkg2
       x B    pkg1 >> pkg2
       x C    pkg1 >> pkg2
@@ -23,7 +23,7 @@
       x ... and 16 more: K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     Output
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -38,7 +38,7 @@
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
       [36m--[39m [1mPossible Namespace Conflicts:  26[22m [36m-------------------------------------------[39m
-    Message <cliMessage>
+    Message
       [31mx[39m A    pkg1 >> pkg2
       [31mx[39m B    pkg1 >> pkg2
       [31mx[39m C    pkg1 >> pkg2
@@ -52,7 +52,7 @@
       [31mx[39m ... and 16 more: K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     Output
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 
@@ -67,7 +67,7 @@
       -- Unused Packages: 0 ----------------------------------------------------------
       
       -- Possible Namespace Conflicts:  26 -------------------------------------------
-    Message <cliMessage>
+    Message
       x AAA         user_defined_functions >> pkg2
       x BBBB        user_defined_functions >> pkg2
       x CCCCCCCC    user_defined_functions >> pkg2
@@ -81,7 +81,7 @@
       x ... and 16 more: KKKK, LLLLLLLL, MMM, NNNN, OOOOOOOO, PPP, QQQQ, RRRRRRRR,....
     Output
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -96,7 +96,7 @@
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
       [36m--[39m [1mPossible Namespace Conflicts:  26[22m [36m-------------------------------------------[39m
-    Message <cliMessage>
+    Message
       [31mx[39m AAA         user_defined_functions >> pkg2
       [31mx[39m BBBB        user_defined_functions >> pkg2
       [31mx[39m CCCCCCCC    user_defined_functions >> pkg2
@@ -110,7 +110,7 @@
       [31mx[39m ... and 16 more: KKKK, LLLLLLLL, MMM, NNNN, OOOOOOOO, PPP, QQQQ, RRRRRRRR,....
     Output
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 
@@ -130,7 +130,7 @@
       x C     x H
       x D     x I
       x E     x J
-    Message <cliMessage>
+    Message
       x ... and 16 more: K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
       
 
@@ -150,7 +150,7 @@
       [31mx[39m C     [31mx[39m H
       [31mx[39m D     [31mx[39m I
       [31mx[39m E     [31mx[39m J
-    Message <cliMessage>
+    Message
       [31mx[39m ... and 16 more: K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
       
 
@@ -167,7 +167,7 @@
       -- Specifically (`pkg::fun()`) further used Packages: 1 ------------------------
       i pkg1
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -184,7 +184,7 @@
       [36m--[39m [1mSpecifically (`pkg::fun()`) further used Packages: 1[22m [36m------------------------[39m
       [32mi[39m pkg1
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 
@@ -199,7 +199,7 @@
       
       -- Unused Packages: 0 ----------------------------------------------------------
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -214,7 +214,7 @@
       
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 
@@ -230,7 +230,7 @@
       
       -- Unused Packages: 0 ----------------------------------------------------------
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -246,7 +246,7 @@
       
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 
@@ -267,7 +267,7 @@
       i F     i M
       i G     
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -288,7 +288,7 @@
       [33mi[39m F     [33mi[39m M
       [33mi[39m G     
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 
@@ -315,7 +315,7 @@
       
       -- Unused Packages: 0 ----------------------------------------------------------
       
-    Message <cliMessage>
+    Message
       v All used functions defined! 🥳
       
 
@@ -342,7 +342,7 @@
       
       [36m--[39m [1mUnused Packages: 0[22m [36m----------------------------------------------------------[39m
       
-    Message <cliMessage>
+    Message
       [32mv[39m All used functions defined! 🥳
       
 

@@ -1,3 +1,11 @@
+# origin 1.1.2 (21 Apr 2024)
+### Bugfix
+- `rstudioapi::sourceMarkers` does not allow for HTML styling anymore since 
+  RStudio verison [2023.03.0](https://docs.posit.co/ide/news/#rstudio-ide-10). 
+  See more about this  [here](https://github.com/rstudio/rstudio/issues/12425)
+  and [here](https://github.com/rstudio/rstudio/issues/10062). 
+  Thanks for Dschaykip raising this issue (#6).
+  
 # origin 1.1.1 (03 Sep 2023)
 ### Bugfix
 - Due to the change of _R_CHECK_STOP_ON_INVALID_NUMERIC_VERSION_INPUTS_=true,

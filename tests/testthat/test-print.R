@@ -146,7 +146,8 @@ cli::test_that_cli(
 
 cli::test_that_cli(
   configs = c("plain", "ansi"),
-  "print.pkg_usage - used packages", {
+  desc = "print.pkg_usage - used packages", 
+  code = {
     res <- data.frame(pkg           = LETTERS,
                       fun           = letters,
                       n_calls       = 1,
