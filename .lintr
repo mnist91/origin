@@ -1,41 +1,41 @@
 linters: lintr::linters_with_defaults(
   trailing_whitespace_linter = NULL,
-  # T_and_F_symbol_linter = lintr::T_and_F_symbol_linter,
+  indentation_linter = NULL,
+  lintr::T_and_F_symbol_linter(),
   lintr::line_length_linter(80L),
     lintr::assignment_linter(allow_cascading_assign = FALSE,
                              allow_right_assign = FALSE,
                              allow_trailing = TRUE),
   lintr::brace_linter(allow_single_line = FALSE),
-  # commas_linter = lintr::commas_linter,
+  lintr::commas_linter(),
   # commented_code_linter = lintr::commented_code_linter,
   lintr::cyclocomp_linter(complexity_limit = 30),
   object_usage_linter = NULL,
   lintr::object_name_linter(styles = "snake_case"),
   lintr::object_length_linter(length = 30L),
-  # equals_na_linter = lintr::equals_na_linter,
-  # function_left_parentheses_linter = lintr::function_left_parentheses_linter,
-  # infix_spaces_linter = lintr::infix_spaces_linter,
+  lintr::equals_na_linter(),
+  lintr::function_left_parentheses_linter(),
+  lintr::infix_spaces_linter(),
   # no_tab_linter = lintr::no_tab_linter,
-  # paren_brace_linter = lintr::paren_brace_linter,
+  lintr::brace_linter(),
   lintr::absolute_path_linter(lax = TRUE),
   lintr::nonportable_path_linter(lax = TRUE),
-  # pipe_continuation_linter = lintr::pipe_continuation_linter,
+  lintr::pipe_continuation_linter(),
   lintr::semicolon_linter(),
-  # seq_linter = lintr::seq_linter,
-  # single_quotes_linter = lintr::single_quotes_linter,
-  # spaces_inside_linter = lintr::spaces_inside_linter,
-  # spaces_left_parentheses_linter = lintr::spaces_left_parentheses_linter,
+  lintr::seq_linter(),
+  lintr::quotes_linter(),
+  lintr::spaces_inside_linter(),
+  lintr::spaces_left_parentheses_linter(),
     lintr::undesirable_function_linter(
       fun = c(lintr::default_undesirable_functions[
         !names(lintr::default_undesirable_functions)
         %in% c("mapply", "options")])),
     lintr::undesirable_operator_linter(
       op = c(lintr::default_undesirable_operators)),
-  lintr::unneeded_concatenation_linter(allow_single_expression = FALSE))
+  lintr::unnecessary_concatenation_linter(allow_single_expression = FALSE))
 exclusions: list("R/zzz.R",
                  "tests/testthat/test_origin_file.R",
                  "tests/testthat/test_verbolize.R")
 exclude: "# Exclude Linting"
 exclude_start: "# Begin Exclude Linting"
 exclude_end: "# End Exclude Linting"
-
