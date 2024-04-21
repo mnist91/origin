@@ -8,6 +8,7 @@
 ^\.github$
 ^data-raw$
 .lintr
+man/test.R
 man-roxygen
 .covrignore
 ^docs
