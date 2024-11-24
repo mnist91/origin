@@ -15,7 +15,8 @@
     origin.excluded_functions = list(),
     origin.check_local_conflicts = TRUE,
     origin.path_to_local_functions = NULL,
-    origin.verbose = TRUE
+    origin.verbose = TRUE,
+    origin.filetypes = "R"
   )
 
   to_set <- !(names(optns_origin) %in% names(optns))

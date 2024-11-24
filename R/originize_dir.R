@@ -38,6 +38,7 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
+#' @template filetypes
 #'
 #' @return No return value, called for side effects
 #'
@@ -55,6 +56,7 @@
 #'                                         c("last", "first")),
 #'               exclude_files = c("dont_originize_this.R",
 #'                                 "dont_originize_that.R"),
+#'               filetypes = c(".R", ".rmd", ".qmd"),
 #'               verbose = TRUE)
 #' }
 originize_dir <-
@@ -82,7 +84,9 @@ originize_dir <-
     verbose =
       getOption("origin.verbose", FALSE),
     use_markers =
-      getOption("origin.use_markers_for_logging", TRUE)
+      getOption("origin.use_markers_for_logging", TRUE),
+    filetypes =
+      getOption("origin.filetypes", "R")
   ) {
     
     if (!check_base_conflicts && add_base_packages) {
@@ -90,13 +94,18 @@ originize_dir <-
            "potential conflicts is required!")
     }
     
+    # make regex from requested filetypes --------------------------------------
+    # remove point rather than add it to make standardizing process easier
+    filetype_pattern <- make_filetype_pattern(filetypes)
+    
+    # list files to originize --------------------------------------------------
     files <- list_files(path = path,
                         exclude_folders = c("renv", "packrat",
                                             ".git", ".Rproj"),
                         full.names = TRUE,
                         include.dirs = FALSE,
                         recursive = recursive,
-                        pattern = "\\.R$",
+                        pattern = filetype_pattern,
                         ignore.case = TRUE)
     
     
@@ -155,7 +164,16 @@ originize_dir <-
       files <- files[!empty_scripts]
     }
     
+    scripts_clean <- Map(f = function(f, s) {
+      if (is_rmd_file(f)) {
+        return(extract_r_chunks(s))
+      } else {
+        return(s)
+      }
+    }, files, scripts)
+    
     originize_wrap(scripts = scripts,
+                   scripts_clean = scripts_clean,
                    files = files,
                    type = "writeLines",
                    pkgs = pkgs,

@@ -82,6 +82,8 @@ check the environment but solely parses files and scans them for function defini
 * `verbose`: some sort of logging is performed, either in the 
 console or via the markers tab in RStudio.
 * `use_markers`: whether to use the Markers tab in RStudio.
+* `filetypes`: Which filetypes to consider. 
+Currently, origin supports .R, .Rmd, and .Qmd (Quarto) files.
 
 
 

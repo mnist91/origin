@@ -1,20 +1,29 @@
+# origin 1.2.0 (24 Nov 2024)
+### Features
+- Origin now supports .rmd (R-Markdown) and .qmd (Quarto) files. 
+  For `originze_dir` and `originize_pkg`, default remains to be .R files only.
+  This can be changed by setting the `filetypes` argument or
+  the `origin.filetypes` option. Thanks to @nathanhaigh for raising the issue   
+  [#7](https://github.com/mnist91/origin/issues/7).
+
 # origin 1.1.2 (21 Apr 2024)
 ### Bugfix
 - `rstudioapi::sourceMarkers` does not allow for HTML styling anymore since 
-  RStudio verison [2023.03.0](https://docs.posit.co/ide/news/#rstudio-ide-10). 
+  RStudio version [2023.03.0](https://docs.posit.co/ide/news/#rstudio-ide-10). 
   See more about this  [here](https://github.com/rstudio/rstudio/issues/12425)
   and [here](https://github.com/rstudio/rstudio/issues/10062). 
-  Thanks for Dschaykip raising this issue (#6).
+  Thanks for @Dschaykip raising this issue 
+  [#6](https://github.com/mnist91/origin/issues/6).
   
 # origin 1.1.1 (03 Sep 2023)
 ### Bugfix
 - Due to the change of _R_CHECK_STOP_ON_INVALID_NUMERIC_VERSION_INPUTS_=true,
-a test now trhows an error. This has been fixed in this new patch.
+a test now throws an error. This has been fixed in this new patch.
 
 
 # origin 1.1.0 (02 Nov 2022)
 ### Features
-- `check_pck_usage` now allows for no provided packages, resulting in checking
+- `check_pkg_usage` now allows for no provided packages, resulting in checking
   all standard R packages.
 - enhanced `print.pkg_usage()` function. Using {cli} to properly style console 
   outputs. 

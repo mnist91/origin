@@ -18,7 +18,8 @@ originize_dir(
   add_base_packages = getOption("origin.add_base_packages", FALSE),
   excluded_functions = getOption("origin.excluded_functions", list()),
   verbose = getOption("origin.verbose", FALSE),
-  use_markers = getOption("origin.use_markers_for_logging", TRUE)
+  use_markers = getOption("origin.use_markers_for_logging", TRUE),
+  filetypes = getOption("origin.filetypes", "R")
 )
 }
 \arguments{
@@ -76,6 +77,11 @@ namespace conflicts or highlighting popular infix functions like
 \item{use_markers}{a boolean. If TRUE, the markers tab inn RStudio is used
 to track changes and show issues. FALSE prints the same information in
 the console.}
+
+\item{filetypes}{which types of files to originize. 
+Currently supported filetypes are .R, .RMD, .QMD. By default, R-files only
+are considered.
+Note: leading points are optional and upper/lower case are not considered.}
 }
 \value{
 No return value, called for side effects
@@ -113,6 +119,7 @@ originize_dir(path = "folder_to_originize",
                                         c("last", "first")),
               exclude_files = c("dont_originize_this.R",
                                 "dont_originize_that.R"),
+              filetypes = c(".R", ".rmd", ".qmd"),
               verbose = TRUE)
 }
 }

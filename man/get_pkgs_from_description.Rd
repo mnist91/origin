@@ -7,7 +7,7 @@
 get_pkgs_from_description(path = NULL)
 }
 \arguments{
-\item{path}{Path to a DESC>RIPTION file, If `NULL` (default), the functions
+\item{path}{Path to a DESCRIPTION file, If `NULL` (default), the functions
 searches for a description file in the current active project}
 }
 \value{

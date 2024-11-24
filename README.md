@@ -85,6 +85,7 @@ This is especially useful when using the RStudio Addins.
   - `origin.color_added_package`: hex code highlighting insertions.
   - `origin.color_missed_function`: hex code highlighting potential missings.
   - `origin.color_infix_function`: hex code highlighting infix functions (see discussion).
+  - `origin.filetypes`: Which filetypes to consider. Now origin supports .R, .Rmd, and .Qmd (Quarto) files.
 
 
 ### Considered Packages

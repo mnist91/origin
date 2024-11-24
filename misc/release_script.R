@@ -37,21 +37,21 @@ devtools::spell_check()
 # Run goodpractice check
 goodpractice::gp()
 
-# Check package dependencies
-inteRgrate::check_pkg()
-
-# Check if code adheres to standards
-inteRgrate::check_lintr()
-
-# Check if your description is tidy
-inteRgrate::check_tidy_description()
+# # Check package dependencies
+# inteRgrate::check_pkg()
+# 
+# # Check if code adheres to standards
+# inteRgrate::check_lintr()
+# 
+# # Check if your description is tidy
+# inteRgrate::check_tidy_description()
 usethis::use_tidy_description()
 
-# Check if file names are correct
-inteRgrate::check_r_filenames()
-
-# Check if .gitignore contains standard files
-inteRgrate::check_gitignore()
+# # Check if file names are correct
+# inteRgrate::check_r_filenames()
+# 
+# # Check if .gitignore contains standard files
+# inteRgrate::check_gitignore()
 
 # Update cran-comments.md
 devtools::check()

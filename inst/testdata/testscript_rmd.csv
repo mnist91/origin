@@ -1,0 +1,171 @@
+TESTSKRIPT;TARGET
+---;---
+title: "tes_markdown";title: "tes_markdown"
+output: html_document;output: html_document
+date: "2024-11-03";date: "2024-11-03"
+---;---
+;
+```{r setup, include=FALSE};```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE);knitr::opts_chunk$set(echo = TRUE)
+```;```
+;
+## R Markdown;## R Markdown
+;
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+;
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:;When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+;
+```{r cars};```{r cars}
+summary(cars);summary(cars)
+data.table(blud);data.table::data.table(blud)
+```;```
+;
+## Full test;## Full test
+;
+Use same Testdata as for regular check;Use same Testdata as for regular check
+;
+```{r pressure, echo=FALSE};```{r pressure, echo=FALSE}
+# regular usage;# regular usage
+irisdt <- as.data.table(iris);irisdt <- data.table::as.data.table(iris)
+;
+# start of a line;# start of a line
+setkey(iris, Species);data.table::setkey(iris, Species)
+;
+# spaces between function and opening bracket;# spaces between function and opening bracket
+setkey (iris, Species);data.table::setkey (iris, Species)
+setkey       (iris, Species);data.table::setkey       (iris, Species)
+;
+# already set;# already set
+data.table::setkey(iris, Species);data.table::setkey(iris, Species)
+data.table::setkey (iris, Species);data.table::setkey (iris, Species)
+data.table::setkey     (iris, Species);data.table::setkey     (iris, Species)
+;
+# function called as is;# function called as is
+setkey;setkey
+;
+# infix functions;# infix functions
+"irisdt[Species %like% ""setosa""]";"irisdt[Species %like% ""setosa""]"
+irisdt[Sepal.Length %between% c(1, 2)];irisdt[Sepal.Length %between% c(1, 2)]
+"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]";"irisdt[Sepal.Length %between% c(1, 2)][Species %like% ""setosa""]"
+irisdt[, new := old];irisdt[, new := old]
+irisdt[, new := (2 + 3) * 4];irisdt[, new := (2 + 3) * 4]
+irisdt[, `:=`(new = old)];irisdt[, `:=`(new = old)]
+"irisdt[, "":=""(new = old)]";"irisdt[, "":=""(new = old)]"
+;
+# variable masks function name;# variable masks function name
+"filter <- 'Species == ""setosa""'";"filter <- 'Species == ""setosa""'"
+;
+# same function used multiple times in the same line;# same function used multiple times in the same line
+"iris %>% filter(Species == ""setosa"") %>% filter(Spepal.Length > 3) %>% filter(TRUE)";"iris %>% dplyr::filter(Species == ""setosa"") %>% dplyr::filter(Spepal.Length > 3) %>% dplyr::filter(TRUE)"
+;
+# mutltiple calls plus usage of a variable with same name as a function;# mutltiple calls plus usage of a variable with same name as a function
+iris %>% filter(filter) %>% filter(Spepal.Length > 3);iris %>% dplyr::filter(filter) %>% dplyr::filter(Spepal.Length > 3)
+;
+# different functions used in the same line;# different functions used in the same line
+"mutate(filter(iris,if_else(Species == ""setosa"", TRUE, FALSE)))";"dplyr::mutate(dplyr::filter(iris,dplyr::if_else(Species == ""setosa"", TRUE, FALSE)))"
+;
+;
+;
+# ignore comments;# ignore comments
+# last()-function exported by both dplyr and data.table;# last()-function exported by both dplyr and data.table
+  # indendet comments are also ignored last();  # indendet comments are also ignored last()
+  last()   # comments in the same line as code last();  data.table::last()   # comments in the same line as code last()
+;
+# id() is a dplyr function;# id() is a dplyr function
+id <- 54;id <- 54
+last(id);data.table::last(id)
+szen <- last(id);szen <- data.table::last(id)
+last(szen);data.table::last(szen)
+id(id);dplyr::id(id)
+;
+;
+# functional programming. Only checked if explicitly called.;# functional programming. Only checked if explicitly called.
+lapply(iris, bind_cols);lapply(iris, bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols);       FUN = dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols );       FUN = dplyr::bind_cols )
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols      );       FUN = dplyr::bind_cols      )
+lapply(X = iris,;lapply(X = iris,
+       FUN=bind_cols);       FUN=dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN= bind_cols);       FUN= dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN =bind_cols);       FUN =dplyr::bind_cols)
+lapply(X = iris,;lapply(X = iris,
+       FUN = bind_cols_2);       FUN = bind_cols_2)
+lapply(X = iris,;lapply(X = iris,
+       FUN =bind_cols, ...);       FUN =dplyr::bind_cols, ...)
+lapply(X = iris,;lapply(X = iris,
+       FUN =bind_cols , ...);       FUN =dplyr::bind_cols , ...)
+;
+# purrr-style;# purrr-style
+map(iris,;purrr::map(iris,
+    bind_cols);    bind_cols)
+map(iris, bind_cols);purrr::map(iris, bind_cols)
+map(iris,;purrr::map(iris,
+    .f = bind_cols);    .f = dplyr::bind_cols)
+map(iris, .f =bind_cols);purrr::map(iris, .f =dplyr::bind_cols)
+;
+# exclamation mark;# exclamation mark
+if (!is.data.table(dt)) TRUE;if (!data.table::is.data.table(dt)) TRUE
+;
+# square brackets;# square brackets
+dt[as.IDate(myvar)];dt[data.table::as.IDate(myvar)]
+;
+# curly brackets;# curly brackets
+myfun <- function(x) {copy(x)};myfun <- function(x) {data.table::copy(x)}
+;
+# mathematical operators;# mathematical operators
+2*n_distinct(tib$VAR1)+n_distinct(tib$VAR1)-n_distinct(tib$VAR1)/n_distinct(tib$VAR1)^n_distinct(tib$VAR1);2*dplyr::n_distinct(tib$VAR1)+dplyr::n_distinct(tib$VAR1)-dplyr::n_distinct(tib$VAR1)/dplyr::n_distinct(tib$VAR1)^dplyr::n_distinct(tib$VAR1)
+;
+# comparisons;# comparisons
+3>n(tib)&n(tib)<2&3<n(tib)|5>=n(tib)|n(tib)==n(tib2);3>dplyr::n(tib)&dplyr::n(tib)<2&3<dplyr::n(tib)|5>=dplyr::n(tib)|dplyr::n(tib)==dplyr::n(tib2)
+;
+# HTMLs;# HTMLs
+"mutate(x = ""<div> Hi! <\\div>"") %>% filter(length)";"dplyr::mutate(x = ""<div> Hi! <\\div>"") %>% dplyr::filter(length)"
+;
+# very long strings;# very long strings;
+"long_code <- mutate(x = 'Lorem ipsum dolor sit amet,\\n consectetur adipiscing elit,";"long_code <- dplyr::mutate(x = 'Lorem ipsum dolor sit amet,\\n consectetur adipiscing elit,"
+"                         sed do eiusmod tempor incididunt ut";"                         sed do eiusmod tempor incididunt ut"
+"                         sed do eiusmod tempor incididunt')";"                         sed do eiusmod tempor incididunt')"
+# very very ling string >1000 characters;# very very ling string >1000 characters
+"x <- 'apply_changes <- function(ask_before_applying_changes,";"x <- 'apply_changes <- function(ask_before_applying_changes,"
+"                          result,";"                          result,"
+"                          init_script,";"                          init_script,"
+"                          type,";"                          type,"
+"                          context = NULL) {";"                          context = NULL) {"
+"  ";"  "
+"    # if changes were made, ask user if those can be overwrite the files";"    # if changes were made, ask user if those can be overwrite the files"
+"  } else {";"  } else {"
+"    if (type == ""writeLines"") {";"    if (type == ""writeLines"") {"
+"      # extract non-empty new scripts";"      # extract non-empty new scripts"
+"      new_scripts <- result$to_write[!unchanged]";"      new_scripts <- result$to_write[!unchanged]"
+"      # assign scripts where changes are made";"      # assign scripts where changes are made"
+"      mapply(new_scripts,";"      mapply(new_scripts,"
+"             names(new_scripts),";"             names(new_scripts),"
+"             FUN = function(x, f) {";"             FUN = function(x, f) {"
+"               # NOTE: EOL-Issue:";"               # NOTE: EOL-Issue:"
+"               # If a file does not end in an EOL mark (LF or CRLF),";"               # If a file does not end in an EOL mark (LF or CRLF),"
+"               # this often indicates a broken text file.";"               # this often indicates a broken text file."
+"               # readLines() does not read in the last line but triggers a";"               # readLines() does not read in the last line but triggers a"
+"               # warning of a file does not end in a EOL mark. ";"               # warning of a file does not end in a EOL mark. "
+"               # Instead of using tryCatch to use these warnings to ";"               # Instead of using tryCatch to use these warnings to "
+"               # determine if a final line existed, all returned scripts ";"               # determine if a final line existed, all returned scripts "
+"               # will end with a final line which is";"               # will end with a final line which is"
+"               # consistent with git. x[length(x) + 1] <- """;"               # consistent with git. x[length(x) + 1] <- """
+"               ";"               "
+"               writeLines(text = x,";"               writeLines(text = x,"
+"                          con = f)})' %>% paste()";"                          con = f)})' %>% paste()"
+"'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis tellus in metus vulputate eu scelerisque felis. Commodo elit at imperdiet dui. In fermentum et sollicitudin ac orci phasellus egestas tellus. Vel risus commodo viverra maecenas. Urna neque viverra justo nec. Nec dui nunc mattis enim ut. Donec pretium vulputate sapien nec sagittis. Blandit cursus risus at ultrices. Leo urna molestie at elementum eu facilisis. Dignissim convallis aenean et tortor at risus. In cursus turpis massa tincidunt dui ut. Nec feugiat in fermentum posuere. At consectetur lorem donec massa sapien faucibus et molestie. Libero enim sed faucibus turpis in eu mi bibendum neque. Metus dictum at tempor commodo. Sed felis eget velit aliquet sagittis id consectetur. Mi sit amet mauris commodo quis imperdiet massa. Viverra vitae congue eu consequat. Tellus cras adipiscing enim eu. Id ornare arcu odio ut. Auctor neque vitae tempus quam pellentesque nec. Sodales ut etiam sit amet nisl purus. Nec feugiat in fermentum posuere urna. Urna id volutpat lacus laoreet non curabitur gravida arcu. Vel elit scelerisque mauris pellentesque pulvinar. Convallis posuere morbi leo urna molestie at elementum eu.'";'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis tellus in metus vulputate eu scelerisque felis. Commodo elit at imperdiet dui. In fermentum et sollicitudin ac orci phasellus egestas tellus. Vel risus commodo viverra maecenas. Urna neque viverra justo nec. Nec dui nunc mattis enim ut. Donec pretium vulputate sapien nec sagittis. Blandit cursus risus at ultrices. Leo urna molestie at elementum eu facilisis. Dignissim convallis aenean et tortor at risus. In cursus turpis massa tincidunt dui ut. Nec feugiat in fermentum posuere. At consectetur lorem donec massa sapien faucibus et molestie. Libero enim sed faucibus turpis in eu mi bibendum neque. Metus dictum at tempor commodo. Sed felis eget velit aliquet sagittis id consectetur. Mi sit amet mauris commodo quis imperdiet massa. Viverra vitae congue eu consequat. Tellus cras adipiscing enim eu. Id ornare arcu odio ut. Auctor neque vitae tempus quam pellentesque nec. Sodales ut etiam sit amet nisl purus. Nec feugiat in fermentum posuere urna. Urna id volutpat lacus laoreet non curabitur gravida arcu. Vel elit scelerisque mauris pellentesque pulvinar. Convallis posuere morbi leo urna molestie at elementum eu.'"
+;
+# Very Long Comment;# Very Long Comment
+# Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis tellus in metus vulputate eu scelerisque felis. Commodo elit at imperdiet dui. In fermentum et sollicitudin ac orci phasellus egestas tellus. Vel risus commodo viverra maecenas. Urna neque viverra justo nec. Nec dui nunc mattis enim ut. Donec pretium vulputate sapien nec sagittis. Blandit cursus risus at ultrices. Leo urna molestie at elementum eu facilisis. Dignissim convallis aenean et tortor at risus. In cursus turpis massa tincidunt dui ut. Nec feugiat in fermentum posuere. At consectetur lorem donec massa sapien faucibus et molestie. Libero enim sed faucibus turpis in eu mi bibendum neque. Metus dictum at tempor commodo. Sed felis eget velit aliquet sagittis id consectetur. Mi sit amet mauris commodo quis imperdiet massa. Viverra vitae congue eu consequat. Tellus cras adipiscing enim eu. Id ornare arcu odio ut. Auctor neque vitae tempus quam pellentesque nec. Sodales ut etiam sit amet nisl purus. Nec feugiat in fermentum posuere urna. Urna id volutpat lacus laoreet non curabitur gravida arcu. Vel elit scelerisque mauris pellentesque pulvinar. Convallis posuere morbi leo urna molestie at elementum eu.;# Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis tellus in metus vulputate eu scelerisque felis. Commodo elit at imperdiet dui. In fermentum et sollicitudin ac orci phasellus egestas tellus. Vel risus commodo viverra maecenas. Urna neque viverra justo nec. Nec dui nunc mattis enim ut. Donec pretium vulputate sapien nec sagittis. Blandit cursus risus at ultrices. Leo urna molestie at elementum eu facilisis. Dignissim convallis aenean et tortor at risus. In cursus turpis massa tincidunt dui ut. Nec feugiat in fermentum posuere. At consectetur lorem donec massa sapien faucibus et molestie. Libero enim sed faucibus turpis in eu mi bibendum neque. Metus dictum at tempor commodo. Sed felis eget velit aliquet sagittis id consectetur. Mi sit amet mauris commodo quis imperdiet massa. Viverra vitae congue eu consequat. Tellus cras adipiscing enim eu. Id ornare arcu odio ut. Auctor neque vitae tempus quam pellentesque nec. Sodales ut etiam sit amet nisl purus. Nec feugiat in fermentum posuere urna. Urna id volutpat lacus laoreet non curabitur gravida arcu. Vel elit scelerisque mauris pellentesque pulvinar. Convallis posuere morbi leo urna molestie at elementum eu.
+;
+# Methods;# Methods
+myclass$last();myclass$last()
+myclass@last();myclass@last()
+```;```
+;
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.;Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

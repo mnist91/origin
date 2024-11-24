@@ -1,6 +1,6 @@
 #' Get Packages from the DESCRIPTION file
 #'
-#' @param path Path to a DESC>RIPTION file, If `NULL` (default), the functions
+#' @param path Path to a DESCRIPTION file, If `NULL` (default), the functions
 #'         searches for a description file in the current active project
 #'
 #' @description It looks for a DESCRIPTION file in the current project and

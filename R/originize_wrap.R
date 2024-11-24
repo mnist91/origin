@@ -31,6 +31,7 @@ originize_wrap <-
            files,
            type,
            pkgs,
+           scripts_clean = scripts,
            overwrite = TRUE,
            ask_before_applying_changes =TRUE,
            check_conflicts = TRUE,
@@ -43,6 +44,7 @@ originize_wrap <-
            path_to_local_functions = NULL,
            selected_lines = NULL,
            context = NULL) {
+    # End Exclude Linting
     
     # Parameter checks ---------------------------------------------------------
     if (!is.null(path_to_local_functions) &&
@@ -81,7 +83,6 @@ originize_wrap <-
                  "`options(origin.pkgs = c('pkg', ...))`",
                  "or the `pkgs` argument."))
     }
-    
     # get all exported functions from each package
     functions <- stats::setNames(object = lapply(X   = pkgs,
                                                  FUN = get_exported_functions),
@@ -100,29 +101,30 @@ originize_wrap <-
       stop("You excluded all exported functions from the given packages.")
     }
     
+    
     # check if locally defined functions share names with exported functions
     # from checked packages.
     # Note that all projects R scripts are searched for function definitions
     if (check_local_conflicts) {
-      script_collapsed <- paste(lapply(X = scripts,
+      script_collapsed <- paste(lapply(X = scripts_clean,
                                        FUN = paste,
                                        collapse = ""),
                                 collapse = "")
       functions <- exclude_local_functions(functions,
                                            files,
-                                           scripts,
+                                           scripts_clean,
                                            path_to_local_functions,
                                            script_collapsed,
                                            ask_before_applying_changes)
     }
-    
+
     # parse all scripts
     if (type == "writeLines"){
       script_parsed <- Reduce(f = rbind,
                               lapply(X = files,
                                      FUN = get_parsed_data))
     } else {
-      scripts_vec <- vapply(X = scripts[[1]],
+      scripts_vec <- vapply(X = scripts_clean[[1]],
                             FUN = function(x) {
                               if (length(x) == 0) {
                                 x <- ""
@@ -215,10 +217,10 @@ originize_wrap <-
     # recover very long strings.
     # parse truncates strings that are longer than 1000 characters. To recover
     # the initial input, these strings have to be stored in the data
+    names(scripts_clean) <- files
     names(scripts) <- files
     trunc <- grepl(pattern = "^\\[[0-9]+ chars quoted with",
                    x = script_parsed$text)
-    
     if (any(trunc)) {
       # loop over all truncated strings
       for (tt in which(trunc)) {
@@ -243,6 +245,8 @@ originize_wrap <-
     }
     
     results <- originize(dat = script_parsed,
+                         files = files,
+                         scripts = scripts,
                          functions = functions,
                          pkgs = names(functions),
                          verbose = verbose,
@@ -315,4 +319,3 @@ originize_wrap <-
     
     return(invisible(out))
   }
-# End Exclude Linting

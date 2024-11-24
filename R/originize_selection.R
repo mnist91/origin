@@ -30,31 +30,37 @@ originize_selection <-
     path_to_local_functions = getOption("origin.path_to_local_functions"),
     check_local_conflicts = getOption("origin.check_local_conflicts")
   ) {
-
+    
     if (is.null(context)) {
       message("Nothing selected")
       return(invisible(NULL))
     }
-
+    
     file <- context$path
-
-    # if funciton is run in a unsaved script, use root path a dummy path
+    
+    # if function is run in a unsaved script, use root path a dummy path
     # needed for sourceMarkers
     if (file == "") {
       # TODO: .
       file <- "."
     }
-
+    
     init_text <- context$selection[[1]]$text
+    
     # read file
     script <- strsplit(init_text, split = "\\n")[[1]]
-
+    if (grepl(pattern = "\\.rmd$|\\.qmd$",
+              x = file) &&
+        any(startsWith(script, "```"))) {
+      stop("when originizing rmd/qmd files by selection, ",
+           "do not select parts of non-R chunks")
+    }
+    
     if (verbose) {
       selected_context <- context$selection[[1]]$range
       selected_lines <- selected_context$start[1]:selected_context$end[1]
     }
-
-
+    
     originize_wrap(scripts = list(script),
                    files = file,
                    type = "insertText",
@@ -71,6 +77,6 @@ originize_selection <-
                    check_local_conflicts = check_local_conflicts,
                    selected_lines = selected_lines,
                    context = context)
-
+    
     return(invisible(NULL))
   }

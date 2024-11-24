@@ -18,7 +18,8 @@ originize_pkg(
   verbose = getOption("origin.verbose", FALSE),
   use_markers = getOption("origin.use_markers_for_logging", TRUE),
   path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
-  check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
+  check_local_conflicts = getOption("origin.check_local_conflicts", TRUE),
+  filetypes = getOption("origin.filetypes", "R")
 )
 }
 \arguments{
@@ -77,6 +78,11 @@ RStudio Project root.}
 defined functions inside of the project mask exported functions
 packages listed in pkgs. It avoids mistakenly adding pkg:: to a
 custom local function.}
+
+\item{filetypes}{which types of files to originize. 
+Currently supported filetypes are .R, .RMD, .QMD. By default, R-files only
+are considered.
+Note: leading points are optional and upper/lower case are not considered.}
 }
 \value{
 No return value, called for side effects

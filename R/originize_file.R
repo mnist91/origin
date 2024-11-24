@@ -13,9 +13,11 @@
 #' @template verbose
 #' @template use_markers
 #'
-#' @details check_conflicts checks whether multiple packages listed in pkgs
+#' @details 
+#' Currently supported filetypes are .R, .RMD, and .QMD (Quarto) files.
+#' `check_conflicts` checks whether multiple packages listed in pkgs
 #' export
-#' functions with the same name, e.g. lag() is both part of the dplyr and
+#' functions with the same name, e.g. `lag()` is both part of the dplyr and
 #' data.table namespace. If there are any conflicts actually present
 #' in any considered script, these conflicts are shown including how origin
 #' would solve them. User input is required to proceed. The order in pkgs
@@ -23,10 +25,10 @@
 #' than those listed later in the vector. This is consistent with function
 #' masking in R.
 #'
-#' check_base_conflicts checks whether functions listed in pkgs mask R functions
-#'  of R core packages (base, utils, stats, methods, graphics, grDevices,
-#'  datasets). Even tough the user might not include those functions in the
-#'  pkg::fct logic, potential conflicts require careful evaluation.
+#' `check_base_conflicts` checks whether functions listed in pkgs mask R 
+#'. functions of R core packages (base, utils, stats, methods, graphics, 
+#'  grDevices, datasets). Even tough the user might not include those functions
+#'  in the pkg::fct logic, potential conflicts require careful evaluation.
 #'
 #'
 #' @return No return value, called for side effects
@@ -61,17 +63,42 @@ originize_file <-
     path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
     check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
   ) {
-
+    
     if (!file.exists(file)) {
       stop("No file in this path\n", file)
     }
-
-
-    # read file
+    
+    # check filetype -----------------------------------------------------------
+    # currently supported filetypes
+    supported_filetypes <- c("R", "RMD", "QMD")
+    # R becomes \\.R$
+    supported_filetypes_pattern <- paste("\\.", supported_filetypes, "$",
+                                         sep = "",
+                                         collapse = "|")
+    
+    if (!grepl(x = file,
+               pattern = supported_filetypes_pattern,
+               ignore.case = TRUE)) {
+      stop("Only ",
+           paste(".", supported_filetypes,
+                 sep = "", collapse = ", "),
+           " files are supported\n", 
+           file)
+    }
+    
+    
+    # read file ----------------------------------------------------------------
     script <- suppressWarnings(readLines(file))
-
-
+    script_clean <- if (is_rmd_file(file)) {
+      extract_r_chunks(script)
+    } else {
+      script
+    }
+    
+    
+    # originize ----------------------------------------------------------------
     originize_wrap(scripts = list(script),
+                   scripts_clean = list(script_clean),
                    files = file,
                    type = "writeLines",
                    pkgs = pkgs,
@@ -85,7 +112,7 @@ originize_file <-
                    use_markers = use_markers,
                    path_to_local_functions = path_to_local_functions,
                    check_local_conflicts = check_local_conflicts)
-
+    
     return(invisible(NULL))
-
+    
   }

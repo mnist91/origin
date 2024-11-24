@@ -10,6 +10,8 @@
 #' @return list of information where which package is (potentially) missing
 #' @noRd
 originize <- function(dat,
+                      files,
+                      scripts,
                       functions,
                       pkgs = getOption("origin.pkgs", .packages()),
                       verbose = FALSE,
@@ -53,13 +55,16 @@ originize <- function(dat,
 
 
   dat_out <- fix_column_values(dat_out)
-
-  files <- unique(dat_out$file)
+  files_rel <- unique(dat_out$file)
+  rel <- files %in% files_rel
   result <- stats::setNames(
-    lapply(files,
-           FUN = function(f) {
-             revert_parse_data(dat_out[dat_out$file == f, ])
-           }),
+    Map(f = function(f, s) {
+             revert_parse_data(dat_out[dat_out$file == f, ],
+                               script = s)
+           },
+        files[rel],
+        scripts[rel]
+        ),
     files)
 
 

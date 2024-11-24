@@ -24,6 +24,7 @@
 #' @template excluded_functions
 #' @template verbose
 #' @template use_markers
+#' @template filetypes
 #'
 #' @details check_conflicts checks whether multiple packages listed in pkgs
 #' export
@@ -69,7 +70,8 @@ originize_pkg <-
     verbose = getOption("origin.verbose", FALSE),
     use_markers = getOption("origin.use_markers_for_logging", TRUE),
     path_to_local_functions = getOption("origin.path_to_local_functions", NULL),
-    check_local_conflicts = getOption("origin.check_local_conflicts", TRUE)
+    check_local_conflicts = getOption("origin.check_local_conflicts", TRUE),
+    filetypes = getOption("origin.filetypes", "R")
   ) {
     
     if (!check_base_conflicts && add_base_packages) {
@@ -77,13 +79,15 @@ originize_pkg <-
            "potential conflicts is required!")
     }
     
+    filetype_pattern <- make_filetype_pattern(filetypes)
+    
     files <- list_files(path = path,
                         exclude_folders = c("renv", "packrat",
                                             ".git", ".Rproj"),
                         full.names = TRUE,
                         include.dirs = FALSE,
                         recursive = recursive,
-                        pattern = "\\.R$",
+                        pattern = filetype_pattern,
                         ignore.case = TRUE)
     
     
@@ -142,7 +146,17 @@ originize_pkg <-
       files <- files[!empty_scripts]
     }
     
+    scripts_clean <- Map(f = function(f, s) {
+      if (is_rmd_file(f)) {
+        return(extract_r_chunks(s))
+      } else {
+        return(s)
+      }
+    }, files, scripts)
+    
+    
     originize_wrap(scripts = scripts,
+                   scripts_clean = scripts_clean,
                    files = files,
                    type = "writeLines",
                    pkgs = pkgs,
