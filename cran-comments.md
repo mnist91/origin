@@ -1,12 +1,11 @@
-# Submission 1.1.2
+# Submission 1.2.0
 
-Fix that RStudio color highlighting in the markers pane is no longer posssible
-via HTML but ansi colours.
+Support .rmd and .qmd files.
 
 ## Test environments
 
-* local MacOS Monterey, R 4.3.3
-* tested with GitHub actions for R 3.6, R 4.0, R 4.2 on
+* local MacOS Monterey, R 4.4.2
+* tested with GitHub actions for R 4.3.3, R 4.4.2, R 4.5.0 on
   - Ubuntu 20.04
   - macOS
   - Windows
@@ -19,5 +18,9 @@ via HTML but ansi colours.
   - R-hub [CT] ubuntu-next
 
 ## R CMD check results
-See https://github.com/mnist91/origin/actions/runs/8773339195.
-There were no ERRORs, WARNINGs, or Notes
+See https://github.com/mnist91/origin/actions/runs/11998726168.
+There were no ERRORs, WARNINGs, or NOTEs
+
+## Win Devel check results
+See https://win-builder.r-project.org/Ofk10ME3Y75v/00check.log
+There were no ERRORs, WARNINGs, or NOTEs
