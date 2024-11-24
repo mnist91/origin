@@ -1,4 +1,4 @@
-# origin - 1.1.2 <img src="misc/origin.png" width=170 align="right" />
+# origin - 1.2.0 <img src="misc/origin.png" width=170 align="right" />
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/origin)](https://cran.r-project.org/package=origin)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/origin)](https://cran.r-project.org/package=origin)
