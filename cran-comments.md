@@ -15,15 +15,13 @@ from dplyr::id to dplyr::filter in the showcases.
 * rhub::rhub_check() 
   - R-hub [VM] linux
   - R-hub [VM] windows
-  - R-hub [VM] macos
-  - R-hub [VM] macos-arm64
   - R-hub [CT] ubuntu-release
   - R-hub [CT] ubuntu-next
 
 ## R CMD check results
-See https://github.com/mnist91/origin/actions/runs/11998726168.
+https://github.com/mnist91/origin/actions/runs/21115809141
 There were no ERRORs, WARNINGs, or NOTEs
 
 ## Win Devel check results
-https://win-builder.r-project.org/kMK24nqQIkeV/00check.log
+https://win-builder.r-project.org/38Is2lw28Fuk/00check.log
 There were no ERRORs, WARNINGs, or NOTEs
