@@ -43,12 +43,12 @@ testthat::test_that("check_pkg_usage() working on test", {
                            ":=", "as.IDate", "as.data.table",
                            "copy", "is.data.table", "last",
                            "setkey", "setkey", "%>%", "bind_cols",
-                           "filter", "id", "if_else", "mutate",
+                           "filter", "if_else", "mutate",
                            "n", "n_distinct", "map",
                            "bind_cols_2", NA))
   testthat::expect_equal(res$n_calls,
                          c(2, 10, 1, 2, 2, 1, 1, 1, 1, 1, 4, 3,
-                           3, 7, 10, 7, 1, 1, 3, 6,
+                           3, 7, 10, 8, 1, 3, 6,
                            5, 4, 1, 0))
 
   # run function with markers
@@ -113,7 +113,7 @@ testthat::test_that("check_pkg_usage working on target", {
                            ":=", "as.IDate", "as.data.table",
                            "copy", "is.data.table", "last",
                            "setkey", "bind_cols", "filter",
-                           "id", "if_else", "mutate", "n",
+                           "if_else", "mutate", "n",
                            "n_distinct", "map", "%>%", "bind_cols_2"
                          ))
 

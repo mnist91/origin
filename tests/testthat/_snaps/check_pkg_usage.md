@@ -10,12 +10,11 @@
       
       -- Unused Packages: 0 ----------------------------------------------------------
       
-      -- Functions with unknown origin: 9 --------------------------------------------
+      -- Functions with unknown origin: 8 --------------------------------------------
       x bind_cols       x map        
       x bind_cols_2     x mutate     
       x filter          x n          
-      x id              x n_distinct 
-      x if_else         
+      x if_else         x n_distinct 
 
 # check_pkg_usage working on target
 

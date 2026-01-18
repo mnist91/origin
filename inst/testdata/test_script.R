@@ -8,9 +8,9 @@ carsdt <- merge.data.table(cars)
 carsdt <- data.table::merge.data.table(cars)
 
 eqn <- "
-\begin{equation*}
-\overset
-  \end{pmatrix}}
+\\begin{equation*}
+\\overset
+  \\end{pmatrix}}
 "
 script <- readLines("inst/testdata/test_script.R")
 

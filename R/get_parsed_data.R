@@ -23,7 +23,7 @@ get_parsed_data <- function(file = "",
   if(is.null(script)) {
     script <- readLines(file)
   }
-  script <- gsub("\\", "\\\\", script, fixed = TRUE)
+  # script <- gsub("\\", "\\\\", script, fixed = TRUE)
   
   # detailed information about parsed code
   dat <- utils::getParseData(parse(file = file,
