@@ -2,11 +2,9 @@ Type: Package
 Package: origin
 Title: Explicitly Qualifying Namespaces by Automatically Adding 'pkg::' to
     Functions
-Version: 1.2.0
-Authors@R: person(given = "Matthias",
-                  family = "Nistler",
-                  role = c("aut", "cre"),
-                  email = "m_nistler@web.de")
+Version: 1.2.1
+Authors@R: 
+    person("Matthias", "Braun FKA Nistler", , "m_nistler@web.de", role = c("aut", "cre"))
 Description: Automatically adding 'pkg::' to a function, i.e. mutate()
     becomes dplyr::mutate(). It is up to the user to determine which
     packages should be used explicitly, whether to include base R packages

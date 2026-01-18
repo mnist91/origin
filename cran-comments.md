@@ -1,6 +1,9 @@
-# Submission 1.2.0
+# Submission 1.2.1
 
-Support .rmd and .qmd files.
+Due to impact on a new dplyr version, examples and tests are adapted. Prior to
+the change, I used dplyr::id() in examples. This function is going to be removed
+so my checks would fail eventually and hamper their release. So I changed
+from dplyr::id to dplyr::filter in the showcases.
 
 ## Test environments
 
