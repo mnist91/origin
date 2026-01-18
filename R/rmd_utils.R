@@ -38,7 +38,7 @@ is_rmd_file <- function(file) {
 # additionally check, if the belong to a supported subset
 make_filetype_pattern <- function(filetypes) {
   with_point <- startsWith(filetypes, prefix = ".")
-  if (any(with_point)){
+  if (any(with_point)) {
     filetypes[with_point] <- sub(pattern = ".",
                                  replacement = "",
                                  x = filetypes[with_point],
@@ -51,13 +51,13 @@ make_filetype_pattern <- function(filetypes) {
   filetype_error <- !filetypes %in% supported_filetypes
   if (any(filetype_error)) {
     stop("Currently supported filetypes are ",
-         paste(".", supported_filetypes, sep = "", collapse = ", "),
+         paste0(".", supported_filetypes, collapse = ", "),
          ". Tried to originize ",
-         paste(".", filetypes[filetype_error], sep = "", collapse = ", "))
+         paste0(".", filetypes[filetype_error], collapse = ", "))
   }
   
   # R becomes \\.R$
-  pattern <- paste("\\.", filetypes, "$", sep = "", collapse = "|")
+  pattern <- paste0("\\.", filetypes, "$", collapse = "|")
   
   return(pattern)
 }

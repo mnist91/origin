@@ -70,7 +70,7 @@ list_files <- function(path,
       # remove symlinks since such linked folders should never be considered
       # in looking for local functions since these are eactually outside of
       # the current project
-      files <- files[Sys.readlink(files) == ""]
+      files <- files[!nzchar(Sys.readlink(files))]
     }
 
     return(files)
@@ -103,7 +103,7 @@ list_files <- function(path,
       # remove symlinks since such linked folders should never be considered
       # in looking for local functions since these are eactually outside of
       # the current project
-      dirs <- dirs[Sys.readlink(dirs) == ""]
+      dirs <- dirs[!nzchar(Sys.readlink(dirs))]
     }
 
     # exclude folders, usually package handler and test folders

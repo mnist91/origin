@@ -47,12 +47,12 @@ iris %>% filter(filter) %>% filter(Spepal.Length > 3);iris %>% dplyr::filter(fil
   # indendet comments are also ignored last();  # indendet comments are also ignored last()
   last()   # comments in the same line as code last();  data.table::last()   # comments in the same line as code last()
 ;
-# id() is a dplyr function;# id() is a dplyr function
-id <- 54;id <- 54
-last(id);data.table::last(id)
-szen <- last(id);szen <- data.table::last(id)
+# filter() is a dplyr function;# filter() is a dplyr function
+filter <- 54;filter <- 54
+last(filter);data.table::last(filter)
+szen <- last(filter);szen <- data.table::last(filter)
 last(szen);data.table::last(szen)
-id(id);dplyr::id(id)
+filter(filter);dplyr::filter(filter)
 ;
 ;
 # functional programming. Only checked if explicitly called.;# functional programming. Only checked if explicitly called.
@@ -103,7 +103,7 @@ myfun <- function(x) {copy(x)};myfun <- function(x) {data.table::copy(x)}
 "mutate(x = ""<div> Hi! <\\div>"") %>% filter(length)";"dplyr::mutate(x = ""<div> Hi! <\\div>"") %>% dplyr::filter(length)"
 ;
 # very long strings;# very long strings;
-"long_code <- mutate(x = 'Lorem ipsum dolor sit amet,\\n consectetur adipiscing elit,";"long_code <- dplyr::mutate(x = 'Lorem ipsum dolor sit amet,\\n consectetur adipiscing elit,"
+"long_code <- mutate(x = 'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,";"long_code <- dplyr::mutate(x = 'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,"
 "                         sed do eiusmod tempor incididunt ut";"                         sed do eiusmod tempor incididunt ut"
 "                         sed do eiusmod tempor incididunt')";"                         sed do eiusmod tempor incididunt')"
 # very very ling string >1000 characters;# very very ling string >1000 characters

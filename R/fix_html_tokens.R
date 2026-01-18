@@ -1,7 +1,6 @@
 # for the markers output, escape html specific tokens
 fix_html_tokens <- function(dat) {
-  has_html_token <- which(grepl(pattern = "<|>",
-                                x = dat$text))
+  has_html_token <- grep(pattern = "<|>", x = dat$text)
   
   # in case special characters that intervene with html code are present
   # replace them by their html counterpart
@@ -20,8 +19,10 @@ fix_html_tokens <- function(dat) {
     dat$text[has_html_token]  <-
       gsub(pattern     = ">",
            replacement = "&gt;",
+           fixed       = TRUE,
            x           = gsub(pattern     = "<",
                               replacement = "&lt;",
+                              fixed       = TRUE,
                               x           = html_txt))
   }
   
@@ -158,7 +159,7 @@ make_logging_data <- function(dat, use_markers, type_fun) {
                 FUN = function(xd) {
                   data.frame(file = xd$file[1],
                              line = xd$line1[1],
-                             column = xd$col1[which.min(xd$log_type != "")],
+                             column = xd$col1[which.min(nzchar(xd$log_type))],
                              type = set_marker_type(xd$log_type),
                              message = paste(xd$text, collapse = ""))
                 }

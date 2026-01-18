@@ -17,4 +17,8 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Matthias Braun FKA Nistler \email{m_nistler@web.de}
+
+}
 \keyword{internal}

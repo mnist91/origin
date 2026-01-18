@@ -1,3 +1,10 @@
+# origin 1.2.1 (18 Jan 2026)
+### Patch
+- Due to the removing of the soon to be defunct function `dplyr::id`, I changed
+  examples and tests by now using `dplyr::filter` instead. 
+  Thanks to @DavisVaughan for raising the issue   
+  [#11](https://github.com/mnist91/origin/issues/11).
+
 # origin 1.2.0 (24 Nov 2024)
 ### Features
 - Origin now supports .rmd (R-Markdown) and .qmd (Quarto) files. 

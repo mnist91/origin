@@ -71,12 +71,12 @@ iris %>% filter(filter) %>% filter(Spepal.Length > 3);iris %>% dplyr::filter(fil
   # indendet comments are also ignored last();  # indendet comments are also ignored last()
   last()   # comments in the same line as code last();  data.table::last()   # comments in the same line as code last()
 ;
-# id() is a dplyr function;# id() is a dplyr function
-id <- 54;id <- 54
-last(id);data.table::last(id)
-szen <- last(id);szen <- data.table::last(id)
+# filter() is a dplyr function;# filter() is a dplyr function
+filter <- 54;filter <- 54
+last(filter);data.table::last(filter)
+szen <- last(filter);szen <- data.table::last(filter)
 last(szen);data.table::last(szen)
-id(id);dplyr::id(id)
+filter(filter);dplyr::filter(filter)
 ;
 ;
 # functional programming. Only checked if explicitly called.;# functional programming. Only checked if explicitly called.

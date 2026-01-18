@@ -11,13 +11,11 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
   
   # in one go, inlcuding crosschecks
   testthat::expect_message(
-    testthat::expect_equal(
+    testthat::expect_null(
       originize_dir(dir,
                     pkgs = c("data.table",
-                             "dplyr"
-                    ), check_local_conflicts = FALSE),
-      NULL
-    ),
+                             "dplyr"),
+                    check_local_conflicts = FALSE)),
     regexp = "All provided scripts are empty"
   )
   
@@ -69,10 +67,10 @@ testthat::test_that("solve_local_duplicates triggers the expected messages", {
   
   
   writeLines(test_text_rmd[,
-                       grepl("TESTSKRIPT", nms, fixed = TRUE)],
+                           grepl("TESTSKRIPT", nms, fixed = TRUE)],
              con = test_rmd_path)
   writeLines(test_text_rmd[,
-                       grepl("TARGET", nms, fixed = TRUE)],
+                           grepl("TARGET", nms, fixed = TRUE)],
              con = target_rmd_path)
   
   # in one go, inlcuding crosschecks

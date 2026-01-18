@@ -103,7 +103,7 @@ check_pkg_usage <- function(path = getwd(),
   # make sure no package is considered multiple times
   if (any(dup_pkgs <- duplicated(pkgs))) {
     warning("The following packages are provided more than once: ",
-            paste(unique(pkgs[dup_pkgs]), collapse = ", "))
+            toString(unique(pkgs[dup_pkgs])))
     pkgs <- unique(pkgs)
   }
   
@@ -118,7 +118,7 @@ check_pkg_usage <- function(path = getwd(),
   
   if (any((unknown_pkgs <- !pkgs %in% rownames(utils::installed.packages())))) {
     stop(paste(sum(unknown_pkgs), "uninstalled packages:",
-               paste(pkgs[unknown_pkgs], collapse = ", ")))
+               toString(pkgs[unknown_pkgs])))
   }
   
   # get all exported functions from each package
@@ -199,7 +199,7 @@ check_pkg_usage <- function(path = getwd(),
   script_parsed$Id <- seq_len(nrow(script_parsed))
   
   rm_backticks <- function(x) {
-    gsub("`", "", x)
+    gsub("`", "", x, fixed = TRUE)
   }
   
   df_empty_sceleton <- data.frame(pkg = character(),
@@ -283,11 +283,12 @@ check_pkg_usage <- function(path = getwd(),
     df_defined_funs <- df_empty_sceleton
   }
   
-  if (nrow(df_namespaced_funs) > 0) {
-    other_used_pkgs <- sort(setdiff(df_namespaced_funs$pkg, pkgs))
-  } else {
-    other_used_pkgs <- character(0)
-  }
+  # TODO: returnieren
+  # if (nrow(df_namespaced_funs) > 0) {
+  #   other_used_pkgs <- sort(setdiff(df_namespaced_funs$pkg, pkgs))
+  # } else {
+  #   other_used_pkgs <- character(0)
+  # }
   
   
   used_pkgs <- setdiff(c(df_namespaced_funs$pkg, df_defined_funs$pkg),
