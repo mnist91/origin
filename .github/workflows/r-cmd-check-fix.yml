@@ -16,8 +16,8 @@ jobs:
           - {os: windows-latest, r: '4.0'}
           - {os: windows-latest, r: '4.2'}
           # MAC
-          - {os: macOS-latest, r: '3.6'}
-          - {os: macOS-latest, r: '4.0'}
+          - {os: macOS-latest, r: '4.4'}
+          - {os: macOS-latest, r: '4.1'}
           - {os: macOS-latest, r: '4.2'}
           # LINUX
           - {os: ubuntu-latest, r: '3.6'}
