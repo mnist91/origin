@@ -38,7 +38,7 @@ get_project_pkg <- function() {
   }
 
   # retreive package name
-  pkg_name <- gsub("Package: ", "", pkg_name)
+  pkg_name <- gsub("Package: ", "", pkg_name, fixed = TRUE)
 
   return(pkg_name)
   # nocov end

@@ -33,7 +33,7 @@ originize_wrap <-
            pkgs,
            scripts_clean = scripts,
            overwrite = TRUE,
-           ask_before_applying_changes =TRUE,
+           ask_before_applying_changes = TRUE,
            check_conflicts = TRUE,
            check_base_conflicts = TRUE,
            add_base_packages = FALSE,
@@ -69,7 +69,7 @@ originize_wrap <-
     # make sure no package is considered multiple times
     if (any((dup_pkgs <- duplicated(pkgs)))) {
       warning("The following packages are provided more than once: ",
-              paste(unique(pkgs[dup_pkgs]), collapse = ", "))
+              toString(unique(pkgs[dup_pkgs])))
       pkgs <- unique(pkgs)
     }
     
@@ -119,7 +119,7 @@ originize_wrap <-
     }
 
     # parse all scripts
-    if (type == "writeLines"){
+    if (type == "writeLines") {
       script_parsed <- Reduce(f = rbind,
                               lapply(X = files,
                                      FUN = get_parsed_data))
@@ -227,7 +227,7 @@ originize_wrap <-
         # get a truncated row
         df_trunc <- script_parsed[tt, ]
         # get lines that contain the initial text
-        imp <- unlist(scripts[[ df_trunc$file ]][df_trunc$line1:df_trunc$line2])
+        imp <- unlist(scripts[[df_trunc$file]][df_trunc$line1:df_trunc$line2])
         
         # if the string does not start at the beginning of the line, cut what
         # comes before the string

@@ -15,7 +15,7 @@ revert_parse_data <- function(parse_data,
     
     # recover one row for each line
     # get string for each line
-    string_cut <- unlist(strsplit(dfs$text, split = "\n"))
+    string_cut <- unlist(strsplit(dfs$text, split = "\n", fixed = TRUE))
     # repeat ddf-rows as often
     dfs <- dfs[rep(seq_len(nrow(dfs)), rep), ]
     
@@ -23,7 +23,7 @@ revert_parse_data <- function(parse_data,
     dfs$text <- string_cut
     
     # helper for info recovery
-    dfs$rep <- unlist(lapply(rep, seq_len)) - 1
+    dfs$rep <- unlist(lapply(rep, seq_len)) - 1 # Exclude Linting - more verbose
     
     # start line is initial start + number of lines covered
     dfs$line1 <- dfs$line1 + dfs$rep
@@ -65,7 +65,7 @@ revert_parse_data <- function(parse_data,
               ws <- strrep(" ", times = n_ws)
               
               # add whitespaces to the tokens
-              out <- paste(ws, args$text, collapse = "", sep = "")
+              out <- paste0(ws, args$text, collapse = "")
               return(out)
             })
   res <- as.character(res)
@@ -84,7 +84,7 @@ revert_parse_data <- function(parse_data,
     
   } else {
     # recover empty lines if needed
-    if (recover_empty_lines) {
+    if (recover_empty_lines) { # Exclude Linting - more verbose
       out <- character(max(parse_data$line1))
       out[unique(parse_data$line1)] <- res
       return(out)

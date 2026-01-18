@@ -20,7 +20,7 @@ get_parsed_data <- function(file = "",
     script <- text
   }
   
-  if(is.null(script)) {
+  if (is.null(script)) {
     script <- readLines(file)
   }
   # script <- gsub("\\", "\\\\", script, fixed = TRUE)
@@ -30,7 +30,7 @@ get_parsed_data <- function(file = "",
                                    text = script,
                                    keep.source = TRUE),
                              includeText = TRUE)
-  dat <- dat[dat$terminal == TRUE,
+  dat <- dat[dat$terminal == TRUE, # Exclude Linting - more verbose
              c("line1", "col1", "line2", "col2", "token", "text")]
 
   # replace wiht original line indices

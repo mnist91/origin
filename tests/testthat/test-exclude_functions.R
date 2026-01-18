@@ -52,14 +52,14 @@ testthat::test_that("Exclude Functions named and unnamed", {
                               stats = character()))
 
   # exclude mutltiple specific functions by several calls
-  excl_list <- list(dplyr = "filter", dplyr = "mutate")
+  excl_list <- list(dplyr = "filter", dplyr = "mutate") # Exclude Linting - by design duplicate argument
   testthat::expect_equal(exclude_functions(funs = funlist,
                                            to_exclude = excl_list),
                          list(dplyr = "summarize",
                               stats = c("aggregate", "filter")))
 
   # exclude mutltiple specific functions by several calls and issue warning
-  excl_list <- list(dplyr = "filter", dplyr = "setDT")
+  excl_list <- list(dplyr = "filter", dplyr = "setDT") # Exclude Linting - by design duplicate argument
   testthat::expect_warning(
     testthat::expect_equal(exclude_functions(funs = funlist,
                                              to_exclude = excl_list),

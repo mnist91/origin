@@ -1,4 +1,5 @@
 testthat::test_that("Exclude Specific Functions", {
+  # Begin Exclude Linting - by design duplicate argument
   funvec <- c(dplyr = "mutate",
               dplyr = "filter",
               dplyr = "summarize")
@@ -50,6 +51,7 @@ testthat::test_that("Exclude Specific Functions", {
                                             excl = excl_list),
                            c(dplyr = "mutate",
                              dplyr = "summarize")))
-
+  # End Exclude Linting - by design duplicate argument
+  
 
 })

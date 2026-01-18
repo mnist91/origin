@@ -126,7 +126,7 @@ print.pkg_usage <- function(x, max_display = 10L, ...) {
       cli::cli_alert_danger(
         paste(
           add_conf_str,
-          toString(x     = paste(dat_conflict_add$fun, collapse = ", "),
+          toString(x     = toString(dat_conflict_add$fun),
                    width = max(1,
                                cli::console_width() - nchar(add_conf_str) - 3)
           )
@@ -184,7 +184,7 @@ print.pkg_usage <- function(x, max_display = 10L, ...) {
         paste("... and", length(undefined_functions_add), "more:")
       cli::cli_alert_danger(
         paste(add_undef_str,
-              toString(x     = paste(undefined_functions_add, collapse = ", "),
+              toString(x     = toString(undefined_functions_add),
                        width = max(1,
                                    cli::console_width() -
                                      nchar(add_undef_str) - 3)

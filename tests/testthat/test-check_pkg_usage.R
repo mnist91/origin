@@ -172,15 +172,14 @@ testthat::test_that("check_pkg_usage fails - empty files", {
   writeLines(character(3), con = test_file_empty)
 
   testthat::expect_message(
-    testthat::expect_equal(
+    testthat::expect_null(
       check_pkg_usage(path = dir,
                       pkgs = c("data.table",
                                "dplyr",
                                "purrr"
                       ),
                       recursive = FALSE,
-                      use_markers = FALSE),
-      NULL),
+                      use_markers = FALSE)),
     "All provided files are empty")
 })
 

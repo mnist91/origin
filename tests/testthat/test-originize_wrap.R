@@ -179,7 +179,7 @@ testthat::test_that("Do origin wrapper function checks work", {
 
   # InsertText without hits
   testthat::expect_message(
-    testthat::expect_equal(
+    testthat::expect_null(
       originize_wrap(scripts = list(script),
                      files = test_file_path,
                      type = "insertText",
@@ -188,13 +188,12 @@ testthat::test_that("Do origin wrapper function checks work", {
                      add_base_packages = FALSE,
                      check_local_conflicts = FALSE,
                      verbose = FALSE,
-                     ask_before_applying_changes = FALSE),
-      NULL),
+                     ask_before_applying_changes = FALSE)),
     regexp = "Nothing detected",
     fixed = TRUE)
 
   # Insert Text runs -----------------------------------------------------------
-  testthat::expect_equal(
+  testthat::expect_null(
     originize_wrap(scripts = list(script),
                    files = test_file_path,
                    type = "insertText",
@@ -203,10 +202,9 @@ testthat::test_that("Do origin wrapper function checks work", {
                    add_base_packages = FALSE,
                    check_local_conflicts = FALSE,
                    verbose = FALSE,
-                   ask_before_applying_changes = FALSE),
-    NULL)
+                   ask_before_applying_changes = FALSE))
 
-  testthat::expect_equal(
+  testthat::expect_null(
     originize_wrap(scripts = list(script),
                    files = test_file_path,
                    type = "insertText",
@@ -216,13 +214,12 @@ testthat::test_that("Do origin wrapper function checks work", {
                    check_local_conflicts = FALSE,
                    verbose = FALSE,
                    ask_before_applying_changes = FALSE,
-                   overwrite = FALSE),
-    NULL)
+                   overwrite = FALSE))
 
   # with logging
   if (!rstudioapi::isAvailable()) {
     testthat::expect_error(
-      testthat::expect_equal(
+      testthat::expect_null(
         originize_wrap(scripts = list(script),
                        files = test_file_path,
                        type = "insertText",
@@ -231,13 +228,12 @@ testthat::test_that("Do origin wrapper function checks work", {
                        add_base_packages = FALSE,
                        check_local_conflicts = FALSE,
                        verbose = TRUE,
-                       ask_before_applying_changes = FALSE),
-        NULL),
+                       ask_before_applying_changes = FALSE)),
       regexp = "RStudio not running",
       fixed = TRUE)
   } else {
     testthat::expect_equal(
-      originize_wrap(scripts = list(script),
+      expect_null(scripts = list(script),
                      files = test_file_path,
                      type = "insertText",
                      pkgs = c("dplyr", "purrr"),
@@ -245,8 +241,7 @@ testthat::test_that("Do origin wrapper function checks work", {
                      add_base_packages = FALSE,
                      check_local_conflicts = FALSE,
                      verbose = TRUE,
-                     ask_before_applying_changes = FALSE),
-      NULL)
+                     ask_before_applying_changes = FALSE))
 
   }
 

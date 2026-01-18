@@ -37,8 +37,7 @@ originize <- function(dat,
                           by.x = c("text", "usage"),
                           by.y = c("fct", "MERGE_HELPER"),
                           all.x = TRUE,
-                          sort = FALSE,
-  )
+                          sort = FALSE)
 
   # sort it in the original order
   dat <- dat[order(dat$Id), ]

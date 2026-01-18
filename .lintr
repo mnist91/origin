@@ -1,41 +1,66 @@
-linters: lintr::linters_with_defaults(
-  trailing_whitespace_linter = NULL,
-  indentation_linter = NULL,
-  lintr::T_and_F_symbol_linter(),
-  lintr::line_length_linter(80L),
-    lintr::assignment_linter(allow_cascading_assign = FALSE,
-                             allow_right_assign = FALSE,
-                             allow_trailing = TRUE),
-  lintr::brace_linter(allow_single_line = FALSE),
-  lintr::commas_linter(),
-  # commented_code_linter = lintr::commented_code_linter,
-  lintr::cyclocomp_linter(complexity_limit = 30),
-  object_usage_linter = NULL,
-  lintr::object_name_linter(styles = "snake_case"),
-  lintr::object_length_linter(length = 30L),
-  lintr::equals_na_linter(),
-  lintr::function_left_parentheses_linter(),
-  lintr::infix_spaces_linter(),
-  # no_tab_linter = lintr::no_tab_linter,
-  lintr::brace_linter(),
-  lintr::absolute_path_linter(lax = TRUE),
-  lintr::nonportable_path_linter(lax = TRUE),
-  lintr::pipe_continuation_linter(),
-  lintr::semicolon_linter(),
-  lintr::seq_linter(),
-  lintr::quotes_linter(),
-  lintr::spaces_inside_linter(),
-  lintr::spaces_left_parentheses_linter(),
-    lintr::undesirable_function_linter(
-      fun = c(lintr::default_undesirable_functions[
-        !names(lintr::default_undesirable_functions)
-        %in% c("mapply", "options")])),
-    lintr::undesirable_operator_linter(
-      op = c(lintr::default_undesirable_operators)),
-  lintr::unnecessary_concatenation_linter(allow_single_expression = FALSE))
-exclusions: list("R/zzz.R",
-                 "tests/testthat/test_origin_file.R",
-                 "tests/testthat/test_verbolize.R")
+linters: all_linters(
+    backport_linter("3.6.0", except = c("R_user_dir", "deparse1", "...names")),
+    line_length_linter(120L),
+    object_overwrite_linter(allow_names = c("line", "lines", "pipe", "symbols")),
+    todo_comment_linter(
+      except_regex = c(
+        rex::rex(
+          "TODO(",
+          # GitHub issue number #1234, possibly from another repo org/repo#5678
+          maybe(one_or_more(character_class("a-zA-Z0-9-")), "/", one_or_more(character_class("a-zA-Z0-9._-"))),
+          "#", one_or_more(digit),
+          ")"
+        ),
+        rex::rex(
+          "TODO(",
+          "R>", maybe("="), digit, ".", digit, maybe(".", digit),
+          ")"
+        )
+      )
+    ),
+    undesirable_function_name_linter = NULL,
+    undesirable_function_call_linter = NULL,
+    unnecessary_concatenation_linter(allow_single_expression = FALSE),
+    absolute_path_linter = NULL,
+    library_call_linter = NULL,
+    nonportable_path_linter = NULL,
+    # We now require R>=4.0.0
+    strings_as_factors_linter = NULL,
+    todo_comment_linter = NULL,
+    # exclude; we use customized version above
+    undesirable_function_linter = NULL,
+    trailing_whitespace_linter = NULL,
+    indentation_linter = NULL,
+    return_linter = NULL,
+    unreachable_code_linter = NULL,
+    implicit_integer_linter = NULL,
+    if_switch_linter = NULL,
+    expect_identical_linter = NULL,
+    cyclomatic_complexity_linter = NULL,
+    list_comparison_linter = NULL,
+    condition_call_linter = NULL,
+    condition_message_linter = NULL,
+    outer_negation_linter = NULL,
+    implicit_assignment_linter = NULL,
+    # paste_linter = NULL,
+    scalar_in_linter = NULL,
+    outer_negation_linter = NULL,
+    cyclocomp_linter = NULL,
+    commented_code_linter = NULL,
+    if_not_else_linter = NULL,
+    pipe_consistency_linter = NULL,
+    seq_linter = NULL,
+    object_overwrite_linter = NULL
+  )
+exclusions: list(
+    "inst/doc/creating_linters.R" = 1L,
+    "inst/example/bad.R",
+    "tests/testthat.R" = list(unused_import_linter = Inf),
+    "tests/testthat/default_linter_testcode.R",
+    "tests/testthat/dummy_*",
+    "tests/testthat/exclusions-test",
+    "tests/testthat/knitr_*"
+  )
 exclude: "# Exclude Linting"
 exclude_start: "# Begin Exclude Linting"
 exclude_end: "# End Exclude Linting"

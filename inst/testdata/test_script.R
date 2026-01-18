@@ -13,4 +13,3 @@ eqn <- "
   \\end{pmatrix}}
 "
 script <- readLines("inst/testdata/test_script.R")
-

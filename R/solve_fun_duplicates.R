@@ -20,11 +20,11 @@ solve_fun_duplicates <- function(dups,
                "\033[22m\033[24m\033[39m",
                "\n\n"))
     
-    cat(paste(dups, ": ", names(dups),
-              collapse = "\n", sep = ""),
+    cat(paste0(dups, ": ", names(dups),
+               collapse = "\n"),
         "\n\n")
     cat("Order in which relevant packges are evaluated:\n")
-    dup_nms <- unique(unlist(strsplit(names(dups), ", ")))
+    dup_nms <- unique(unlist(strsplit(names(dups), ", ", fixed = TRUE)))
     cat(paste(pkgs[pkgs %in% dup_nms], collapse = " >> "), "\n")
     
     cat("Do you want to proceed?")

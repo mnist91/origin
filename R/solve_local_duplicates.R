@@ -18,8 +18,8 @@ solve_local_duplicates <- function(dups,
                "\033[22m\033[24m\033[39m",
                "\n\n"))
     
-    cat(paste(dups, ": ", names(dups),
-              collapse = "\n", sep = ""),
+    cat(paste0(dups, ": ", names(dups),
+               collapse = "\n"),
         "\n\n")
     cat(paste("Local functions have \033[4mhigher\033[24m priority.",
               "In case you want to use an",

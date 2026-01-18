@@ -7,8 +7,8 @@ from dplyr::id to dplyr::filter in the showcases.
 
 ## Test environments
 
-* local MacOS Monterey, R 4.4.2
-* tested with GitHub actions for R 4.3.3, R 4.4.2, R 4.5.0 on
+* local MacOS Monterey, R 4.5.2
+* tested with GitHub actions for R 4.3.3, R 4.4.2, R 4.5.2 on
   - Ubuntu 20.04
   - macOS
   - Windows
@@ -25,5 +25,5 @@ See https://github.com/mnist91/origin/actions/runs/11998726168.
 There were no ERRORs, WARNINGs, or NOTEs
 
 ## Win Devel check results
-See https://win-builder.r-project.org/Ofk10ME3Y75v/00check.log
+https://win-builder.r-project.org/kMK24nqQIkeV/00check.log
 There were no ERRORs, WARNINGs, or NOTEs

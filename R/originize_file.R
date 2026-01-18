@@ -72,16 +72,15 @@ originize_file <-
     # currently supported filetypes
     supported_filetypes <- c("R", "RMD", "QMD")
     # R becomes \\.R$
-    supported_filetypes_pattern <- paste("\\.", supported_filetypes, "$",
-                                         sep = "",
-                                         collapse = "|")
+    supported_filetypes_pattern <- paste0("\\.", supported_filetypes, "$",
+                                          collapse = "|")
     
     if (!grepl(x = file,
                pattern = supported_filetypes_pattern,
                ignore.case = TRUE)) {
       stop("Only ",
-           paste(".", supported_filetypes,
-                 sep = "", collapse = ", "),
+           paste0(".", supported_filetypes,
+                  collapse = ", "),
            " files are supported\n", 
            file)
     }
