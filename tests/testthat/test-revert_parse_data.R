@@ -105,8 +105,8 @@ testthat::test_that("revert_parse_data - strings > 1000 chr", {
          "Vel elit scelerisque mauris pellentesque pulvinar. ",
          "Convallis posuere morbi leo urna molestie at elementum eu.'"
   )
-  x_parsed <- get_parsed_data(x, file = "test2.R")
+  x_parsed <- get_parsed_data(paste(x, collapse = " "), file = "test2.R")
 
   testthat::expect_equal(revert_parse_data(x_parsed),
-                         rep("[3901 chars quoted with ''']", times = length(x)))
+                         rep("[3901 chars quoted with ''']", times = 1))
 })
