@@ -11,7 +11,7 @@ rm(list = ls(all.names = TRUE))
 
 # Update your R, Rstudio and all dependent R packages
 # (R and Rstudio has to be updated manually
-devtools::install_deps()
+pak::local_install_deps()
 
 # Write tests and check if your own tests work
 devtools::test()
@@ -66,6 +66,7 @@ rhub::rhub_check(platforms = c("linux",
                                "ubuntu-next",
                                "ubuntu-release"),
                  branch = "dev")
+
 
 
 devtools::release()

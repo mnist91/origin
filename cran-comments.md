@@ -1,14 +1,13 @@
-# Submission 1.2.1
+# Submission 1.2.2
 
-Due to impact on a new dplyr version, examples and tests are adapted. Prior to
-the change, I used dplyr::id() in examples. This function is going to be removed
-so my checks would fail eventually and hamper their release. So I changed
-from dplyr::id to dplyr::filter in the showcases.
+Due to an - apparent - update in getParseData, a text had to be adapted to
+mirror its new behavior to *not* strip information after 1000 characters by 
+`[1234 chars quoted with ''']` as it was before.
 
 ## Test environments
 
-* local MacOS Monterey, R 4.5.2
-* tested with GitHub actions for R 4.3.3, R 4.4.2, R 4.5.2 on
+* local MacOS Golden Gate, R 4.6.1
+* tested with GitHub actions for R 4.3.3, R 4.4.2, R 4.6.1 on
   - Ubuntu 20.04
   - macOS
   - Windows
@@ -19,9 +18,9 @@ from dplyr::id to dplyr::filter in the showcases.
   - R-hub [CT] ubuntu-next
 
 ## R CMD check results
-https://github.com/mnist91/origin/actions/runs/21115809141
+https://github.com/mnist91/origin/actions/runs/40125164201
 There were no ERRORs, WARNINGs, or NOTEs
 
 ## Win Devel check results
-https://win-builder.r-project.org/38Is2lw28Fuk/00check.log
+https://win-builder.r-project.org/3HwE7p5891H7/
 There were no ERRORs, WARNINGs, or NOTEs

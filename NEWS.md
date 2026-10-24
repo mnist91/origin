@@ -1,3 +1,9 @@
+# origin 1.2.2 (24 Oct 2026)
+### Patch
+- Due to an apparent update in getParseData, a text had to be adapted to mirror
+  its new behavior to strip information after more characters by 
+  `[1234 chars quoted with ''']` than before.
+
 # origin 1.2.1 (18 Jan 2026)
 ### Patch
 - Due to the removing of the soon to be defunct function `dplyr::id`, I changed
