@@ -17,13 +17,13 @@ testthat::test_that("revert_parse_data", {
          "")
   # End Exclude Linting
   x_parsed <- get_parsed_data(x, file = "test.R")
-
+  
   testthat::expect_equal(revert_parse_data(x_parsed),
                          expected = x[-length(x)])
   testthat::expect_equal(revert_parse_data(x_parsed,
                                            recover_empty_lines = TRUE),
                          expected = x[-length(x)])
-
+  
   # empty lines up to the last filled input can be recovered
   testthat::expect_equal(revert_parse_data(x_parsed,
                                            recover_empty_lines = FALSE),
@@ -106,7 +106,15 @@ testthat::test_that("revert_parse_data - strings > 1000 chr", {
          "Convallis posuere morbi leo urna molestie at elementum eu.'"
   )
   x_parsed <- get_parsed_data(paste(x, collapse = " "), file = "test2.R")
-
-  testthat::expect_equal(revert_parse_data(x_parsed),
-                         rep("[3901 chars quoted with ''']", times = 1))
+  
+  # apparently, in the current r development version getParseData 
+  # does not shorten long strings anymore.
+  if (getRversion() < "4.7") {
+    testthat::expect_equal(revert_parse_data(x_parsed),
+                           rep("[3901 chars quoted with ''']", times = 1))
+  } else {
+    testthat::expect_equal(revert_parse_data(x_parsed),
+                           paste(x, collapse = " "))
+    
+  }
 })
