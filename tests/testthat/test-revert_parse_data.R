@@ -17,13 +17,13 @@ testthat::test_that("revert_parse_data", {
          "")
   # End Exclude Linting
   x_parsed <- get_parsed_data(x, file = "test.R")
-
+  
   testthat::expect_equal(revert_parse_data(x_parsed),
                          expected = x[-length(x)])
   testthat::expect_equal(revert_parse_data(x_parsed,
                                            recover_empty_lines = TRUE),
                          expected = x[-length(x)])
-
+  
   # empty lines up to the last filled input can be recovered
   testthat::expect_equal(revert_parse_data(x_parsed,
                                            recover_empty_lines = FALSE),
@@ -55,10 +55,66 @@ testthat::test_that("revert_parse_data - strings > 1000 chr", {
          "amet nisl purus. Nec feugiat in fermentum posuere urna.",
          "Urna id volutpat lacus laoreet non curabitur gravida arcu.",
          "Vel elit scelerisque mauris pellentesque pulvinar. ",
+         "sapien faucibus et molestie. Libero enim sed faucibus ",
+         "turpis in eu mi bibendum neque. Metus dictum at tempor",
+         "commodo. Sed felis eget velit aliquet sagittis id",
+         "consectetur. Mi sit amet mauris commodo quis imperdiet",
+         "massa. Viverra vitae congue eu consequat. Tellus cras",
+         "adipiscing enim eu. Id ornare arcu odio ut. Auctor neque",
+         "vitae tempus quam pellentesque nec. Sodales ut etiam sit",
+         "amet nisl purus. Nec feugiat in fermentum posuere urna.",
+         "Urna id volutpat lacus laoreet non curabitur gravida arcu.",
+         "Vel elit scelerisque mauris pellentesque pulvinar. ",
+         "sapien faucibus et molestie. Libero enim sed faucibus ",
+         "turpis in eu mi bibendum neque. Metus dictum at tempor",
+         "commodo. Sed felis eget velit aliquet sagittis id",
+         "consectetur. Mi sit amet mauris commodo quis imperdiet",
+         "massa. Viverra vitae congue eu consequat. Tellus cras",
+         "adipiscing enim eu. Id ornare arcu odio ut. Auctor neque",
+         "vitae tempus quam pellentesque nec. Sodales ut etiam sit",
+         "amet nisl purus. Nec feugiat in fermentum posuere urna.",
+         "Urna id volutpat lacus laoreet non curabitur gravida arcu.",
+         "Vel elit scelerisque mauris pellentesque pulvinar. ",
+         "commodo. Sed felis eget velit aliquet sagittis id",
+         "consectetur. Mi sit amet mauris commodo quis imperdiet",
+         "massa. Viverra vitae congue eu consequat. Tellus cras",
+         "adipiscing enim eu. Id ornare arcu odio ut. Auctor neque",
+         "vitae tempus quam pellentesque nec. Sodales ut etiam sit",
+         "amet nisl purus. Nec feugiat in fermentum posuere urna.",
+         "Urna id volutpat lacus laoreet non curabitur gravida arcu.",
+         "Vel elit scelerisque mauris pellentesque pulvinar. ",
+         "sapien faucibus et molestie. Libero enim sed faucibus ",
+         "turpis in eu mi bibendum neque. Metus dictum at tempor",
+         "commodo. Sed felis eget velit aliquet sagittis id",
+         "consectetur. Mi sit amet mauris commodo quis imperdiet",
+         "massa. Viverra vitae congue eu consequat. Tellus cras",
+         "adipiscing enim eu. Id ornare arcu odio ut. Auctor neque",
+         "vitae tempus quam pellentesque nec. Sodales ut etiam sit",
+         "amet nisl purus. Nec feugiat in fermentum posuere urna.",
+         "Urna id volutpat lacus laoreet non curabitur gravida arcu.",
+         "Vel elit scelerisque mauris pellentesque pulvinar. ",
+         "sapien faucibus et molestie. Libero enim sed faucibus ",
+         "turpis in eu mi bibendum neque. Metus dictum at tempor",
+         "commodo. Sed felis eget velit aliquet sagittis id",
+         "consectetur. Mi sit amet mauris commodo quis imperdiet",
+         "massa. Viverra vitae congue eu consequat. Tellus cras",
+         "adipiscing enim eu. Id ornare arcu odio ut. Auctor neque",
+         "vitae tempus quam pellentesque nec. Sodales ut etiam sit",
+         "amet nisl purus. Nec feugiat in fermentum posuere urna.",
+         "Urna id volutpat lacus laoreet non curabitur gravida arcu.",
+         "Vel elit scelerisque mauris pellentesque pulvinar. ",
          "Convallis posuere morbi leo urna molestie at elementum eu.'"
   )
-  x_parsed <- get_parsed_data(x, file = "test2.R")
-
-  testthat::expect_equal(revert_parse_data(x_parsed),
-                         rep("[1261 chars quoted with ''']", times = length(x)))
+  x_parsed <- get_parsed_data(paste(x, collapse = " "), file = "test2.R")
+  
+  # apparently, in the current r development version getParseData 
+  # does not shorten long strings anymore.
+  if (getRversion() < "4.7") {
+    testthat::expect_equal(revert_parse_data(x_parsed),
+                           rep("[3901 chars quoted with ''']", times = 1))
+  } else {
+    testthat::expect_equal(revert_parse_data(x_parsed),
+                           paste(x, collapse = " "))
+    
+  }
 })

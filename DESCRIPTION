@@ -2,7 +2,7 @@ Type: Package
 Package: origin
 Title: Explicitly Qualifying Namespaces by Automatically Adding 'pkg::' to
     Functions
-Version: 1.2.1
+Version: 1.2.2
 Authors@R: 
     person("Matthias", "Braun FKA Nistler", , "m_nistler@web.de", role = c("aut", "cre"))
 Description: Automatically adding 'pkg::' to a function, i.e. mutate()
@@ -31,6 +31,6 @@ Suggests:
     testthat
 VignetteBuilder: 
     knitr
+Config/roxygen2/version: 8.1.1
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.3.3
